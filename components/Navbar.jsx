@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Image from "next/image";
+import Logo from "./Logo";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import Logo from "./Logo";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +14,14 @@ export default function Navbar() {
   const NavLinks = () => {
     return (
       <>
-        <Link href="#">Home</Link>
+        {isOpen ? (
+          <Link href="#">Home</Link>
+        ) : (
+          <Link className="text-[#D16527] border-b-2 border-[#D16527]" href="#">
+            Home
+          </Link>
+        )}
+
         <Link href="#">impulsa tu refaccionaria</Link>
         <Link href="#">Registrate</Link>
         {isOpen ? (
@@ -31,7 +37,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="w-1/3 flex justify-end lg:mr-8">
+      <nav className="sm:w-1/3 flex justify-end md:w-1/3 lg:max-w-screen-lg lg:mr-8 xl:w-[30%] 2xl:w-[30%] lg:mb-3">
         <div className="hidden w-full justify-between lg:flex md:hidden">
           <NavLinks />
         </div>
