@@ -24,19 +24,22 @@ export default function DescriptionCard() {
   return (
     <>
       <section className="lg:flex lg:flex-col lg:col-start-1 lg:col-end-13 lg:w-[100%] ">
-        <h2 className="lg:mb-[70px] text-[36px] font-bold uppercase">
+        <h2 className=" font-chakra lg:mb-[70px] text-[36px] font-bold uppercase">
           ¿Cómo Funciona?
         </h2>
-        <div className="lg:flex lg:flex-row">
+        <div className="lg:flex lg:flex-row justify-between">
           {descriptionOptions.map((option, idx) => {
             return (
-              <div className="bg-[#302F2F] lg:mr-[92px] p-5 justify-center flex flex-col lg:w-[370px] gap-5 lg:h-[240px] rounded-2xl">
+              <div
+                key={`description-card-${idx}`}
+                className="bg-[#302F2F] p-5 justify-center relative lg:w-[370px] lg:h-[240px] rounded-2xl"
+              >
                 <Image
-                  className="lg:w-[70px] lg:h-[70px] top-0 left-0"
+                  className="lg:w-[70px] lg:h-[70px] absolute lg:top-5 lg:left-5 lg:mb-[22px]"
                   src={option.icon}
                   alt="logo"
                 />
-                <p>{option.description}</p>
+                <p className="absolute top-[45%]">{option.description}</p>
               </div>
             );
           })}
