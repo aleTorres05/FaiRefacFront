@@ -59,11 +59,6 @@ export default function Navbar() {
           </div>
         )}
       </nav>
-      {/* {isOpen && (
-        <div className="flex flex-col items-center">
-          <NavLinks />
-        </div>
-      )} */}
     </>
   );
 }
