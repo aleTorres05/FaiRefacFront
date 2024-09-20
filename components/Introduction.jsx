@@ -13,7 +13,7 @@ export default function Introduction() {
             Compara precios entre refaccionarias cercanas y óbten las piezas que
             necesitas al mejor precio.
           </p>
-          <button className="bg-[#D16527] px-6 py-2  lg:w-[195px] lg:h-[60px] custom-btn ">
+          <button className=" px-6 py-2  lg:w-[195px] lg:h-[60px]">
             <p className=" font-chakra lg:text-[18px] font-bold	uppercase">
               Contiza Ya!
             </p>

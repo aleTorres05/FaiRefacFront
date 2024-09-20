@@ -13,4 +13,5 @@ body {
 
 button{
   clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
+  background-color: #D16527;
 }
