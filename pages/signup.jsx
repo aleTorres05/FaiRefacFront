@@ -1,7 +1,7 @@
 import UserRegistrationForm from '../components/UserRegistrationForm';
 import Header from '@/components/Header';
 
-export default function RegisterPage() {
+export default function Signup() {
   return (
     <div>
       <Header/>
