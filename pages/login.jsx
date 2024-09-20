@@ -9,8 +9,10 @@ export default function Login() {
 
       {/* Contenedor centrado */}
       <div className="flex flex-1 flex-col justify-center md:items-center">
-        {" "}
-        {/* mt ajustado para no superponerse con el header */}
+        <button className="hidden lg:block lg:absolute right-5 top-[15%] bg-[#D16527] font-chakra w-[190px] h-[41px] text-[#fff] uppercase">
+          Resgitrarse
+        </button>
+
         <h1 className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
           Welcome to the FaiRefac
         </h1>

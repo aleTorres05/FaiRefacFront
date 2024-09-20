@@ -34,6 +34,9 @@ export default function LoginForm() {
         >
           Iniciar sesión
         </button>
+        <button className="lg:hidden bg-[#fff] font-chakra w-[190px] h-[41px] text-[#000] uppercase">
+          Resgitrarse
+        </button>
       </form>
     </div>
   );
