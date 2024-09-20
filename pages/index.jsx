@@ -5,7 +5,7 @@ import BenefitCards from "@/components/BenefitCards";
 
 export default function Home() {
   return (
-    <main className="grid mt-[18px] mx-[32px] lg:grid-cols-12">
+    <main className="grid mt-[18px] mx-[32px] grid-cols-12">
       <Header />
       <Introduction />
       <DescriptionCard />

@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 export default function ClientSideBar() {
-  const [isCarSelected, setIsCarSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
 
-  const carButtonSelection = () => {
-    setIsCarSelected(!isCarSelected);
+  const buttonSelection = () => {
+    setIsSelected(!isSelected);
   };
 
   return (

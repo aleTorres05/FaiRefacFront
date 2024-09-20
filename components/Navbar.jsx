@@ -36,8 +36,8 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sm:w-1/3 flex justify-end md:w-1/3 lg:max-w-screen-lg lg:mr-8 xl:w-[30%] 2xl:w-[30%] lg:mb-3">
-        <div className="hidden w-full justify-between lg:flex md:hidden">
+      <nav className="mb-2 sm:w-1/3 flex justify-end md:w-1/3 lg:w-1/2  lg:mr-8 xl:w-1/3 2xl:w-1/3 lg:mb-3  ">
+        <div className="hidden w-full justify-between lg:justify-around lg:flex md:hidden xl:justify-evenly">
           <NavLinks />
         </div>
         <div className="lg:hidden">
