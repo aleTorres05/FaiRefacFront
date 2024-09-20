@@ -1,4 +1,4 @@
-// import carImage from "../assets/images/CarDriving.png";
+import carImage from "../assets/images/CarDriving.png";
 import Image from "next/image";
 
 export default function Introduction() {
@@ -22,7 +22,7 @@ export default function Introduction() {
         <div className="w-[50%]">
           <Image
             className="lg:w-[550px] lg:h-[550px]"
-            // src={carImage}
+            src={carImage}
             alt="logo"
           />
         </div>
