@@ -18,8 +18,8 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className='flex justify-center items-center min-h-screen'>
-        <main className=" w-full md:h-[300px] max-w-full md:max-w-[630px] bg-[#282525] p-4 flex flex-col items-center justify-center gap-6 md:clip-custom">
+    <div className='flex justify-center md:items-center min-h-screen'>
+        <main className=" w-full md:h-[300px] max-w-full md:max-w-[630px] md:bg-[#282525] p-4 flex flex-col items-center justify-center gap-6 md:clip-custom">
       <h1 className="font-chakra font-bold text-white text-2xl md:text-3xl">VALIDA TU CORREO</h1>
       <h2 className="text-white font-mulish text-lg md:text-xl">Ingresa los 6 dígitos enviados a tu correo</h2>
       
