@@ -59,7 +59,7 @@ export default function UserRegistrationForm() {
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
-          className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus:border-[#D26528] font-mulish"
+          className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528] focus:border-[#D26528] font-mulish"
         />
       </div>
 
@@ -71,7 +71,7 @@ export default function UserRegistrationForm() {
           value={formData.password}
           onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           required
-          className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus:border-[#D26528] font-mulish"
+          className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528] focus:border-[#D26528] font-mulish"
         />
       </div>
 
