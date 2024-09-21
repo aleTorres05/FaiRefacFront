@@ -8,10 +8,18 @@
 body {
   color: #FFFFFF;
   background:  #161616;
-}
+};
 
+@layer utilities {
+  
+  button{
+    clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
+  }
 
-button{
-  clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
-  background-color: #D16527;
+  @media (min-width: 768px) {
+    .clip-custom {
+      clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
+    }
+
+  } 
 }
