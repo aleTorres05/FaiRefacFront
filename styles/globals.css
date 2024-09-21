@@ -10,7 +10,6 @@ body {
   background:  #161616;
 };
 
-
 @layer utilities {
   
   button{
@@ -21,5 +20,6 @@ body {
     .clip-custom {
       clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
     }
-  }
+
+  } 
 }

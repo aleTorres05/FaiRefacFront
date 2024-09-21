@@ -18,16 +18,19 @@ export default function BenefitCards() {
   ];
   return (
     <>
-      <section className="lg:col-start-1 lg:col-end-13 lg:mt-[98px] lg:h-[450px]">
+      <section className="mt-14 h-[50px] w-full col-start-1 col-end-13 lg:mt-[98px] lg:h-[450px]">
         <div>
-          <h2 className="uppercase font-chakra text-[36px] mb-[35px] font-bold lg:h-[50px]">
+          <h2 className="uppercase font-chakra text-[36px] mb-1 lg:mb-[35px] font-bold lg:h-[50px]">
             Beneficios
           </h2>
         </div>
-        <div className="lg:flex lg:flex-row  bg-[#070606] lg:h-[100%] rounded-xl justify-evenly items-center ">
+        <div className="lg:flex lg:flex-row flex flex-col md:flex-row md:flex-wrap bg-[#070606] h-fit rounded-xl justify-evenly items-center ">
           {benefitOptions.map((option, idx) => {
             return (
-              <div className="flex flex-col lg:w-[300px] ">
+              <div
+                key={`beneficio-${idx}`}
+                className="flex flex-col w-[80%] md:w-[43%] lg:w-[300px] my-4"
+              >
                 <div className=" border-b-2 border-b-[#D16527] mb-[27px] lg:w-[200px]  text-[18px]">
                   <h4 className="uppercase font-chakra font-semibold mb-[13px]">
                     {option.title}
