@@ -28,11 +28,11 @@ export default function FAQ() {
   return (
     <>
       <section className="col-start-1 col-end-13">
-        <h2 className="font-chakra font-bold text-5xl mb-4">FAQ's:</h2>
+        <h2 className="font-chakra font-bold text-5xl mb-4">FAQs:</h2>
         <div className="rounded-lg mb-3">
           {questions.map((q, index) => (
             <div
-              key={index}
+              key={`index-${index}`}
               className="mb-4 border bg-[#302F2F] font-semibold rounded-lg "
             >
               <button
