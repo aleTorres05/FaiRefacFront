@@ -7,9 +7,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      fontFamily: {
+        chakra: ["Chakra Petch"],
+        mulish: ["Mulish"],
+      },
+      textColor: {
+        test: ["#D16527"],
       },
     },
   },
