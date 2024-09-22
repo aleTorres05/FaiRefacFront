@@ -32,7 +32,7 @@ export default function FAQ() {
         <div className="rounded-lg mb-3">
           {questions.map((q, index) => (
             <div
-              key={index}
+              key={`index-${index}`}
               className="mb-4 border bg-[#302F2F] font-semibold rounded-lg "
             >
               <button
