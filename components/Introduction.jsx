@@ -1,6 +1,3 @@
-import carImage from "../assets/images/CarDriving.png";
-import Image from "next/image";
-
 export default function Introduction() {
   return (
     <>
