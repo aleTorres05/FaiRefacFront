@@ -17,37 +17,43 @@ export default function FAQ() {
     },
     {
       question: "¿PUEDO CONFIAR EN LAS MARCAS DE REFACCIONES QUE OFRECEN?",
-      answer: "Respuesta a la segunda pregunta...",
+      answer:
+        "¡Sí, puedes confiar! Todas nuestras refacciones provienen de refaccionarias de confianza. Además, te ofrecemos comparaciones para que elijas la mejor opción con total seguridad.",
     },
     {
       question: "¿QUÉ SUCEDE DESPUÉS DE SELECCIONAR UNA COTIZACIÓN?",
-      answer: "Respuesta a la tercera pregunta...",
+      answer:
+        "Después de seleccionar una cotización, las refaccionarias se encargaran de procesar tu pedido y coordinar el envío de las refacciones directamente a tu taller, listas para ser instaladas.",
     },
   ];
 
   return (
     <>
       <section className="col-start-1 col-end-13">
-        <h2 className="font-chakra font-bold text-5xl mb-4">FAQs:</h2>
+        <h2 className="font-chakra text-3xl font-bold md:text-5xl mb-4">
+          FAQs:
+        </h2>
         <div className="rounded-lg mb-3">
           {questions.map((q, index) => (
             <div
               key={`index-${index}`}
-              className="mb-4 border bg-[#302F2F] font-semibold rounded-lg "
+              className="mb-4 border bg-[#302F2F] md:font-semibold rounded-lg "
             >
               <button
-                className="flex justify-between items-center w-full p-4 rounded-lg"
+                className="flex font-chakra justify-between items-center w-full p-4 rounded-lg"
                 onClick={() => toggleQuestion(index)}
               >
-                <span className="text-xl">{q.question}</span>
+                <span className="text-sm text-start md:text-xl">
+                  {q.question}
+                </span>
                 {expandedQuestion === index ? (
-                  <ChevronUp className="text-[#D16527]" />
+                  <ChevronUp className="text-[#D16527] h-[50px] w-[50px] " />
                 ) : (
-                  <ChevronDown className="text-[#D16527]" />
+                  <ChevronDown className="text-[#D16527] h-[50px] w-[50px]" />
                 )}
               </button>
               {expandedQuestion === index && (
-                <div className="bg-[#898585] p-4 mt-2 border-4 text-xl">
+                <div className="bg-[#898585] font-mulish p-4 mt-2 border-4 text-xl">
                   {q.answer}
                 </div>
               )}
