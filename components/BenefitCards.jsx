@@ -7,8 +7,7 @@ export default function BenefitCards() {
     },
     {
       title: "Transparencia",
-      description:
-        "Encuentra las mejores opciones sin necesidad de visitar múltiples refaccionarias.",
+      description: "Comparación clara de precios y disponibilidad.",
     },
     {
       title: "Entrega Directa",

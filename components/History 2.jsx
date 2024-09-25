@@ -15,12 +15,12 @@ export default function History() {
           </h2>
           <blockquote className=" font-mulish border-l-2 border-[#D16527] text-justify pl-4 italic xl:h-[50%] xl:text-[21px] 2xl:h-[60%] 2xl:text-[25px]  md:h-fit">
             Siempre he confiado en mi mecánico de confianza, pero después de
-            probar con 3 talleres y cotizar con ellos, descubrí que estaba
-            equivocado. Ahora, con esta app, puedo comparar fácilmente los
-            precios y marcas de diferentes refaccionarias cercanas.
+            probar 3 talleres y cotizar con ellos, descubrí que estaba mal.
+            Ahora con esta app, puedo comparar fácilmente los precios y marcas
+            de diferentes refaccionarias cercanas
             <p className="mt-2">- JUAN PÉREZ</p>
           </blockquote>
-          <button className="font-chakra font-semibold bg-[#D16527] h-[10%] w-[50%] text-lg xl:h-[12%] xl:w-[30%] 2xl:h-[12%] 2xl:w-[25%]">
+          <button className="font-chakra font-semibold bg-[#D16527] h-[10%] w-[40%] xl:h-[12%] xl:w-[30%] 2xl:h-[12%] 2xl:w-[25%]">
             Crear Cuenta
           </button>
         </div>

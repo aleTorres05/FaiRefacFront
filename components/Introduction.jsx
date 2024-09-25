@@ -11,9 +11,9 @@ export default function Introduction() {
               Compara precios entre refaccionarias cercanas y óbten las piezas
               que necesitas al mejor precio.
             </p>
-            <button className="bg-[#D16527] h-[40px] w-[50%] px-6 py-2 md:h-[45px]  md:w-[25%] lg:w-[50%] lg:h-[10%]">
+            <button className="bg-[#D16527] h-[40px] w-[60%] text-lg  px-6 py-2 md:h-[45px]  md:w-[25%] lg:w-[50%] lg:h-[10%]">
               <p className=" font-chakra  font-bold	uppercase xl:text-[25px] 2xl:text-[30px] ">
-                Contiza Ya!
+                Cotiza Ya!
               </p>
             </button>
           </div>

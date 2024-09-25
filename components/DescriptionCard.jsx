@@ -8,7 +8,7 @@ export default function DescriptionCard() {
     {
       icon: IconSuspention,
       description:
-        "Cotiza Refacciones: Ingresa la lista de piezas que necesitas.",
+        "Cotiza refacciones: Ingresa la lista de piezas que necesitas.",
     },
     {
       icon: IconDollarSign,
@@ -32,14 +32,14 @@ export default function DescriptionCard() {
             return (
               <div
                 key={`description-card-${idx}`}
-                className="bg-[#302F2F] md:w-[44%] md:mr-9 flex flex-col lg:flex-row mb-4 h-[100%] p-5  justify-center relative lg:w-[280px] lg:h-[200px] rounded-2xl xl:w-[30%] 2xl:w-[30%]"
+                className="bg-[#302F2F] md:w-[44%] md:mr-9 flex flex-col lg:flex-row mb-4 h-fit p-5  justify-center relative lg:w-[280px] lg:h-[200px] rounded-2xl xl:w-[30%] 2xl:w-[30%]"
               >
                 <Image
                   className=" h-[50px] w-[50px] mb-2 lg:w-[60px] lg:h-[60px] lg:absolute lg:top-5 lg:left-5 lg:mb-9"
                   src={option.icon}
                   alt="logo"
                 />
-                <p className=" font-mulish lg:top-[45%] lg:relative lg:left-1  lg:text-wrap">
+                <p className=" md:text-md xl:text-lg font-semibold font-mulish lg:top-[45%] lg:relative lg:left-1  lg:text-wrap">
                   {option.description}
                 </p>
               </div>
