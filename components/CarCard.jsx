@@ -28,6 +28,7 @@ export default function CarCard() {
         {carDetails.map((car, idx) => {
           return (
             <div
+              key={`car-${idx}`}
               className="relative w-full h-[220px] mb-3 rounded-lg lg:p-2 lg:h-[100%] xl:h-[100%] 2xl:h-[100%]"
               id={`car-${idx}`}
             >

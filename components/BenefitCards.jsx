@@ -18,7 +18,7 @@ export default function BenefitCards() {
   ];
   return (
     <>
-      <section className="mt-14 h-[50px] w-full col-start-1 col-end-13 lg:mt-[98px] lg:h-[450px]">
+      <section className="mt-14 h-fit w-full col-start-1 col-end-13 lg:mt-[98px] lg:h-[450px]">
         <div>
           <h2 className="uppercase font-chakra text-[36px] mb-1 lg:mb-[35px] font-bold lg:h-[50px]">
             Beneficios
