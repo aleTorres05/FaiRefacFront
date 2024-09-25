@@ -1,6 +1,3 @@
-import carImage from "../assets/images/CarDriving.png";
-import Image from "next/image";
-
 export default function Introduction() {
   return (
     <>
@@ -21,9 +18,9 @@ export default function Introduction() {
             </button>
           </div>
           <div className="w-full md:h-fit  lg:w-1/2 lg:h-fit">
-            <Image
+            <img
               className="w-full md:h-[100%] lg:ml-3 lg:h-[70%]"
-              src={carImage}
+              src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Car+driving-amico+3+(1).png"
               alt="logo"
             />
           </div>
