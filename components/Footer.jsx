@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="flex flex-col justify-evenly ">
           <div>
             <img
-              className="h-[55px] w-[50%] md:w-[30%] md:h-[65px] xl:w-[25%] 2xl:w-[20%]"
+              className="h-[55px] w-[60%] md:w-[30%] lg:w-[25%] md:h-[65px] xl:w-[20%] 2xl:w-[15%]"
               src="https://fairefac-assets.s3.us-east-2.amazonaws.com/FR-Logo.png"
               alt="logo"
             />
