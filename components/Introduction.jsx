@@ -19,7 +19,7 @@ export default function Introduction() {
           </div>
           <div className="w-full md:h-fit  lg:w-1/2 lg:h-fit">
             <img
-              className="w-full md:h-[100%] lg:ml-3 lg:h-[70%]"
+              className="w-full md:h-[100%] md:w-[98%] lg:ml-3 lg:h-[70%]"
               src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Car+driving-amico+3+(1).png"
               alt="logo"
             />

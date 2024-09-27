@@ -21,7 +21,7 @@ export default function Navbar() {
           </Link>
         )}
 
-        <Link href="#">impulsa tu refaccionaria</Link>
+        <Link href="#">Impulsa tu Refaccionaria</Link>
         <Link href="#">Registrate</Link>
         {isOpen ? (
           <button className="bg-[#D16527] px-6 py-2  w-[90%] h-[30%] custom-btn">
