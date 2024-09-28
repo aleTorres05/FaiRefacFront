@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Introduction() {
   return (
     <>
@@ -11,11 +13,13 @@ export default function Introduction() {
               Compara precios entre refaccionarias cercanas y óbten las piezas
               que necesitas al mejor precio.
             </p>
-            <button className="bg-[#D16527] h-[40px] w-[60%] text-lg  px-6 py-2 md:h-[45px]  md:w-[25%] lg:w-[50%] lg:h-[10%]">
-              <p className=" font-chakra  font-bold	uppercase xl:text-[25px] 2xl:text-[30px] ">
-                Cotiza Ya!
-              </p>
-            </button>
+            <Link href="/signup">
+              <button className="bg-[#D16527] h-[40px] w-[60%] text-lg  px-6 py-2 md:h-[45px]  md:w-[25%] lg:w-[50%] lg:h-[10%]">
+                <p className=" font-chakra  font-bold	uppercase xl:text-[25px] 2xl:text-[30px] ">
+                  Cotiza Ya!
+                </p>
+              </button>
+            </Link>
           </div>
           <div className="w-full md:h-fit  lg:w-1/2 lg:h-fit">
             <img

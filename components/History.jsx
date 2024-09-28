@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function History() {
   return (
     <>
@@ -20,8 +22,9 @@ export default function History() {
             precios y marcas de diferentes refaccionarias cercanas.
             <p className="mt-2">- JUAN PÉREZ</p>
           </blockquote>
+
           <button className="font-chakra font-semibold bg-[#D16527] h-[10%] w-[50%] text-lg xl:h-[12%] xl:w-[30%] 2xl:h-[12%] 2xl:w-[25%]">
-            Crear Cuenta
+            <Link href="/signup">Crear Cuenta</Link>
           </button>
         </div>
       </section>

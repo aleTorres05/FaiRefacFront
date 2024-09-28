@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <>
@@ -43,7 +45,7 @@ export default function Footer() {
                 Recibe ofertas y noticias en tu correo
               </p>
               <button className="bg-[#D16527] font-chakra w-[50%] text-white px-4 py-2 rounded mt-2">
-                SUSCRÍBETE
+                <Link href="/signup">SUSCRÍBETE</Link>
               </button>
             </div>
           </div>
