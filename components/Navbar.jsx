@@ -14,21 +14,21 @@ export default function Navbar() {
     return (
       <>
         {isOpen ? (
-          <Link href="#">Home</Link>
+          <Link href="/">Home</Link>
         ) : (
-          <Link className="text-[#D16527] border-b-2 border-[#D16527]" href="#">
+          <Link className="text-[#D16527] border-b-2 border-[#D16527]" href="/">
             Home
           </Link>
         )}
 
-        <Link href="#">impulsa tu refaccionaria</Link>
-        <Link href="#">Registrate</Link>
+        <Link href="#">Impulsa tu Refaccionaria</Link>
+        <Link href="/signup">Registrate</Link>
         {isOpen ? (
           <button className="bg-[#D16527] px-6 py-2  w-[90%] h-[30%] custom-btn">
-            <Link href="#">Login</Link>
+            <Link href="/login">Login</Link>
           </button>
         ) : (
-          <Link href="#">Login</Link>
+          <Link href="/login">Login</Link>
         )}
       </>
     );
