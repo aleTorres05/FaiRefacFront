@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'sonner';
 import clsx from 'clsx';
 
 export default function UserRegistrationForm() {
@@ -8,6 +10,7 @@ export default function UserRegistrationForm() {
     isClient: false,
     isRepairShop: false,
   });
+  const router = useRouter();
 
   const handleRoleSelection = (role) => {
     setFormData({
@@ -19,7 +22,16 @@ export default function UserRegistrationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Registrando usuario:', formData);
+
+    const {isClient, isRepairShop} = formData;
+
+    if (!isClient && !isRepairShop) {
+      toast.error('Debes seleccionar al menos una opción "CLIENTE" o "REFACCIONARIA".');
+      return;
+    }
+
+    toast.success("Registro exitoso, valida tu correo electronico para poder continuar.");
+    router.push("/email-verification");
   };
 
   return (
@@ -75,11 +87,12 @@ export default function UserRegistrationForm() {
         />
       </div>
 
-      <button type="submit" className="w-full md:w-64 py-2 bg-white text-black font-bold font-chakra">
+      <button type="submit" className="w-full md:w-64 py-2 bg-[#D26528] text-white font-bold font-chakra">
         CREAR USUARIO
       </button>
     </form>
     </main>
   );
 }
+
 
