@@ -23,10 +23,20 @@ export default function UserRegistrationForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const {isClient, isRepairShop} = formData;
+    const {isClient, isRepairShop, email, password} = formData;
 
     if (!isClient && !isRepairShop) {
       toast.error('Debes seleccionar al menos una opción "CLIENTE" o "REFACCIONARIA".');
+      return;
+    }
+
+    if (!email || !password) {
+      toast.error('Por favor, completa todos los campos.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Por favor, ingresa un correo electrónico válido.');
       return;
     }
 

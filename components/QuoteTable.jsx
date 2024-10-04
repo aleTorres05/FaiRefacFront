@@ -1,6 +1,13 @@
-import Item from "./Item";  // Asegúrate de importar el componente Item correctamente
+import { useRouter } from "next/router";
+import Item from "./Item";
 
 export default function QuoteTable({ quote, onDeleteItem }) {
+
+  const router = useRouter();
+
+  const handlePayClick = () => {
+    router.push('/metodo-de-pago')
+  }
   
 
   return (
@@ -64,7 +71,9 @@ export default function QuoteTable({ quote, onDeleteItem }) {
           </div>
 
           <div className="text-center py-4">
-            <button className="bg-[#150801] text-white px-4 py-2 font-chakra rounded">
+            <button 
+             className="bg-[#150801] text-white px-4 py-2 font-chakra rounded"
+             onClick={handlePayClick}>
               PAGAR
             </button>
           </div>
