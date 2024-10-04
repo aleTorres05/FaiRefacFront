@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import clsx from "clsx";
 import { useState } from "react";
 import RepairShopOption from "@/components/RepairShopOptions";
+import Quote from "@/components/Quote";
 
 export default function ClientProfile() {
   const [isSelected, setIsSelected] = useState({
@@ -17,7 +18,7 @@ export default function ClientProfile() {
   };
   return (
     <>
-      <main className=" mt-[18px] mx-[32px] grid lg:grid-cols-12 md:grid-cols-12  ">
+      <main className=" mt-[18px] mx-[32px] flex flex-col gap-4">
         <Header />
         <div className="bg-black col-start-1 col-end-13 p-3 sm:w-full  h-fit md:p-2 lg:col-start-1 lg:col-end-5 md:col-start-1 md:col-end-5 rounded-2xl mt-2 md:h-screen lg:h-screen  md:flex-col lg:mt-4 lg:p-3 xl:col-start-1 xl:col-end-4 2xl:col-start-1 2xl:col-end-4 ">
           <div>
@@ -52,18 +53,20 @@ export default function ClientProfile() {
             <button
               onClick={() => handleButtonSelection("panelCotizaciones")}
               className={clsx(
-                " w-[50%] font-chakra text-xs md:text-[20px] lg:text-lg  xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px]  md:h-[40px]  xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+                " w-[50%] font-chakra leading-3 text-xs md:text-[20px] lg:text-lg  xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px]  md:h-[40px]  xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
                 isSelected.panelCotizaciones
                   ? "bg-[#D26528] text-white"
                   : "bg-white text-black"
               )}
             >
-              Panel de Cotizaciones
+              Panel de <br />
+              Cotizaciones
             </button>
           </div>
         </div>
-        <div className="bg-black h-fit col-start-1 col-end-13 md:p-2 p-3.5 lg:col-start-5 lg:col-end-13 md:col-start-5 md:col-end-13 md:ml-4 rounded-2xl mt-2 md:h-fit lg:h-fit  md:flex-col  lg:mt-4 lg:p-3  xl:col-start-4 xl:col-end-13 2xl:col-start-4 2xl:col-end-13 xl:p-7">
-          <RepairShopOption />
+        <div className="bg-black h-full col-start-1 col-end-13 md:p-2 p-3.5 lg:col-start-5 lg:col-end-13 md:col-start-5 md:col-end-13 md:ml-4 rounded-2xl mt-2 md:h-fit lg:h-fit  md:flex-col  lg:mt-4 lg:p-3  xl:col-start-4 xl:col-end-13 2xl:col-start-4 2xl:col-end-13 xl:p-7">
+          {isSelected.inicio && <RepairShopOption />}
+          {isSelected.panelCotizaciones && <Quote />}
         </div>
       </main>
     </>
