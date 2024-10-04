@@ -2,47 +2,67 @@ export default function RepairShopOptionCard() {
   const panelOptions = [
     {
       image:
-        "https://acnews.blob.core.windows.net/imgnews/large/NAZ_68778115360b49c0858a0f0bde1e74bb.jpg",
+        "https://fairefac-assets.s3.us-east-2.amazonaws.com/repairshop-2.webp",
       name: "Hola Refaccionaria FaiRefac",
     },
     {
       image:
-        "https://www.excelenciasdelmotor.com/sites/default/files/u7/Seat-Leon-729x486-c44abb6e2a3f69a9.jpg",
+        "https://fairefac-assets.s3.us-east-2.amazonaws.com/show-quotes.png",
       name: "Total de Cotizaciones: 420",
     },
     {
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg/640px-Tesla_Model_3_%282023%29_Autofr%C3%BChling_Ulm_IMG_9282.jpg",
+      image: "https://fairefac-assets.s3.us-east-2.amazonaws.com/sales.png",
       name: "Resumen de Ventas del Día",
     },
     {
       image:
-        "https://autodealerluna.mx/wp-content/uploads/2023/08/WhatsApp-Image-2023-08-03-at-3.27.12-PM.jpeg",
+        "https://fairefac-assets.s3.us-east-2.amazonaws.com/month-sales.png",
+      name: "Ventas Mensuales Destacadas:",
+    },
+    {
+      image: "https://fairefac-assets.s3.us-east-2.amazonaws.com/quotes.png",
       name: "Ventas Mensuales Destacadas:",
     },
   ];
 
   return (
     <>
-      <div className="flex flex-col md:grid md:grid-cols-2">
-        {panelOptions.map((option, idx) => {
-          return (
-            <div
-              key={`option-${idx}`}
-              className="relative w-full sm:h-[220px] mb-3 rounded-lg md:p-2 lg:p-2 lg:h-[100%] xl:h-[100%] 2xl:h-[100%]"
-              id={`option-${idx}`}
-            >
-              <img
-                className=" opacity-50 rounded-lg h-fit sm:h-full w-full"
-                src={option.image}
-                alt="option"
-              />
-              <p className=" font-chakra w-[70%] font-bold absolute bottom-2 left-2 sm:bottom-3 border-t-2 border-[#D16527] sm:left-3 md:text-md lg:text-xl lg:left-4 lg:bottom-6 xl:h-[10%] xl:w-fit xl:text-2xl xl:font-semibold xl:border-t-4 xl:left-7">
-                {option.name}
-              </p>
-            </div>
-          );
-        })}
+      <div className="flex flex-col h-full">
+        <div className="grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {panelOptions.slice(0, 2).map((option, idx) => {
+            return (
+              <div
+                key={`option-top-${idx}`}
+                className="relative w-full h-[30vh] p-2 mb-3 rounded-lg md:p-2 lg:p-2 lg:h-[30vh] xl:h-[30vh] 2xl:h-[30vh] bg-cover bg-center flex items-end"
+                style={{ backgroundImage: `url(${option.image})` }}
+                id={`option-top-${idx}`}
+              >
+                <div className="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
+                <p className="font-chakra z-10 w-[70%] font-bold p-2 text-white border-t-2 border-[#D16527] sm:left-3 md:text-md lg:text-xl xl:text-2xl xl:font-semibold xl:border-t-4">
+                  {option.name}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4">
+          {panelOptions.slice(2).map((option, idx) => {
+            return (
+              <div
+                key={`option-bottom-${idx}`}
+                className="relative w-full h-[30vh] p-2 mb-3 rounded-lg md:p-2 lg:p-2 lg:h-[30vh] xl:h-[30vh] 2xl:h-[30vh] bg-cover bg-center flex items-end "
+                style={{ backgroundImage: `url(${option.image})` }}
+                id={`option-bottom-${idx}`}
+              >
+                <div className="absolute inset-0 bg-black opacity-50 rounded-lg"></div>
+                <p className="font-chakra z-10 w-[70%] font-bold p-2 text-white border-t-2 border-[#D16527] sm:left-3 md:text-md lg:text-xl xl:text-2xl xl:font-semibold xl:border-t-4">
+                  {option.name}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );
