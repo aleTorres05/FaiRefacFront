@@ -77,8 +77,7 @@ export default function QuoteForm() {
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
-      <h1 className="font-chakra md:mb-[80px] w-full text-center text-[32px] font-bold">SOLICITA UNA COTIZACIÓN</h1>  
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 my-4">
+      <h1 className="font-chakra md:mb-[80px] w-full text-center text-[32px] font-bold">SOLICITA UNA COTIZACIÓN</h1> 
       <div className="flex flex-row w-full justify-end items-end">
             <div className="flex flex-col mr-9 mb-8">
                 <label htmlFor="mechanic-select" className="block text-white font-chakra font-bold">
@@ -101,6 +100,7 @@ export default function QuoteForm() {
             <div className="flex h-full justify-center my-auto">
             <button
                 className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
+                type="button"
                 onClick={handleOpenMechanicForm}>+</button>
             </div>
         </div>
@@ -110,7 +110,9 @@ export default function QuoteForm() {
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
         onSave={handleSaveMechanic}
-      />
+      /> 
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 my-4">
+
         {items.map((item, index) => (
           <div key={index} className="flex items-center gap-4">
             <input

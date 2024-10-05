@@ -9,8 +9,8 @@ export default function UserUpdateForm() {
   const [user, setUser] = useState({
     email: "yair.@gmail.com",
     password: "$2a$10",
-    isClient: true,
-    isRepairShop: false,
+    isClient: false,
+    isRepairShop: true,
     verifiedEmail: true,
     _id: "66fef2f7b6a223326e30bcd8",
     created_at: "2024-10-03T19:39:35.490Z",
