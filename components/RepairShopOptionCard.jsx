@@ -28,7 +28,7 @@ export default function RepairShopOptionCard() {
   return (
     <>
       <div className="flex flex-col h-full">
-        <div className="grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {panelOptions.slice(0, 2).map((option, idx) => {
             return (
               <div
