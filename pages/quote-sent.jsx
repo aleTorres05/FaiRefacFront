@@ -1,7 +1,15 @@
 import Header from "@/components/Header";
-import clsx from "clsx";
+import { useRouter } from "next/router";
+
 
 export default function QuoteSent() {
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/clients/1')
+}
+
   return (
     <>
       <Header />
@@ -22,7 +30,7 @@ export default function QuoteSent() {
               Una vez aceptada la cotización, la solicitud quedará cancelada
             </span>
           </div>
-          <button className="bg-[#D16527] font-chakra w-[190px] h-[41px] uppercase mt-10">
+          <button onClick={handleClick} className="bg-[#D16527] font-chakra w-[190px] h-[41px] uppercase mt-10">
             cerrar
           </button>
         </div>

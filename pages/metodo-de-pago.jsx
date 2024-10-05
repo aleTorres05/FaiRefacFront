@@ -1,7 +1,15 @@
-import MetodosDePago from "@/components/MetodosDePago";
+import { useRouter } from "next/router";
 import Header from "@/components/Header";
+import MetodosDePago from "@/components/MetodosDePago";
 
 export default function Login() {
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/comfirm-payment')
+}
+
   return (
     <div className="h-[100vh] flex flex-col">
       <Header className="fixed top-0 left-0 w-full" />
@@ -37,7 +45,7 @@ export default function Login() {
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="bg-black w-[190px] h-[41px]">Pagar</button>
+              <button onClick={handleClick} className="bg-black w-[190px] h-[41px]">Pagar</button>
             </div>
           </div>
         </div>
