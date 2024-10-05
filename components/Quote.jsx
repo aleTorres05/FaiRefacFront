@@ -9,9 +9,9 @@ export default function Quote() {
       </h3>
 
       <div>
-        <div className="flex flex-col md:flex-row gap-0 md:mt-5">
+        <div className="container flex flex-col gap-0 md:mt-5">
           {/* Tabla Escritorio */}
-          <div className="w-full mx-auto p-4 md:p-0 hidden md:flex md:flex-col ">
+          <div className="w-full mx-auto p-4  md:p-0 hidden md:flex md:flex-col ">
             <div className="overflow-x-auto">
               <table className="min-w-full bg-orange border border-none">
                 <thead className="">
@@ -196,7 +196,7 @@ export default function Quote() {
             </div>
           </div>
           {/* Tabla de pago */}
-          <div className="bg-[#949494] p-5 mt-5 md:m-0">
+          <div className="bg-[#949494]  p-5 mt-5">
             <h3 className="font-chakra uppercase font-bold text-[23px] leading-[32px] text-center text-white">
               Resumen de cotización
             </h3>
