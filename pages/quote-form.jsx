@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toast } from "sonner";
 import MechanicForm from "@/components/MechanicForm";
 
 export default function QuoteForm() {
@@ -75,19 +76,36 @@ export default function QuoteForm() {
     setMechanics([...mechanics, newMechanic]);
   };
 
+  const handleCopyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl)
+      .then(() => {
+        toast.success("URL copiada al portapapeles");
+      })
+      .catch(err => {
+        toast.error("Error al copiar la URL: ", err);
+      });
+  };
+
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
-      <h1 className="font-chakra md:mb-[80px] w-full text-center text-[32px] font-bold">SOLICITA UNA COTIZACIÓN</h1> 
-      <div className="flex flex-row w-full justify-end items-end">
-            <div className="flex flex-col mr-9 mb-8">
-                <label htmlFor="mechanic-select" className="block text-white font-chakra font-bold">
+      <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">SOLICITA UNA COTIZACIÓN</h1> 
+      <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
+        <div className="w-full">
+            <img 
+            className="h-[50px]" src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png" 
+            alt="copy-icon"
+            onClick={handleCopyUrl} />
+        </div>
+            <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
+                <label htmlFor="mechanic-select" className="block text-white w-full font-chakra font-bold">
                     SELECCIONA UN TALLER
                 </label>
                 <select
                   id="mechanic-select"
                   value={selectedMechanic}
                   onChange={handleMechanicChange}
-                  className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+                  className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 >
                   <option className="text-white font-mulish" value="" disabled>Selecciona un taller</option>
                   {mechanics.map((mechanic) => (
