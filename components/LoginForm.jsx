@@ -1,46 +1,64 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
+import { login } from "@/pages/api/login";
+import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    setError,
+  } = useForm();
 
-    if (!email || !password) {
-      toast.error('Por favor, completa todos los campos.');
-      return;
+  async function onSubmit(data) {
+    try {
+      if (!data.email || !data.password) {
+        toast.error("Por favor, completa todos los campos.");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        toast.error("Por favor, ingresa un correo electrónico válido.");
+        return;
+      }
+      console.log(typeof data.email, typeof data.password);
+      const response = await login(data.email, data.password);
+      console.log(response);
+      if (response.token) {
+        window.localStorage.setItem("token", response.token);
+        window.localStorage.setItem("email", response.email);
+        toast.success("Bienvenido.");
+        router.push("/repairShop/1");
+      }
+    } catch (error) {
+      toast.error(error);
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      toast.error('Por favor, ingresa un correo electrónico válido.');
-      return;
-    }
-
-    toast.success("Bienvenido.");
-    router.push("/repairShop/1");
-  };
+  }
 
   return (
     <div className="flex flex-col px-[32px]">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-[20px]"
+      >
         <div className="w-full md:w-[660px] h-[66px] flex flex-col gap-[15px]">
-          <label
-            className="color-[#EDEDED] font-chakra text-[16px] font-bold leading-normal uppercase"
-            htmlFor=""
-          >
+          <label className="color-[#EDEDED] font-chakra text-[16px] font-bold leading-normal uppercase">
             CORREO
           </label>
           <input
             type="mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
             className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            required
+            {...register("email", {
+              required: { value: true, message: "Email Required" },
+            })}
           />
         </div>
         <div className="w-full md:w-[660px] h-[66px] flex flex-col gap-[15px]">
@@ -52,9 +70,11 @@ export default function LoginForm() {
           </label>
           <input
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            required
+            {...register("password", {
+              required: { value: true, message: "Password Required" },
+            })}
           />
         </div>
         <button
