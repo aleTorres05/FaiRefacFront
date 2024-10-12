@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { login } from "@/pages/api/login";
 import { useForm } from "react-hook-form";
+import { getUserByEmail } from "@/pages/api/user";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -28,14 +29,15 @@ export default function LoginForm() {
         toast.error("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-      console.log(typeof data.email, typeof data.password);
       const response = await login(data.email, data.password);
-      console.log(response);
+
       if (response.token) {
         window.localStorage.setItem("token", response.token);
-        window.localStorage.setItem("email", response.email);
+        window.localStorage.setItem("email", data.email);
         toast.success("Bienvenido.");
-        router.push("/repairShop/1");
+        const user = await getUserByEmail(data.email, response.token);
+        console.log(user);
+        router.push(`/dashboard/${user._id}`);
       }
     } catch (error) {
       toast.error(error);
