@@ -11,3 +11,21 @@ export async function getUserByEmail(email, token) {
 
   return json.data.user;
 }
+
+export async function getByID(id, token) {
+  try {
+    const response = await fetch(`${API_URL}/user/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+    console.log(response);
+    if (response.status != 200) throw new Error("error on getting user");
+
+    const json = await response.json();
+    return json.data.user;
+  } catch (error) {
+    throw new Error(error);
+  }
+}

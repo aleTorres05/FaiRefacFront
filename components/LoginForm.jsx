@@ -30,16 +30,15 @@ export default function LoginForm() {
         return;
       }
       const response = await login(data.email, data.password);
-
       if (response.token) {
         window.localStorage.setItem("token", response.token);
         window.localStorage.setItem("email", data.email);
         toast.success("Bienvenido.");
         const user = await getUserByEmail(data.email, response.token);
-        console.log(user);
         router.push(`/dashboard/${user._id}`);
       }
     } catch (error) {
+      console.log(error);
       toast.error(error);
     }
   }
