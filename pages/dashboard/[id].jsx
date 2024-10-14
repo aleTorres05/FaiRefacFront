@@ -6,9 +6,26 @@ import ClientQuotes from "@/components/ClientQuotes";
 import { getByID } from "../api/user";
 import { useRouter } from "next/router";
 import { Toaster, toast } from "sonner";
+import RepairShopOption from "@/components/RepairShopOptions";
+import Quote from "@/components/Quote";
 
 export default function UserDashboard() {
   const router = useRouter();
+  const [isSelected, setIsSelected] = useState({
+    coches: true,
+    cotizaciones: false,
+    inicio: "inicio",
+    panelCotizaciones: false,
+  });
+
+  const handleButtonSelection = (option) => {
+    setIsSelected({
+      coches: option === "coches",
+      cotizaciones: option === "cotizaciones",
+      inicio: option === "inicio",
+      panelCotizaciones: option === "panelCotizaciones",
+    });
+  };
 
   const { id } = router.query;
   const [user, setUser] = useState({});
