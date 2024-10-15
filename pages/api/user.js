@@ -20,11 +20,31 @@ export async function getByID(id, token) {
         Authorization: token,
       },
     });
-    console.log(response);
     if (response.status != 200) throw new Error("error on getting user");
 
     const json = await response.json();
     return json.data.user;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function create(userData) {
+  try {
+    const response = await fetch(`${API_URL}/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userData,
+      }),
+    });
+    console.log(response);
+    // if (response.status != 200) throw new Error("error on creating user");
+
+    // const json = await response.json();
+    // return json.data.User;
   } catch (error) {
     throw new Error(error);
   }
