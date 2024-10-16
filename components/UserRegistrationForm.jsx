@@ -38,13 +38,17 @@ export default function UserRegistrationForm() {
         toast.error("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-
       await create(data);
       toast.success(
         "Registro exitoso, valida tu correo electronico para poder continuar."
       );
 
-      router.push("/email-verification");
+
+      toast.success(
+        "Registro exitoso, valida tu correo electronico para poder continuar."
+      );
+
+      router.push(`/email-verification?email=${data.email}`);
     } catch (error) {
       toast.error(error);
       router.push("/signup");
