@@ -38,9 +38,8 @@ export default function UserRegistrationForm() {
         toast.error("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-      // const response = await create(data);
-      // const queryParams = encodeURIComponent(JSON.stringify(data.email));
-      // await send(response.email);
+      const response = await create(data);
+
       toast.success(
         "Registro exitoso, valida tu correo electronico para poder continuar."
       );
