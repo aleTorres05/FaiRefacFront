@@ -1,7 +1,7 @@
 const API_URL = "https://fairefac-api.onrender.com";
 
 export async function getUserByEmail(email, token) {
-  const response = await fetch(`${API_URL}/user/${email}`, {
+  const response = await fetch(`${API_URL}/user/find-email/${email}`, {
     method: "GET",
     headers: {
       Authorization: token,
@@ -40,11 +40,10 @@ export async function create(userData) {
         userData,
       }),
     });
-    console.log(response);
-    // if (response.status != 200) throw new Error("error on creating user");
+    if (response.status != 200) throw new Error("error on creating user");
 
-    // const json = await response.json();
-    // return json.data.User;
+    const json = await response.json();
+    return json.data.User;
   } catch (error) {
     throw new Error(error);
   }
