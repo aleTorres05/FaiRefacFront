@@ -104,7 +104,7 @@ export default function UserDashboard() {
           </div>
         </main>
       )}
-      {user.isRepairshop && (
+      {user.isRepairShop && (
         <main className=" mt-[18px] mx-[32px] flex flex-col gap-4">
           <Header />
           <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-12 gap-0 p-3 md:p-0">
