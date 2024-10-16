@@ -40,11 +40,10 @@ export async function create(userData) {
         userData,
       }),
     });
-    console.log(response);
-    // if (response.status != 200) throw new Error("error on creating user");
+    if (response.status != 200) throw new Error("error on creating user");
 
-    // const json = await response.json();
-    // return json.data.User;
+    const json = await response.json();
+    return json.data.User;
   } catch (error) {
     throw new Error(error);
   }
