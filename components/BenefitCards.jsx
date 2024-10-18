@@ -1,20 +1,39 @@
-export default function BenefitCards() {
-  const benefitOptions = [
-    {
-      title: "Ahorro de Tiempo",
-      description:
-        "Encuentra las mejores opciones sin necesidad de visitar múltiples refaccionarias.",
-    },
-    {
-      title: "Transparencia",
-      description: "Comparación clara de precios y disponibilidad.",
-    },
-    {
-      title: "Entrega Directa",
-      description:
-        "Las refacciones llegan directamente al taller, listas para ser instaladas.",
-    },
-  ];
+export default function BenefitCards({ currentPage }) {
+  const benefitOptions =
+    currentPage === "home"
+      ? [
+          {
+            title: "Ahorro de Tiempo",
+            description:
+              "Encuentra las mejores opciones sin necesidad de visitar múltiples refaccionarias.",
+          },
+          {
+            title: "Transparencia",
+            description: "Comparación clara de precios y disponibilidad.",
+          },
+          {
+            title: "Entrega Directa",
+            description:
+              "Las refacciones llegan directamente al taller, listas para ser instaladas.",
+          },
+        ]
+      : [
+          {
+            title: "Registro Simple",
+            description:
+              "Crea tu cuenta en minutos y comienza a ofrecer tus productos a una amplia red de talleres y usuarios.",
+          },
+          {
+            title: "Cotización en Tiempo Real",
+            description:
+              "Responde a solicitudes de cotización y deja que los clientes elijan tus productos basándose en precio y calidad",
+          },
+          {
+            title: "Gestión y Entrega de Pedidos",
+            description:
+              "LRecibe, procesa y organiza la entrega de pedidos directamente al taller con tu equipo de repartidores, asegurando un servicio rápido y confiable.",
+          },
+        ];
   return (
     <>
       <section className="mt-14 h-fit w-full col-start-1 col-end-13 lg:mt-[98px] lg:h-[450px]">
