@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { create } from "@/pages/api/user";
-import { send } from "@/pages/api/opt";
+import { login } from "@/pages/api/login";
 
 export default function UserRegistrationForm() {
   const router = useRouter();
@@ -39,11 +39,10 @@ export default function UserRegistrationForm() {
         return;
       }
       await create(data);
-      toast.success(
-        "Registro exitoso, valida tu correo electronico para poder continuar."
-      );
-
-
+      const response = await login(data.email, data.password);
+      if (response.token) {
+        window.localStorage.setItem("token", response.token);
+      }
       toast.success(
         "Registro exitoso, valida tu correo electronico para poder continuar."
       );
