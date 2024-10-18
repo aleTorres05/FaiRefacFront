@@ -3,24 +3,43 @@ import IconDollarSign from "../assets/images/Icon-dollar.png";
 import IconSuspention from "../assets/images/Icon-suspention.png";
 import IconCar from "../assets/images/Icon-car.png";
 
-export default function DescriptionCard() {
-  const descriptionOptions = [
-    {
-      icon: IconSuspention,
-      description:
-        "Cotiza refacciones: Ingresa la lista de piezas que necesitas.",
-    },
-    {
-      icon: IconDollarSign,
-      description:
-        "Compara precios: Revisa las ofertas de refaccionarias cercanas.",
-    },
-    {
-      icon: IconCar,
-      description:
-        "Compra y recibe: Selecciona la mejor opción y nosotros nos encargamos del envío al taller.",
-    },
-  ];
+export default function DescriptionCard({ currentPage }) {
+  const descriptionOptions =
+    currentPage === "home"
+      ? [
+          {
+            icon: IconSuspention,
+            description:
+              "Cotiza refacciones: Ingresa la lista de piezas que necesitas.",
+          },
+          {
+            icon: IconDollarSign,
+            description:
+              "Compara precios: Revisa las ofertas de refaccionarias cercanas.",
+          },
+          {
+            icon: IconCar,
+            description:
+              "Compra y recibe: Selecciona la mejor opción y nosotros nos encargamos del envío al taller.",
+          },
+        ]
+      : [
+          {
+            icon: IconSuspention,
+            description:
+              "Llega a más clientes en tu área y aumenta la visibilidad de tu negocio.",
+          },
+          {
+            icon: IconDollarSign,
+            description:
+              "No cobramos comisión a tu refaccionaria, solo al usuario.",
+          },
+          {
+            icon: IconCar,
+            description:
+              "Usa tus repartidores; nosotros te traemos las ventas.",
+          },
+        ];
   return (
     <>
       <section className="lg:flex lg:flex-col col-start-1 col-end-13 h-fit lg:h-fit md:h-fit ">
