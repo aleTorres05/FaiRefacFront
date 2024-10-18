@@ -51,7 +51,7 @@ export default function VerifyEmail() {
     await verify(router.query.email, code.join(""));
     const user = await getUserByEmail(router.query.email, token);
     toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
-    router.push(`/update-info/${user._id}`);
+    router.push(`/updateInfo/${user._id}`);
   }
 
   return (
