@@ -31,13 +31,17 @@ export async function getByID(id, token) {
 
 export async function create(userData) {
   try {
+    const { email, password, isClient, isRepairShop } = userData;
     const response = await fetch(`${API_URL}/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userData,
+        email,
+        password,
+        isClient,
+        isRepairShop,
       }),
     });
     if (response.status != 200) throw new Error("error on creating user");

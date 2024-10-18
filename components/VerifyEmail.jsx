@@ -1,14 +1,20 @@
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { toast } from 'sonner'; 
+import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
+import { toast } from "sonner";
+import { send, verify } from "@/pages/api/opt";
+import { getUserByEmail } from "@/pages/api/user";
 
 export default function VerifyEmail() {
-  const [code, setCode] = useState(Array(6).fill(''));
+  const [code, setCode] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
   const router = useRouter();
 
-  
   const handleInputChange = (index, value) => {
+    const isNumeric = /^[+-]?\d+(\.\d+)?$/.test(value);
+    if (!isNumeric) {
+      toast.warning("Agrega solo digitos");
+      value = "";
+    }
     if (value.length <= 1) {
       const newCode = [...code];
       newCode[index] = value;
@@ -20,24 +26,44 @@ export default function VerifyEmail() {
     }
   };
 
-  
-  const handleConfirmClick = () => {
-    
-    if (code.some(digit => digit === '')) {
-      toast.error('Por favor, completa todos los dígitos antes de confirmar.'); 
+  useEffect(() => {
+    if (router.isReady && router.query.email) {
+      send(router.query.email)
+        .then((response) => {
+          toast.success(response.message);
+        })
+        .catch((e) => {
+          toast.error("Algo salio mal: ", e);
+          router.push("/login");
+          throw new Error(e);
+        });
+    }
+  }, [router.isReady, router.query.email]);
+
+  async function handleConfirmClick() {
+    const token = window.localStorage.getItem("token");
+
+    if (code.some((digit) => digit === "")) {
+      toast.error("Por favor, completa todos los dígitos antes de confirmar.");
       return;
     }
-    
-    toast.success('Código validado correctamente. Bienvenido a FaiRefac.'); 
-    router.push('/clients/1');
-  };
+
+    await verify(router.query.email, code.join(""));
+    const user = await getUserByEmail(router.query.email, token);
+    toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
+    router.push(`/update-info/${user._id}`);
+  }
 
   return (
-    <div className='flex justify-center md:items-center min-h-screen'>
+    <div className="flex justify-center md:items-center min-h-screen">
       <main className="w-full md:h-[300px] max-w-full md:max-w-[630px] md:bg-[#282525] p-4 flex flex-col items-center justify-center gap-6 md:clip-custom">
-        <h1 className="font-chakra font-bold text-white text-2xl md:text-3xl">VALIDA TU CORREO</h1>
-        <h2 className="text-white font-mulish text-lg md:text-xl">Ingresa los 6 dígitos enviados a tu correo</h2>
-        
+        <h1 className="font-chakra font-bold text-white text-2xl md:text-3xl">
+          VALIDA TU CORREO
+        </h1>
+        <h2 className="text-white font-mulish text-lg md:text-xl">
+          Ingresa los 6 dígitos enviados a tu correo
+        </h2>
+
         <div className="flex justify-center w-full max-w-[300px] md:max-w-[490px] gap-2 md:gap-4">
           {code.map((digit, index) => (
             <input
@@ -52,7 +78,7 @@ export default function VerifyEmail() {
           ))}
         </div>
 
-        <button 
+        <button
           onClick={handleConfirmClick}
           className="mt-6 w-full max-w-80 md:w-[239px] py-2 bg-[#D26528] text-white font-chakra font-bold text-lg"
         >
