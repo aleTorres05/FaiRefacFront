@@ -41,17 +41,22 @@ export default function VerifyEmail() {
   }, [router.isReady, router.query.email]);
 
   async function handleConfirmClick() {
-    const token = window.localStorage.getItem("token");
+    try {
+      if (code.some((digit) => digit === "")) {
+        toast.error(
+          "Por favor, completa todos los dígitos antes de confirmar."
+        );
+        return;
+      }
 
-    if (code.some((digit) => digit === "")) {
-      toast.error("Por favor, completa todos los dígitos antes de confirmar.");
-      return;
+      await verify(router.query.email, code.join(""));
+      toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
+      router.push(`/login`);
+    } catch (error) {
+      toast.error(error);
+      // toast.error("error: algo salio mal, inicie session ");
+      throw new Error(error);
     }
-
-    await verify(router.query.email, code.join(""));
-    const user = await getUserByEmail(router.query.email, token);
-    toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
-    router.push(`/updateInfo/${user._id}`);
   }
 
   return (
