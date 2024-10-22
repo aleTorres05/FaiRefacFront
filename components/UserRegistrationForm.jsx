@@ -39,10 +39,7 @@ export default function UserRegistrationForm() {
         return;
       }
       await create(data);
-      const response = await login(data.email, data.password);
-      if (response.token) {
-        window.localStorage.setItem("token", response.token);
-      }
+
       toast.success(
         "Registro exitoso, valida tu correo electronico para poder continuar."
       );
