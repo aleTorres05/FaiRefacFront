@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import ClientCar from "@/components/ClientCar";
 import ClientQuotes from "@/components/ClientQuotes";
-import { getByID } from "../api/user";
+import { getUserByEmail } from "./api/user";
 import { useRouter } from "next/router";
 import { Toaster, toast } from "sonner";
 import RepairShopOption from "@/components/RepairShopOptions";
@@ -27,27 +27,26 @@ export default function UserDashboard() {
     });
   };
 
-  const { id } = router.query;
   const [user, setUser] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    if (id) {
-      console.log("este es un id", id);
-      getByID(id, token)
+    const email = localStorage.getItem("email");
+    if (!token || !email) {
+      router.push("/login");
+    } else {
+      getUserByEmail(email, token)
         .then((user) => {
           setUser(user);
-          console.log(user);
         })
-        .catch((e) => {
-          //toast and send back to login
-          toast.error("Wrong password or Username");
+        .catch((error) => {
+          toast.error("Error fetching user data. Please log in again.");
+          localStorage.removeItem("token");
+          localStorage.removeItem("email");
           router.push("/login");
-          console.log(e);
         });
     }
-  }, [id]);
+  }, []);
 
   return (
     <>

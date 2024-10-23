@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { getUserByEmail } from "@/pages/api/user";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({});
   const router = useRouter();
 
   const {
@@ -35,7 +34,7 @@ export default function LoginForm() {
         window.localStorage.setItem("email", data.email);
         toast.success("Bienvenido.");
         const user = await getUserByEmail(data.email, response.token);
-        router.push(`/dashboard/${user._id}`);
+        router.push(`/dashboard`);
       }
     } catch (error) {
       console.log(error);
