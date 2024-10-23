@@ -46,9 +46,8 @@ export default function UserRegistrationForm() {
 
       router.push(`/email-verification?email=${data.email}`);
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message || "Ocurrió un error inesperado");
       router.push("/signup");
-      throw new Error(error);
     }
   }
 

@@ -5,7 +5,7 @@ import ClientCar from "@/components/ClientCar";
 import ClientQuotes from "@/components/ClientQuotes";
 import { getUserByEmail } from "./api/user";
 import { useRouter } from "next/router";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import RepairShopOption from "@/components/RepairShopOptions";
 import Quote from "@/components/Quote";
 
@@ -33,14 +33,41 @@ export default function UserDashboard() {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (!token || !email) {
+      console.log("No token or email, triggering toast");
+      toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
     } else {
       getUserByEmail(email, token)
         .then((user) => {
           setUser(user);
+
+          if (!user.verifiedEmail) {
+            toast.error("Es necesario verificar su correo electrónico.");
+            setTimeout(() => {
+              router.push("/email-verification");
+            }, 1000);
+            return; 
+          }
+  
+          
+          if (user.isClient && (!user.client || Object.keys(user.client).length === 0)) {
+            toast.error("Es necesario actualizar su información como cliente.");
+            setTimeout(() => {
+              router.push("/update-info");
+            }, 1000);
+            return; 
+          }
+  
+          
+          if (user.isRepairShop && (!user.repairShop || Object.keys(user.repairShop).length === 0)) {
+            toast.error("Es necesario actualizar su información como refaccionaria.");
+            setTimeout(() => {
+              router.push("/update-info");
+            }, 1000);
+          }
         })
         .catch((error) => {
-          toast.error("Error fetching user data. Please log in again.");
+          toast.error(error.message || "Ocurrió un error inesperado");
           localStorage.removeItem("token");
           localStorage.removeItem("email");
           router.push("/login");
@@ -50,7 +77,6 @@ export default function UserDashboard() {
 
   return (
     <>
-      <Toaster position="top-center" />
       {user.isClient && (
         <main className=" mt-[18px] mx-[32px] grid lg:grid-cols-12 md:grid-cols-12  ">
           <Header />
