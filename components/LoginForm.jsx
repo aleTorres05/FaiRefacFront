@@ -28,7 +28,7 @@ export default function LoginForm() {
         toast.error("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-      const response = await login(data.email, data.password);
+      const response = await login(data.email, data.password, router);
       if (response.token) {
         window.localStorage.setItem("token", response.token);
         window.localStorage.setItem("email", data.email);
@@ -37,8 +37,7 @@ export default function LoginForm() {
         router.push(`/dashboard`);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error);
+      toast.error(error.message || "Ocurrió un error inesperado");
     }
   }
 
