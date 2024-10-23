@@ -29,12 +29,19 @@ export default function LoginForm() {
         return;
       }
       const response = await login(data.email, data.password, router);
-      if (response.token) {
-        window.localStorage.setItem("token", response.token);
+      console.log(response);
+      if (response.error === "Verify your email to login.") {
         window.localStorage.setItem("email", data.email);
+        toast.error("Es necesario verificar su correo electrónico.");
+        router.push(`/email-verification`);
+        return;
+      } else if (response.token) {
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("token", response.token);
         toast.success("Bienvenido.");
-        const user = await getUserByEmail(data.email, response.token);
         router.push(`/dashboard`);
+      } else {
+        toast.error("Correo o Contraseña incorrecto.");
       }
     } catch (error) {
       toast.error(error.message || "Ocurrió un error inesperado");
