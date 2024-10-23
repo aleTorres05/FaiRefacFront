@@ -1,7 +1,6 @@
 import { toast } from "sonner";
 const API_URL = "https://fairefac-api.onrender.com";
 
-
 export async function login(email, password, router) {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -14,23 +13,15 @@ export async function login(email, password, router) {
         password,
       }),
     });
-  
+
     if (!response.ok) {
-      const errorResponse = await response.json();
-
-      if (errorResponse.error === "Verify your email to login.") {
-        toast.error("Es necesario verificar su correo electrónico.");
-        router.push(`/email-verification?email=${email}`);
-        return;
-      }
-
-      throw new Error(errorResponse.error || 'Error desconocido al hacer login.');
+      return await response.json();
     }
-  
+
     const json = await response.json();
     return json.data;
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
     throw new Error(error.message);
   }
 }
