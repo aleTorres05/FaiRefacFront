@@ -43,8 +43,9 @@ export default function UserRegistrationForm() {
       toast.success(
         "Registro exitoso, valida tu correo electronico para poder continuar."
       );
+      localStorage.setItem("email", data.email);
 
-      router.push(`/email-verification?email=${data.email}`);
+      router.push(`/email-verification`);
     } catch (error) {
       toast.error(error.message || "Ocurrió un error inesperado");
       router.push("/signup");

@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 const API_URL = "https://fairefac-api.onrender.com";
 
 export async function send(email) {
@@ -32,9 +34,13 @@ export async function verify(email, otp) {
       }),
     });
 
-    const json = await response.json();
-    return json.data;
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      return response;
+    }
   } catch (error) {
-    throw new Error(error);
+    toast.error(error);
   }
 }

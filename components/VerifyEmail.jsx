@@ -6,10 +6,22 @@ import { getUserByEmail } from "@/pages/api/user";
 
 export default function VerifyEmail() {
   const [code, setCode] = useState(Array(6).fill(""));
+  const [userEmail, setUserEmail] = useState("");
   const inputsRef = useRef([]);
   const router = useRouter();
 
   const handleInputChange = (index, value) => {
+    if (value === "") {
+      const newCode = [...code];
+      newCode[index] = value;
+      setCode(newCode);
+
+      if (index > 0) {
+        inputsRef.current[index - 1].focus();
+      }
+      return;
+    }
+
     const isNumeric = /^[+-]?\d+(\.\d+)?$/.test(value);
     if (!isNumeric) {
       toast.warning("Agrega solo digitos");
@@ -27,18 +39,19 @@ export default function VerifyEmail() {
   };
 
   useEffect(() => {
-    if (router.isReady && router.query.email) {
-      send(router.query.email)
-        .then((response) => {
-          toast.success(response.message);
-        })
-        .catch((e) => {
-          toast.error("Algo salio mal: ", e);
-          router.push("/login");
-          throw new Error(e);
-        });
-    }
-  }, [router.isReady, router.query.email]);
+    const email = localStorage.getItem("email");
+    setUserEmail(email);
+
+    send(email)
+      .then((response) => {
+        toast.success("OTP Enviado a tu Correo");
+      })
+      .catch((e) => {
+        toast.error("Algo salio mal: ", e);
+        router.push("/login");
+        throw new Error(e);
+      });
+  }, []);
 
   async function handleConfirmClick() {
     try {
@@ -49,12 +62,15 @@ export default function VerifyEmail() {
         return;
       }
 
-      await verify(router.query.email, code.join(""));
-      toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
-      router.push(`/login`);
+      const response = await verify(userEmail, code.join(""));
+      if (response.message === "User was successfyly verified.") {
+        toast.success("Código validado correctamente. Bienvenido a FaiRefac.");
+        router.push(`/login`);
+      } else {
+        toast.warning("El OTP no coicide. Intente de nuevo");
+      }
     } catch (error) {
       toast.error(error);
-      // toast.error("error: algo salio mal, inicie session ");
       throw new Error(error);
     }
   }
