@@ -2,9 +2,12 @@ import ClientDashboard from "@/components/ClientDashboard";
 import RepairShopDashboard from "@/components/RepairShopDashboard";
 import { useEffect, useState } from "react";
 import { getUserByEmail } from "./api/user";
+import { toast } from "sonner";
+import { useRouter } from "next/router";
 
 export default function UserDashboard() {
-  const [user, setUser] = useState({});
+  const router = useRouter();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,8 +62,17 @@ export default function UserDashboard() {
   }, []);
   return (
     <>
-      {user.isClient && <ClientDashboard />}
-      {user.isRepairShop && <RepairShopDashboard />}
+      {user ? (
+        user.isClient ? (
+          <ClientDashboard />
+        ) : user.isRepairShop ? (
+          <RepairShopDashboard />
+        ) : null
+      ) : (
+        <p className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
+          CARGANDO DATOS DEL USUARIO...
+        </p>
+      )}
     </>
   );
 }
