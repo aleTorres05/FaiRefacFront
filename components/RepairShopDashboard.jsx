@@ -2,6 +2,8 @@ import { getUserByEmail } from "@/pages/api/user";
 import { useEffect, useState } from "react";
 import Header from "./Header";
 import clsx from "clsx";
+import RepairShopOption from "./RepairShopOptions";
+import Quote from "./Quote";
 
 export default function RepairShopDashboard() {
   const [isSelected, setIsSelected] = useState({
