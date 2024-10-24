@@ -8,18 +8,20 @@ export async function getUserByEmail(email, token) {
         Authorization: token,
       },
     });
-  
+
     if (!response.ok) {
       const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Error desconocido al obtener el usuario');
+      throw new Error(
+        errorResponse.error || "Error desconocido al obtener el usuario"
+      );
     }
-  
+
     const json = await response.json();
     const user = json.data.user;
-  
+
     localStorage.setItem("userId", user._id);
-  
-    return user
+
+    return user;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -36,7 +38,9 @@ export async function getByID(id, token) {
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Error desconocido al obtener el usuario');
+      throw new Error(
+        errorResponse.error || "Error desconocido al obtener el usuario"
+      );
     }
 
     const json = await response.json();
@@ -64,26 +68,31 @@ export async function create(userData) {
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Error desconocido al crear el usuario');
+      throw new Error(
+        errorResponse.error || "Error desconocido al crear el usuario"
+      );
     }
 
     const json = await response.json();
     const user = json.data.User;
-    
+
     localStorage.setItem("userId", user._id);
 
     return user;
-
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
-export async function updateUserClient(userId, userData, profilePicture, token) {
+export async function updateUserClient(
+  userId,
+  userData,
+  profilePicture,
+  token
+) {
   try {
     const formData = new FormData();
-    
-    
+
     formData.append("firstName", userData.firstName);
     formData.append("lastName", userData.lastName);
     formData.append("phoneNumber", userData.phoneNumber);
@@ -92,18 +101,20 @@ export async function updateUserClient(userId, userData, profilePicture, token) 
       formData.append("profilePicture", profilePicture);
     }
 
-
     const response = await fetch(`${API_URL}/user/${userId}/client`, {
       method: "PATCH",
       headers: {
-        Authorization : token,
+        Authorization: token,
       },
-      body: formData,  
+      body: formData,
     });
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Error desconocido al actualizar el perfil del cliente.');
+      throw new Error(
+        errorResponse.error ||
+          "Error desconocido al actualizar el perfil del cliente."
+      );
     }
 
     const json = await response.json();
@@ -113,11 +124,15 @@ export async function updateUserClient(userId, userData, profilePicture, token) 
   }
 }
 
-export async function updateUserRepairShop(userId, repairShopData, profilePicture, token) {
+export async function updateUserRepairShop(
+  userId,
+  repairShopData,
+  profilePicture,
+  token
+) {
   try {
     const formData = new FormData();
-    
-    
+
     formData.append("companyName", repairShopData.companyName);
     formData.append("phoneNumber", repairShopData.phoneNumber);
     formData.append("address[street]", repairShopData.address.street);
@@ -125,28 +140,32 @@ export async function updateUserRepairShop(userId, repairShopData, profilePictur
     if (repairShopData.address.intNum) {
       formData.append("address[intNum]", repairShopData.address.intNum);
     }
-    formData.append("address[neighborhood]", repairShopData.address.neighborhood);
+    formData.append(
+      "address[neighborhood]",
+      repairShopData.address.neighborhood
+    );
     formData.append("address[zipCode]", repairShopData.address.zipCode);
     formData.append("address[city]", repairShopData.address.city);
     formData.append("address[state]", repairShopData.address.state);
 
-    
     if (profilePicture) {
       formData.append("profilePicture", profilePicture);
     }
 
-
     const response = await fetch(`${API_URL}/user/${userId}/repairShop`, {
       method: "PATCH",
       headers: {
-        Authorization: token, 
+        Authorization: token,
       },
-      body: formData,  
+      body: formData,
     });
 
     if (!response.ok) {
       const errorResponse = await response.json();
-      throw new Error(errorResponse.error || 'Error desconocido al actualizar el perfil de la refaccionaria.');
+      throw new Error(
+        errorResponse.error ||
+          "Error desconocido al actualizar el perfil de la refaccionaria."
+      );
     }
 
     const json = await response.json();
