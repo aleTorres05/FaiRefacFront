@@ -2,12 +2,10 @@ import { useState, useEffect } from "react";
 import CarDetail from "./CarDetail";
 import { getByID } from "@/pages/api/user";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
 import AddCar from "./AddCar";
 import clsx from "clsx";
 
 export default function CarCard() {
-  const router = useRouter();
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isAddCarModalOpen, setIsAddCarModalOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);

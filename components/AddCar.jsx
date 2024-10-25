@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { addCar } from "@/pages/api/user";
 
 export default function Addcar({ closeModal, isModalOpen }) {
   const {
@@ -11,12 +12,17 @@ export default function Addcar({ closeModal, isModalOpen }) {
   const [carPicture, setCarPicture] = useState(null);
 
   const handleImageChange = (event) => {
-    carPicture(event.target.files[0]);
+    setCarPicture(event.target.files[0]);
   };
 
-  const submitForm = (data) => {
-    onSubmit(data, carPicture);
-  };
+  async function submitForm(data) {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
+      const carAdded = await addCar(userId, data, carPicture, token);
+      console.log(carAdded);
+    } catch (error) {}
+  }
 
   useEffect(() => {
     if (isModalOpen) {
@@ -75,9 +81,10 @@ export default function Addcar({ closeModal, isModalOpen }) {
               <span className="text-red-500">Modelo es obligatorio</span>
             )}
           </div>
+
           <div className="mb-14">
             <label className="block font-chakra text-sm font-medium mb-1">
-              Versión
+              VERSIÓN
             </label>
             <input
               type="text"
@@ -91,10 +98,9 @@ export default function Addcar({ closeModal, isModalOpen }) {
 
           <div className="mb-14">
             <label className="block font-chakra text-sm font-medium mb-1">
-              Año
+              AÑO
             </label>
             <input
-              type="tel"
               {...register("year", {
                 required: "Año es obligatorio",
                 pattern: {
@@ -108,19 +114,18 @@ export default function Addcar({ closeModal, isModalOpen }) {
               <span className="text-red-500">Año es obligatorio</span>
             )}
           </div>
+
           <div className="mb-14">
             <label className="block font-chakra text-sm font-medium mb-1">
               NICKNAME
             </label>
             <input
               type="text"
-              {...register("nickname", { required: true })}
+              {...register("nickname")}
               className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
-            {errors.nickname && (
-              <span className="text-red-500">Nickname es obligatorio</span>
-            )}
           </div>
+
           <div className="mb-10">
             <label className="block text-sm font-medium font-chakra mb-1">
               FOTO DEL AUTOMOVIL
@@ -146,9 +151,9 @@ export default function Addcar({ closeModal, isModalOpen }) {
           </div>
           <button
             type="submit"
-            className="w-full md:w-64 py-2 bg-[#D26528] text-white font-bold"
+            className="w-full md:w-64 py-2 bg-[#D26528] text-white font-bold font-chakra"
           >
-            ACTUALIZAR INFORMACIÓN
+            AGREGAR CARRO
           </button>
         </form>
       </div>
