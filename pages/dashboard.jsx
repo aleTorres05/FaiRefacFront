@@ -29,16 +29,16 @@ export default function UserDashboard() {
             return;
           }
 
-          if (
-            user.isClient &&
-            (!user.client || Object.keys(user.client).length === 0)
-          ) {
-            toast.error("Es necesario actualizar su información como cliente.");
-            setTimeout(() => {
-              router.push("/update-info");
-            }, 1000);
-            return;
-          }
+          // if (
+          //   user.isClient &&
+          //   (!user.client || Object.keys(user.client).length === 0)
+          // ) {
+          //   toast.error("Es necesario actualizar su información como cliente.");
+          //   setTimeout(() => {
+          //     router.push("/update-info");
+          //   }, 1000);
+          //   return;
+          // }
 
           if (
             user.isRepairShop &&

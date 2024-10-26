@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import CarDetail from "./CarDetail";
 import { getByID } from "@/pages/api/user";
 import { toast } from "sonner";
-import { useRouter } from "next/router";
+import AddCar from "./AddCar";
 import clsx from "clsx";
 
 export default function CarCard() {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isAddCarModalOpen, setIsAddCarModalOpen] = useState(false);
   const [selectedCar, setSelectedCar] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,15 +30,25 @@ export default function CarCard() {
       });
   }, [currentPage]);
 
-  const openModal = (car) => {
+  const carDetialsOpenModal = (car) => {
     setSelectedCar(car);
-    setIsModalOpen(true);
+    setIsDetailsModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const carDetailsCloseModal = () => {
+    setIsDetailsModalOpen(false);
     setSelectedCar(null);
   };
+
+  const addCarOpenModal = (car) => {
+    setSelectedCar(car);
+    setIsAddCarModalOpen(true);
+  };
+
+  const addCarCloseModal = () => {
+    setIsAddCarModalOpen(false);
+  };
+
   const numOfPages = Math.round(userDetails.client?.cars.length / carsPerPage);
 
   const handdleCarsPerPage = (pageNum) => {
@@ -64,7 +74,7 @@ export default function CarCard() {
             key={`car-${idx}`}
             className="relative w-full h-[220px] mb-3 rounded-lg lg:p-2 lg:h-[100%] xl:h-[100%] 2xl:h-[100%] cursor-pointer"
             id={`car-${idx}`}
-            onClick={() => openModal(car)}
+            onClick={() => carDetialsOpenModal(car)}
           >
             <img
               className="opacity-50 rounded-lg h-full w-full"
@@ -78,7 +88,10 @@ export default function CarCard() {
         ))}
         {currentPage === numOfPages && (
           <div>
-            <button className="opacity-50 rounded-lg h-full w-full">
+            <button
+              onClick={() => addCarOpenModal()}
+              className="opacity-50 rounded-lg h-full w-full"
+            >
               <img
                 className="opacity-80 rounded-lg h-full w-full "
                 src="https://fairefac-assets.s3.us-east-2.amazonaws.com/add-car-icon.png"
@@ -86,10 +99,6 @@ export default function CarCard() {
               />
             </button>
           </div>
-        )}
-
-        {isModalOpen && (
-          <CarDetail selectedCar={selectedCar} closeModal={closeModal} />
         )}
       </div>
       <div className=" p-3">
@@ -106,6 +115,13 @@ export default function CarCard() {
           </button>
         ))}
       </div>
+      {isDetailsModalOpen && (
+        <CarDetail
+          selectedCar={selectedCar}
+          closeModal={carDetailsCloseModal}
+        />
+      )}
+      {isAddCarModalOpen && <AddCar closeModal={addCarCloseModal} />}
     </>
   );
 }
