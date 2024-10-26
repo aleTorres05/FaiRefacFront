@@ -1,10 +1,11 @@
-import Header from "@/components/Header";
+import { getUserByEmail } from "@/pages/api/user";
+import { useEffect, useState } from "react";
+import Header from "./Header";
 import clsx from "clsx";
-import { useState } from "react";
-import RepairShopOption from "@/components/RepairShopOptions";
-import Quote from "@/components/Quote";
+import RepairShopOption from "./RepairShopOptions";
+import Quote from "./Quote";
 
-export default function ClientProfile() {
+export default function RepairShopDashboard() {
   const [isSelected, setIsSelected] = useState({
     inicio: "inicio",
     panelCotizaciones: false,
@@ -16,6 +17,30 @@ export default function ClientProfile() {
       panelCotizaciones: option === "panelCotizaciones",
     });
   };
+
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    if (!token || !email) {
+      console.log("No token or email, triggering toast");
+      toast.error("Es necesario iniciar sesión para acceder a esta página.");
+      router.push("/login");
+    } else {
+      getUserByEmail(email, token)
+        .then((user) => {
+          setUser(user);
+        })
+        .catch((error) => {
+          toast.error(error.message || "Ocurrió un error inesperado");
+          localStorage.removeItem("token");
+          localStorage.removeItem("email");
+          router.push("/login");
+        });
+    }
+  }, []);
+
   return (
     <>
       <main className=" mt-[18px] mx-[32px] flex flex-col gap-4">

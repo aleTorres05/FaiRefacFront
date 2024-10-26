@@ -13,8 +13,8 @@ export default function History({ currentPage }) {
       : [
           {
             description:
-              "Siempre he confiado en mi mecánico de confianza, pero a menudo me pregunto si estoy pagando demasiado por las refacciones y no sé qué marcas utiliza. Ahora, con esta app, puedo comparar fácilmente los precios y marcas de diferentes refaccionarias cercanas. No solo obtengo las mejores ofertas, sino que también la refaccionaria se encarga de enviar las piezas directamente a mi mecánico. Todo esto lo hago sin moverme de donde estoy, lo que me ahorra tiempo y preocupaciones.",
-            user: "Juan Jimenez",
+              "Gracias a esta aplicación, hemos logrado aumentar nuestras ventas en un 30%. Los clientes ahora pueden comparar precios y encontrarnos fácilmente. Nos ha ayudado a destacar entre la competencia en la zona.",
+            user: "Refaccionaria El Buen Taller, Ciudad de México",
           },
         ];
   return (

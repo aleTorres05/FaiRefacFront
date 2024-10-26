@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { getUserByEmail } from "@/pages/api/user";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({});
   const router = useRouter();
 
   const {
@@ -29,17 +28,23 @@ export default function LoginForm() {
         toast.error("Por favor, ingresa un correo electrónico válido.");
         return;
       }
-      const response = await login(data.email, data.password);
-      if (response.token) {
-        window.localStorage.setItem("token", response.token);
+      const response = await login(data.email, data.password, router);
+      console.log(response);
+      if (response.error === "Verify your email to login.") {
         window.localStorage.setItem("email", data.email);
+        toast.error("Es necesario verificar su correo electrónico.");
+        router.push(`/email-verification`);
+        return;
+      } else if (response.token) {
+        window.localStorage.setItem("email", data.email);
+        window.localStorage.setItem("token", response.token);
         toast.success("Bienvenido.");
-        const user = await getUserByEmail(data.email, response.token);
-        router.push(`/dashboard/${user._id}`);
+        router.push(`/dashboard`);
+      } else {
+        toast.error("Correo o Contraseña incorrecto.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error);
+      toast.error(error.message || "Ocurrió un error inesperado");
     }
   }
 
