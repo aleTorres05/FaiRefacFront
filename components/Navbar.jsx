@@ -182,7 +182,7 @@ export default function Navbar({ setCurrentPage }) {
         ) : (
           <>
             <Link
-              href="#"
+              href="/"
               onClick={() => setCurrentPage("impulsa")}
               className="hover:text-[#D16527] transition-colors"
             >
