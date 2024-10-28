@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { addCar } from "@/pages/api/user";
+import { toast } from "sonner";
+import { useRouter } from "next/router";
 
-export default function Addcar({ closeModal, isModalOpen }) {
+export default function Addcar({ closeModal, isModalOpen, user }) {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -17,11 +20,20 @@ export default function Addcar({ closeModal, isModalOpen }) {
 
   async function submitForm(data) {
     try {
-      const userId = localStorage.getItem("userId");
+      const clientId = user.client._id;
       const token = localStorage.getItem("token");
-      const carAdded = await addCar(userId, data, carPicture, token);
-      console.log(carAdded);
-    } catch (error) {}
+      const carAdded = await addCar(clientId, data, carPicture, token);
+      if (!carAdded.success) {
+        toast.error("Algo salio mal intenta de nuevo");
+      } else {
+        window.location.reload();
+        toast.success(
+          `Tu ${data.brand} ${data.model} ha sido agregado con exito!`
+        );
+      }
+    } catch (error) {
+      toast.error(error.message || "Error al agregar el carro.");
+    }
   }
 
   useEffect(() => {
@@ -60,10 +72,10 @@ export default function Addcar({ closeModal, isModalOpen }) {
             </label>
             <input
               type="text"
-              {...register("marca", { required: true })}
+              {...register("brand", { required: true })}
               className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
-            {errors.marca && (
+            {errors.brand && (
               <span className="text-red-500">Marca es obligatorio</span>
             )}
           </div>
@@ -74,10 +86,10 @@ export default function Addcar({ closeModal, isModalOpen }) {
             </label>
             <input
               type="text"
-              {...register("modelo", { required: true })}
+              {...register("model", { required: true })}
               className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
-            {errors.modelo && (
+            {errors.model && (
               <span className="text-red-500">Modelo es obligatorio</span>
             )}
           </div>
@@ -150,6 +162,7 @@ export default function Addcar({ closeModal, isModalOpen }) {
             )}
           </div>
           <button
+            onClick={handleSubmit(submitForm)}
             type="submit"
             className="w-full md:w-64 py-2 bg-[#D26528] text-white font-bold font-chakra"
           >
