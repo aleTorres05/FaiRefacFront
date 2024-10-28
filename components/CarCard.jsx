@@ -19,6 +19,7 @@ export default function CarCard() {
   useEffect(() => {
     const userid = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+
     getByID(userid, token)
       .then((user) => {
         setUserDetails(user);
@@ -49,7 +50,9 @@ export default function CarCard() {
     setIsAddCarModalOpen(false);
   };
 
-  const numOfPages = Math.round(userDetails.client?.cars.length / carsPerPage);
+  const numOfPages = userDetails.client?.cars.length
+    ? Math.ceil(userDetails.client?.cars.length / carsPerPage)
+    : 1;
 
   const handdleCarsPerPage = (pageNum) => {
     setCurrentPage(pageNum);
@@ -82,7 +85,9 @@ export default function CarCard() {
               alt="car"
             />
             <p className="font-chakra absolute bottom-3 border-t-2 border-[#D16527] left-3 lg:left-4 lg:bottom-4 xl:h-[10%] xl:w-fit xl:text-2xl xl:font-semibold xl:border-t-4 xl:left-7">
-              {`${car.brand} ${car.model} ${car.version} ${car.year}`}
+              {car?.nickname != "null"
+                ? car.nickname
+                : `${car.brand} ${car.model} ${car.version} ${car.year}`}
             </p>
           </div>
         ))}
@@ -121,7 +126,9 @@ export default function CarCard() {
           closeModal={carDetailsCloseModal}
         />
       )}
-      {isAddCarModalOpen && <AddCar closeModal={addCarCloseModal} />}
+      {isAddCarModalOpen && (
+        <AddCar closeModal={addCarCloseModal} user={userDetails} />
+      )}
     </>
   );
 }

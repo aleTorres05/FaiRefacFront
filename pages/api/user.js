@@ -175,33 +175,39 @@ export async function updateUserRepairShop(
   }
 }
 
-export async function addCar(userId, formData, carPicture, token) {
+export async function addCar(clientId, userData, carPicture, token) {
   try {
-    const { marca, modelo, version, year, nickname } = formData;
-    const response = await fetch(`${API_URL}/client/${userId}/car`, {
+    const formData = new FormData();
+
+    let { brand, model, version, year, nickname } = userData;
+
+    if (nickname === "") {
+      nickname = null;
+    }
+
+    formData.append("brand", brand);
+    formData.append("model", model);
+    formData.append("version", version);
+    formData.append("year", year);
+    formData.append("nickname", nickname);
+    if (carPicture) {
+      formData.append("carPicture", carPicture);
+    }
+
+    const response = await fetch(`${API_URL}/client/${clientId}/car`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({
-        marca,
-        modelo,
-        version,
-        year,
-        nickname,
-        carPicture,
-      }),
+      body: formData,
     });
 
-    console.log(response);
     if (!response.ok) {
       const errorResponse = await response.json();
       throw new Error(
         errorResponse.error || "Error desconocido al agregar el carro"
       );
     }
-
     const json = await response.json();
 
     return json;
