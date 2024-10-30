@@ -4,19 +4,17 @@ import { toast } from "sonner";
 import MechanicForm from "@/components/MechanicForm";
 import { getAllMechanics } from "./api/mechanic";
 import { useForm, useFieldArray } from "react-hook-form";
+import { createQuote } from "./api/quote";
 
 export default function QuoteForm() {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+
   const [isMechanicFormOpen, setIsMechanicFormOpen] = useState(false);
   const [mechanics, setMechanics] = useState([]);
   const [selectedMechanic, setSelectedMechanic] = useState("");
   const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
   const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
+  const [car, setCar] = useState(null);
 
   const {
     handleSubmit,
@@ -32,6 +30,10 @@ export default function QuoteForm() {
   });
 
   useEffect(() => {
+    const carSelected = sessionStorage.getItem("carSelected");
+    if (carSelected) {
+      setCar(JSON.parse(carSelected));
+    }
     getAllMechanics()
       .then((mechanics) => {
         setMechanics(mechanics);
@@ -46,11 +48,14 @@ export default function QuoteForm() {
     setSelectedMechanic(e.target.value);
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  async function onSubmit(data) {
+    try {
+      const response = await createQuote(car._id, selectedMechanic, data);
+    } catch (error) {}
+
     // router.push("/quote-sent");
     // console.log("Cotización enviada", { selectedMechanic, items });
-  };
+  }
 
   const handleSaveMechanic = (newMechanic) => {
     setMechanics([...mechanics, newMechanic]);
