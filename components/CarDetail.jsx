@@ -5,7 +5,8 @@ export default function CarDetail({ selectedCar, closeModal, isModalOpen }) {
   const router = useRouter();
 
   const handleQuoteClick = () => {
-    router.push("/quote-form");
+    console.log(selectedCar);
+    router.push(`/quote-form`);
   };
 
   useEffect(() => {
