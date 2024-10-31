@@ -74,7 +74,7 @@ function AlertDialog({ trigger, title, description, onConfirm }) {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ setCurrentPage }) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -83,9 +83,14 @@ export default function Navbar() {
   const userName = "Usuario123"; // Nombre de usuario de ejemplo
   const userEmail = "usuario@example.com"; // Ejemplo de correo del usuario
 
-  // Ejemplo de datos para quotes y repairshop
-  const quotes = [{ id: 1 }, { id: 2 }]; // Ejemplo de cotizaciones pendientes
-  const repairshop = { status: "initial" }; // Estado inicial de repairshop
+  // Ocultar Navbar en las páginas específicas
+  if (
+    ["/update-info", "/email-verification", "/success", "/cancel"].includes(
+      router.pathname
+    )
+  ) {
+    return null;
+  }
 
   useEffect(() => {
     const mockNotifications = [
@@ -128,7 +133,8 @@ export default function Navbar() {
   const NavLinks = () => {
     if (router.pathname === "/dashboard" && isLoggedIn) {
       return (
-        <>
+        <div className="fixed top-10 right-7 flex items-center space-x-5">
+          {/* Ícono de Notificaciones */}
           <DropdownMenu
             trigger={
               <div className="relative">
@@ -141,8 +147,8 @@ export default function Navbar() {
               </div>
             }
           >
-            <div className="p-4">
-              <p className="font-bold">Notificaciones</p>
+            <div className="p-4 ">
+              <p className="font-bold text-black">Notificaciones</p>
               <hr />
               {notifications.length > 0 ? (
                 notifications.map((notif) => (
@@ -153,51 +159,70 @@ export default function Navbar() {
                     } mb-1`}
                     onClick={() => markNotificationAsRead(notif.id)}
                   >
-                    <div className="font-medium">{notif.title}</div>
-                    <div className="text-sm text-gray-600">{notif.message}</div>
-                    <div className="text-xs text-gray-400">{notif.time}</div>
+                    <div className="font-medium text-black">{notif.title}</div>
+                    <div className="text-sm text-black">{notif.message}</div>
+                    <div className="text-xs text-gray-500">{notif.time}</div>
                   </div>
                 ))
               ) : (
-                <p>No hay notificaciones</p>
+                <p className="text-black">No hay notificaciones</p>
               )}
             </div>
           </DropdownMenu>
+
+          {/* Ícono de Usuario */}
           <DropdownMenu
             trigger={
               <User className="w-6 h-6 hover:text-[#D16527] transition-colors" />
             }
           >
-            <div className="p-4">
-              <p className="font-bold text-black">{userName}</p>
-              <p className="text-gray-500 text-sm">{userEmail}</p>{" "}
-              {/* Muestra el email */}
-              <hr className="my-2" />
-              <Link href="/profile" className="block py-2 text-black">
-                Perfil
-              </Link>
+            <div className="p-6 bg-[#302F2F] rounded-md w-64 text-white">
+              <div className="flex items-center flex-col mb-4">
+                <img
+                  src="/path/to/profile-picture.jpg" // Reemplaza con la ruta de la imagen real
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full mb-2"
+                />
+                <p className="font-bold text-lg">Juan Perez</p>{" "}
+                {/* Nombre de ejemplo */}
+                <p className="text-sm text-gray-400">Olmecas 107</p>{" "}
+                {/* Dirección de ejemplo */}
+              </div>
+
               <AlertDialog
                 trigger={
-                  <div className="text-red-500 cursor-pointer py-2 flex items-center gap-2">
-                    <LogOut className="w-4 h-4" /> Cerrar Sesión
-                  </div>
+                  <button className="bg-[#D16527] text-white w-full py-2 mt-4 rounded-md font-bold">
+                    SALIR
+                  </button>
                 }
                 title="¿Estás seguro de cerrar sesión?"
-                description="."
+                description=""
                 onConfirm={handleLogout}
               />
             </div>
           </DropdownMenu>
-        </>
+        </div>
       );
     } else {
       return (
         <>
-          <Link href="/" className="hover:text-[#D16527] transition-colors">
-            Home
-          </Link>
+          {isOpen ? (
+            <Link href="/" onClick={() => setCurrentPage("home")}>
+              Home
+            </Link>
+          ) : (
+            <Link
+              className="hover:text-[#D16527] transition-colors"
+              href="/"
+              onClick={() => setCurrentPage("home")}
+            >
+              Home
+            </Link>
+          )}{" "}
+          {/* Impulsa tu Refaccionaria */}
           <Link
-            href="/boost"
+            href="#"
+            onClick={() => setCurrentPage("impulsa")}
             className="hover:text-[#D16527] transition-colors"
           >
             Impulsa tu Refaccionaria
@@ -234,14 +259,14 @@ export default function Navbar() {
       </div>
       {isOpen && (
         <div className="fixed h-full w-screen bg-black-50 backdrop-blur-sm top-0 right-0 lg:hidden">
-          <div className="text-white items-center bg-[#302F2F] flex-col absolute right-3 top-4 h-auto p-8 gap-4 z-50 flex">
+          <div className="text-white items-center bg-[#302F2F] flex-col absolute right-5 top-1 h-auto p-10 gap-4 z-50 flex">
+            {/* Botón "X" para cerrar el menú móvil */}
             <button
-              className="text-[#D16527] absolute right-2 top-2 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={toggleNavbar}
+              onClick={() => setIsOpen(false)}
+              className="text-white absolute top-1 right-1"
             >
               <X />
             </button>
-            <Logo />
             <NavLinks />
           </div>
         </div>
