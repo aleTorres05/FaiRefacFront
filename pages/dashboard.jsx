@@ -66,7 +66,7 @@ export default function UserDashboard() {
         user.isClient ? (
           <ClientDashboard />
         ) : user.isRepairShop ? (
-          <RepairShopDashboard />
+          <RepairShopDashboard user={user} />
         ) : null
       ) : (
         <p className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
