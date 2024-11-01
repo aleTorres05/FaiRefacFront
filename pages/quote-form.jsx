@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import MechanicForm from "@/components/MechanicForm";
 import { getAllMechanics } from "./api/mechanic";
 import { useForm, useFieldArray } from "react-hook-form";
-import { createQuote } from "./api/quote";
+import { createQuote, createQuoteLinkToken } from "./api/quote";
 
 export default function QuoteForm() {
   const router = useRouter();
@@ -15,6 +15,8 @@ export default function QuoteForm() {
   const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
   const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
   const [car, setCar] = useState(null);
+  const carSelected = sessionStorage.getItem("carSelected");
+  const client = sessionStorage.getItem("client");
 
   const {
     handleSubmit,
@@ -30,7 +32,6 @@ export default function QuoteForm() {
   });
 
   useEffect(() => {
-    const carSelected = sessionStorage.getItem("carSelected");
     if (carSelected) {
       setCar(JSON.parse(carSelected));
     }
@@ -61,17 +62,18 @@ export default function QuoteForm() {
     setMechanics([...mechanics, newMechanic]);
   };
 
-  const handleCopyUrl = () => {
+  async function handleCopyUrl() {
     const currentUrl = window.location.href;
+    const token = await createQuoteLinkToken(client._id, carSelected._id);
     navigator.clipboard
-      .writeText(currentUrl)
+      .writeText(`${currentUrl}/`)
       .then(() => {
         toast.success("URL copiada al portapapeles");
       })
       .catch((err) => {
         toast.error("Error al copiar la URL: ", err);
       });
-  };
+  }
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
@@ -79,13 +81,14 @@ export default function QuoteForm() {
         SOLICITA UNA COTIZACIÓN
       </h1>
       <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
-        <div className="w-full">
+        <div className="w-full flex flex-row items-center">
           <img
             className="h-[50px]"
             src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
             alt="copy-icon"
             onClick={handleCopyUrl}
           />
+          <p className="">Copiar Enlace</p>
         </div>
         <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
           <label
