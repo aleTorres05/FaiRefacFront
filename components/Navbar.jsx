@@ -92,38 +92,38 @@ export default function Navbar({ setCurrentPage }) {
     return null;
   }
 
-  useEffect(() => {
-    const mockNotifications = [
-      {
-        id: 1,
-        title: "Nueva oferta",
-        message: "¡50% de descuento!",
-        read: false,
-        time: "hace 5 minutos",
-      },
-      {
-        id: 2,
-        title: "Pedido enviado",
-        message: "Tu pedido #123 ha sido enviado",
-        read: false,
-        time: "hace 1 hora",
-      },
-    ];
+  //useEffect(() => {
+   // const mockNotifications = [
+     // {
+       // id: 1,
+        //title: "Nueva oferta",
+        //message: "¡50% de descuento!",
+        //read: false,
+        //time: "hace 5 minutos",
+      //},
+     // {
+        //id: 2,
+       // title: "Pedido enviado",
+        //message: "Tu pedido #123 ha sido enviado",
+        //read: false,
+       // time: "hace 1 hora",
+      //},
+    //];
 
-    setNotifications(mockNotifications);
-    setUnreadCount(mockNotifications.filter((n) => !n.read).length);
-  }, []);
+   // setNotifications(mockNotifications);
+   // setUnreadCount(mockNotifications.filter((n) => !n.read).length);
+//  }, []);
 
   const toggleNavbar = () => setIsOpen(!isOpen);
 
-  const markNotificationAsRead = (notificationId) => {
-    setNotifications(
-      notifications.map((notif) =>
-        notif.id === notificationId ? { ...notif, read: true } : notif
-      )
-    );
-    setUnreadCount((prev) => Math.max(0, prev - 1));
-  };
+ // const markNotificationAsRead = (notificationId) => {
+  //  setNotifications(
+   //   notifications.map((notif) =>
+    //    notif.id === notificationId ? { ...notif, read: true } : notif
+     // )
+    //);
+   // setUnreadCount((prev) => Math.max(0, prev - 1));
+  //};
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -157,7 +157,7 @@ export default function Navbar({ setCurrentPage }) {
                     className={`p-2 cursor-pointer ${
                       !notif.read ? "bg-blue-50" : ""
                     } mb-1`}
-                    onClick={() => markNotificationAsRead(notif.id)}
+                   //onClick={() => markNotificationAsRead(notif.id)}
                   >
                     <div className="font-medium text-black">{notif.title}</div>
                     <div className="text-sm text-black">{notif.message}</div>
