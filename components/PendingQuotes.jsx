@@ -52,6 +52,7 @@ export default function PendingQuotes({ quotes, setQuotes }) {
           onUpdateQuote={updateQuotes}
         />
       )}
+      
     </main>
   );
 }

@@ -67,6 +67,7 @@ export default function FollowUpPanel({ repairShop }) {
                 </button>
             </div>
         </div>
+        
     );
 }
 
