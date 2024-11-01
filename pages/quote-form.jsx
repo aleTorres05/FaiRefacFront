@@ -1,76 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import MechanicForm from "@/components/MechanicForm";
+import { getAllMechanics } from "./api/mechanic";
+import { useForm, useFieldArray } from "react-hook-form";
+import { createQuote } from "./api/quote";
 
 export default function QuoteForm() {
   const router = useRouter();
+
   const [isMechanicFormOpen, setIsMechanicFormOpen] = useState(false);
-  const [mechanics, setMechanics] = useState([
-    {
-        firstName: "Eduardo",
-        lastName: "Valdez",
-        workshopName: "Speed Pro",
-        phoneNumber: "5545641201",
-        address: {
-          street: "Av. Siempre Viva",
-          extNum: "123",
-          intNum: "A",
-          neighborhood: "Centro",
-          zipCode: "08100",
-          city: "Ciudad de México",
-          state: "CDMX",
-          _id: "66e6c4ba6412f327751b6a66"
-        },
-        _id: "66e6c4ba6412f327751b6a65",
-        __v: 0
-      },
-      {
-        firstName: "Mario",
-        lastName: "López",
-        workshopName: "AutoMaster",
-        phoneNumber: "5523456789",
-        address: {
-          street: "Insurgentes",
-          extNum: "1500",
-          intNum: "B",
-          neighborhood: "Roma Norte",
-          zipCode: "06700",
-          city: "Ciudad de México",
-          state: "CDMX",
-          _id: "66e6c4ba6412f327751b6a67"
-        },
-        _id: "66e6c4ba6412f327751b6a68",
-        __v: 0
-      },
-  ]);
-
-  const [selectedMechanic, setSelectedMechanic] = useState(""); 
-  const [items, setItems] = useState([{ concept: "", quantity: 1 }]);
-
+  const [mechanics, setMechanics] = useState([]);
+  const [selectedMechanic, setSelectedMechanic] = useState("");
   const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
   const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
+  const [car, setCar] = useState(null);
 
-  
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+    setError,
+  } = useForm({ defaultValues: { items: [{ concept: "", quantity: 1 }] } });
+
+  const { fields, append, remove, update } = useFieldArray({
+    control,
+    name: "items",
+  });
+
+  useEffect(() => {
+    const carSelected = sessionStorage.getItem("carSelected");
+    if (carSelected) {
+      setCar(JSON.parse(carSelected));
+    }
+    getAllMechanics()
+      .then((mechanics) => {
+        setMechanics(mechanics);
+      })
+      .catch((e) => {
+        toast.error("Algo salio mal: ", e);
+        throw new Error(e);
+      });
+  }, []);
+
   const handleMechanicChange = (e) => {
     setSelectedMechanic(e.target.value);
   };
 
-  const handleItemChange = (index, field, value) => {
-    const newItems = [...items];
-    newItems[index][field] = value;
-    setItems(newItems);
-  };
+  async function onSubmit(data) {
+    try {
+      const response = await createQuote(car._id, selectedMechanic, data);
+    } catch (error) {}
 
-  const addItem = () => {
-    setItems([...items, { concept: "", quantity: 1 }]);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    router.push('/quote-sent')
-    console.log("Cotización enviada", { selectedMechanic, items });
-  };
+    // router.push("/quote-sent");
+    // console.log("Cotización enviada", { selectedMechanic, items });
+  }
 
   const handleSaveMechanic = (newMechanic) => {
     setMechanics([...mechanics, newMechanic]);
@@ -78,82 +63,114 @@ export default function QuoteForm() {
 
   const handleCopyUrl = () => {
     const currentUrl = window.location.href;
-    navigator.clipboard.writeText(currentUrl)
+    navigator.clipboard
+      .writeText(currentUrl)
       .then(() => {
         toast.success("URL copiada al portapapeles");
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error("Error al copiar la URL: ", err);
       });
   };
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
-      <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">SOLICITA UNA COTIZACIÓN</h1> 
+      <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">
+        SOLICITA UNA COTIZACIÓN
+      </h1>
       <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
         <div className="w-full">
-            <img 
-            className="h-[50px]" src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png" 
+          <img
+            className="h-[50px]"
+            src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
             alt="copy-icon"
-            onClick={handleCopyUrl} />
+            onClick={handleCopyUrl}
+          />
         </div>
-            <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
-                <label htmlFor="mechanic-select" className="block text-white w-full font-chakra font-bold">
-                    SELECCIONA UN TALLER
-                </label>
-                <select
-                  id="mechanic-select"
-                  value={selectedMechanic}
-                  onChange={handleMechanicChange}
-                  className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
-                >
-                  <option className="text-white font-mulish" value="" disabled>Selecciona un taller</option>
-                  {mechanics.map((mechanic) => (
-                    <option key={mechanic._id} value={mechanic._id}>
-                      {mechanic.workshopName}
-                    </option>
-                  ))}
-                </select>
-            </div>
-            <div className="flex h-full justify-center my-auto">
-            <button
-                className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
-                type="button"
-                onClick={handleOpenMechanicForm}>+</button>
-            </div>
+        <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
+          <label
+            htmlFor="mechanic-select"
+            className="block text-white w-full font-chakra font-bold"
+          >
+            SELECCIONA UN TALLER
+          </label>
+          <select
+            id="mechanic-select"
+            value={selectedMechanic}
+            onChange={handleMechanicChange}
+            className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+          >
+            <option className="text-white font-mulish" value="" disabled>
+              Selecciona un taller
+            </option>
+            {mechanics.map((mechanic) => (
+              <option key={mechanic._id} value={mechanic._id}>
+                {mechanic.workshopName}
+              </option>
+            ))}
+          </select>
         </div>
-
+        <div className="flex h-full justify-center my-auto">
+          <button
+            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
+            type="button"
+            onClick={handleOpenMechanicForm}
+          >
+            +
+          </button>
+        </div>
+      </div>
 
       <MechanicForm
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
         onSave={handleSaveMechanic}
-      /> 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 my-4">
-
-        {items.map((item, index) => (
+      />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 my-4"
+      >
+        {fields.map((field, index) => (
           <div key={index} className="flex items-center gap-4">
             <input
               type="text"
-              value={item.concept}
-              onChange={(e) => handleItemChange(index, "concept", e.target.value)}
               placeholder="Refacción"
               className="text-white text-base outline-none font-mulish text-[14px] font-normal leading-normal md:min-w-[600px] md:max-w-[850px] w-full bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+              {...register(`items.${index}.concept`, {
+                required: { value: true, message: "Refaccion es Requerida" },
+              })}
             />
             <div className="flex items-center">
               <button
                 type="button"
-                onClick={() =>
-                  handleItemChange(index, "quantity", Math.max(1, item.quantity - 1))
-                }
+                onClick={() => {
+                  if (field.quantity === 0) {
+                    remove(index);
+                  }
+                  update(index, {
+                    ...field,
+                    quantity: Math.max(0, field.quantity - 1),
+                  });
+                }}
                 className="p-2 border"
               >
                 -
               </button>
-              <span className="px-2">{item.quantity}</span>
+              <input
+                type="text"
+                value={field.quantity}
+                readOnly
+                className="px-2 bg-transparent text-center w-10 "
+                {...register(`items.${index}.quantity`, {
+                  valueAsNumber: true,
+                })}
+              />
+
               <button
                 type="button"
-                onClick={() => handleItemChange(index, "quantity", item.quantity + 1)}
+                onClick={() =>
+                  update(index, { ...field, quantity: field.quantity + 1 })
+                }
                 className="p-2 border"
               >
                 +
@@ -163,23 +180,24 @@ export default function QuoteForm() {
         ))}
 
         <div className="w-full flex justify-center">
-        <button
-          type="button"
-          onClick={addItem}
-          className="bg-[#D16527] md:mt-6 md:mb-14 w-[250px] font-chakra font-bold text-white p-2 rounded-md"
-        >AGREGAR PIEZA</button>
+          <button
+            type="button"
+            onClick={() => append({ concept: "", quantity: 1 })}
+            className="bg-[#D16527] md:mt-6 md:mb-14 w-[250px] font-chakra font-bold text-white p-2 rounded-md"
+          >
+            AGREGAR PIEZA
+          </button>
         </div>
 
         <div className="w-full flex justify-center md:justify-end">
-        <button
-          type="submit"
-          className="bg-[#D16527] w-[250px] font-chakra font-bold text-white p-2 rounded-md mt-4"
-        >
-          SOLICITAR COTIZACIÓN
-        </button>
+          <button
+            type="submit"
+            className="bg-[#D16527] w-[250px] font-chakra font-bold text-white p-2 rounded-md mt-4"
+          >
+            SOLICITAR COTIZACIÓN
+          </button>
         </div>
       </form>
     </div>
   );
 }
-
