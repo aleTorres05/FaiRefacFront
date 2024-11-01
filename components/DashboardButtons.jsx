@@ -2,7 +2,7 @@ import clsx from "clsx";
 
 export default function DashboardButtons({ isSelected, handleButtonSelection, repairShop }) {
   return (
-    <div className="bg-black col-start-1 col-end-13 p-3 sm:w-full h-fit md:p-2 md:col-start-1 md:col-end-5 lg:col-start-1 lg:col-end-4 xl:col-start-1 xl:col-end-4 2xl:col-start-1 2xl:col-end-4 rounded-2xl mt-2 md:h-screen lg:h-screen md:flex-col lg:mt-4 lg:p-3">
+    <div className="bg-black col-start-1 col-end-13 p-3 sm:w-full h-fit md:p-2 md:col-start-1 md:col-end-3 lg:col-start-1 lg:col-end-4 xl:col-start-1 xl:col-end-4 2xl:col-start-1 2xl:col-end-4 rounded-2xl mt-2 md:h-screen lg:h-screen md:flex-col lg:mt-4 lg:p-3">
     <div>
       <div className="flex flex-row mb-1 md:flex-row lg:mb-10 justify-start lg:mr-3 ">
         <img
@@ -24,7 +24,7 @@ export default function DashboardButtons({ isSelected, handleButtonSelection, re
       <button
         onClick={() => handleButtonSelection("pendingQuotes")}
         className={clsx(
-          "w-[50%] font-chakra leading-3 lg:leading-none text-xs md:text-[20px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+          "w-[50%] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
           isSelected.pendingQuotes ? "bg-[#D26528] text-white" : "bg-white text-black"
         )}
       >
@@ -33,7 +33,7 @@ export default function DashboardButtons({ isSelected, handleButtonSelection, re
       <button
         onClick={() => handleButtonSelection("followUpPanel")}
         className={clsx(
-          "w-[50%] font-chakra leading-3 lg:leading-none text-xs md:text-[20px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+          "w-[50%] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
           isSelected.followUpPanel ? "bg-[#D26528] text-white" : "bg-white text-black"
         )}
       >

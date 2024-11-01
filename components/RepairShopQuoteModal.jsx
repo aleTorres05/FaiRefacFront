@@ -1,7 +1,6 @@
 import RepairShopQuoteTable from "./RepairShopQuoteTable";
-export default function RepairShopQuoteModal({ selectedQuote, closeModal }) {
-    const { mechanic, items } = selectedQuote
-    console.log(selectedQuote)
+export default function RepairShopQuoteModal({ selectedQuote, closeModal, onUpdateQuote }) {
+    const { mechanic, items, _id } = selectedQuote
   return (
     <div 
     className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50"
@@ -20,7 +19,11 @@ export default function RepairShopQuoteModal({ selectedQuote, closeModal }) {
           {`${selectedQuote?.car.brand} ${selectedQuote?.car.model} ${selectedQuote?.car.version} ${selectedQuote?.car.year}`.toUpperCase()}
         </h3>
         <p className="font-mulish text-[20px] mb-4">Taller: {`${mechanic.workshopName}, dudas llamar a ${mechanic.firstName} ${mechanic.lastName} Tel. ${mechanic.phoneNumber}`}</p>
-        <RepairShopQuoteTable items={items}/>
+        <RepairShopQuoteTable 
+        items={items} 
+        quoteId={_id}
+        closeModal={closeModal}
+        onUpdateQuote={onUpdateQuote}/>
       </div>
     </div>
   );

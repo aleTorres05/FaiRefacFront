@@ -1,25 +1,54 @@
-import { useForm } from "react-hook-form"
+import { useController } from "react-hook-form"
 import { useEffect } from "react";
+import { toast } from "sonner";
 
-export default function RepairShopItem({item, updateItemTotal }) {
+export default function RepairShopItem({item, updateItemTotal, control, errors }) {
 
     const { quantity, _id } = item
     
     const {
-        handleSubmit,
-        register,
-        formState: { errors },
-        setError,
-        watch,
-    } = useForm();
+        field: {onChange: setUnitPrice, value: unitPrice},
+    } = useController({
+        name: `unitPrice-${_id}`,
+        control,
+        rules: { 
+            required: "El precio unitario es obligatorio",
+            validate: {
+                isNumber: (value) => !isNaN(value) || "El precio unitario debe ser un número",
+            },
+        },
+    });
+
+    const {
+        field: {onChange: setBrand,},
+    } = useController({
+        name: `brand-${_id}`,
+        control,
+        rules: { 
+            required: "El campo marca es obligatorio",
+            validate: {
+                isString: (value) => typeof value === 'string' && value.trim().length > 0 || "La marca debe ser una cadena de texto válida",
+            },
+        },
+    });
     
-    const unitPrice = watch("unitPrice", 0);
-    const itemTotalPrice = quantity * unitPrice
+    const itemTotalPrice = quantity * unitPrice || 0
 
     useEffect(() => {
-        updateItemTotal(_id, itemTotalPrice);
-    }, [itemTotalPrice, _id, updateItemTotal]);
-    
+        if (itemTotalPrice > 0) {
+            updateItemTotal(_id, itemTotalPrice);
+        }
+    }, [itemTotalPrice]);
+
+    useEffect(() => {
+        if (errors[`unitPrice-${_id}`]) {
+          toast.error(errors[`unitPrice-${_id}`].message);
+        }
+        if (errors[`brand-${_id}`]) {
+          toast.error(errors[`brand-${_id}`].message);
+        }
+      }, [errors, _id]);
+
     return (
     <div className="border-b flex justify-between py-2">
         <div className="w-1/3">
@@ -28,7 +57,7 @@ export default function RepairShopItem({item, updateItemTotal }) {
             <p className="font-mulish mr-2">Marca: </p>
             <input
             type="text"
-            {...register("brand", { required: true })}
+            onChange={(e) => setBrand(e.target.value)}
             className="w-full md:w-1/2 md:text-center border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
           </div>
@@ -36,7 +65,7 @@ export default function RepairShopItem({item, updateItemTotal }) {
           <p className="font-chakra mr-1">$ </p>
           <input
             type="text"
-            {...register("unitPrice", { required: true })}
+            onChange={(e) => setUnitPrice(e.target.value)}
             className="w-full md:w-1/2 md:text-center border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
         </div>
@@ -46,7 +75,7 @@ export default function RepairShopItem({item, updateItemTotal }) {
         <p className="hidden text-center align-middle md:block">$ </p>
         <input
             type="text"
-            {...register("unitPrice", { required: true })}
+            onChange={(e) => setUnitPrice(e.target.value)}
             className="hidden md:block w-full md:w-1/2 md:text-center border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528]"
             />
         </div>
