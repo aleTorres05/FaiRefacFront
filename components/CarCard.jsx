@@ -122,6 +122,7 @@ export default function CarCard() {
       </div>
       {isDetailsModalOpen && (
         <CarDetail
+          client={userDetails.client}
           selectedCar={selectedCar}
           closeModal={carDetailsCloseModal}
         />
