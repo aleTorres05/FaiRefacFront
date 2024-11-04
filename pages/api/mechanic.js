@@ -21,3 +21,27 @@ export async function getAllMechanics() {
     throw new Error(error.message);
   }
 }
+
+export async function postMechanic(mechanicData) {
+  try {
+    const response = await fetch(`${API_URL}/mechanic`, {
+      method: "POST",
+      headers: {
+        "Content-Tyoe": "applicacion/json",
+      },
+      body: JSON.stringify(mechanicData),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error || "Error desconocido al crear el cotización"
+      );
+    }
+
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
