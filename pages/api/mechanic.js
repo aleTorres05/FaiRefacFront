@@ -1,4 +1,6 @@
-const API_URL = "https://fairefac-api.onrender.com";
+import { toast } from "sonner";
+
+const API_URL = "http://localhost:8080";
 
 export async function getAllMechanics() {
   try {
@@ -23,20 +25,46 @@ export async function getAllMechanics() {
 }
 
 export async function postMechanic(mechanicData) {
+  const {
+    firstName,
+    lastName,
+    workshopName,
+    phoneNumber,
+    street,
+    extNum,
+    intNum,
+    neighborhood,
+    zipCode,
+    city,
+    state,
+  } = mechanicData;
+
   try {
     const response = await fetch(`${API_URL}/mechanic`, {
       method: "POST",
       headers: {
-        "Content-Tyoe": "applicacion/json",
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      body: JSON.stringify(mechanicData),
+      body: JSON.stringify({
+        firstName: firstName,
+        lastName: lastName,
+        workshopName: workshopName,
+        phoneNumber: phoneNumber,
+        address: {
+          street: street,
+          extNum: extNum,
+          intNum: intNum === "" ? null : intNum,
+          neighborhood: neighborhood,
+          zipCode: zipCode,
+          city: city,
+          state: state,
+        },
+      }),
     });
 
-    if (!response.ok) {
-      const errorResponse = await response.json();
-      throw new Error(
-        errorResponse.error || "Error desconocido al crear el cotización"
-      );
+    if (response.status === 409) {
+      toast.error("El numero telefónico ya esta en uso");
     }
 
     const json = await response.json();

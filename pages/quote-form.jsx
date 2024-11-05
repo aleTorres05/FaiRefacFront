@@ -147,10 +147,6 @@ export default function QuoteForm() {
     } catch (error) {}
   }
 
-  const handleSaveMechanic = (newMechanic) => {
-    setMechanics([...mechanics, newMechanic]);
-  };
-
   async function handleCopyUrl() {
     const currentUrl = window.location.href;
     if (quoteToken) {
@@ -228,7 +224,6 @@ export default function QuoteForm() {
       <MechanicForm
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
-        onSave={handleSaveMechanic}
       />
       <form
         onSubmit={handleSubmit(submitForm)}

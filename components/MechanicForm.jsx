@@ -1,70 +1,22 @@
+import { postMechanic } from "@/pages/api/mechanic";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-export default function MechanicForm({ isOpen, onClose, onSave }) {
-  const [mechanic, setMechanic] = useState({
-    firstName: "",
-    lastName: "",
-    workshopName: "",
-    phoneNumber: "",
-    address: {
-      street: "",
-      extNum: "",
-      intNum: "",
-      neighborhood: "",
-      zipCode: "",
-      city: "",
-      state: "",
-    },
-  });
-
+export default function MechanicForm({ isOpen, onClose }) {
   const {
     handleSubmit,
     register,
-    control,
     formState: { errors },
     setError,
   } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setMechanic({
-      ...mechanic,
-      [name]: value,
-    });
-  };
-
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setMechanic({
-      ...mechanic,
-      address: {
-        ...mechanic.address,
-        [name]: value,
-      },
-    });
-  };
-
-  const onSubmit = (data) => {
-    setMechanic({
-      firstName: data.firstName,
-      lastName: data.lastName,
-      workshopName: data.workshopName,
-      phoneNumber: data.phoneNumber,
-      address: {
-        street: data.street,
-        extNum: data.extNum,
-        intNum: data.intNum,
-        neighborhood: data.neighborhood,
-        zipCode: data.zipCode,
-        city: data.city,
-        state: data.state,
-      },
-    });
-    console.log(mechanic);
-    // onSave(mechanic);
-    // onClose();
-  };
+  async function onSubmit(data) {
+    await postMechanic(data);
+    onClose();
+    toast.success("Mecanico Agregado exitosamente");
+    window.location.reload();
+  }
 
   if (!isOpen) return null;
 
@@ -93,13 +45,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="firstName"
-                onChange={handleChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("firstName", {
                   required: {
+                    value: true,
                     message: "Nombre es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.firstName && (
@@ -114,13 +66,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="lastName"
-                onChange={handleChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("lastName", {
                   required: {
+                    value: true,
                     message: "Apellido es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.lastName && (
@@ -135,13 +87,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="workshopName"
-                onChange={handleChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("workshopName", {
                   required: {
+                    value: true,
                     message: "Nombre del Taller es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.workshopName && (
@@ -158,25 +110,20 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="phoneNumber"
-                onChange={handleChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("phoneNumber", {
                   required: {
+                    value: true,
                     message: "Numero Telefonico es requerido",
-                    minLength: 2,
-                    maxLength: 10,
-                    valueAsNumber: true,
                   },
+                  minLength: 2,
+                  maxLength: 10,
+                  valueAsNumber: true,
                 })}
               />
               {errors.phoneNumber && (
                 <span className="text-red-500">
                   Numero Telefonico es obligatorio
-                </span>
-              )}
-              {errors.phoneNumber?.length > 10 && (
-                <span className="text-red-500">
-                  Numero Telefonico a 10 Digitos
                 </span>
               )}
             </div>
@@ -190,13 +137,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="street"
-                onChange={handleAddressChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("street", {
                   required: {
+                    value: true,
                     message: "Calle es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.street && (
@@ -212,14 +159,14 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
                 <input
                   type="text"
                   name="extNum"
-                  onChange={handleAddressChange}
                   className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                   {...register("extNum", {
                     required: {
+                      value: true,
                       message: "Numero Exterior es requerido",
-                      minLength: 2,
-                      valueAsNumber: true,
                     },
+                    minLength: 2,
+                    valueAsNumber: true,
                   })}
                 />
               </div>
@@ -230,7 +177,6 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
                 <input
                   type="text"
                   name="intNum"
-                  onChange={handleAddressChange}
                   className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                   {...register("intNum")}
                 />
@@ -249,13 +195,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="neighborhood"
-                onChange={handleAddressChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("neighborhood", {
                   required: {
+                    value: true,
                     message: "Colonia es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.neighborhood && (
@@ -270,13 +216,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="zipCode"
-                onChange={handleAddressChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("zipCode", {
                   required: {
+                    value: true,
                     message: "Codigo Postal es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.zipCode && (
@@ -291,13 +237,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="city"
-                onChange={handleAddressChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("city", {
                   required: {
+                    value: true,
                     message: "Ciudad es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.city && (
@@ -310,13 +256,13 @@ export default function MechanicForm({ isOpen, onClose, onSave }) {
               <input
                 type="text"
                 name="state"
-                onChange={handleAddressChange}
                 className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
                 {...register("state", {
                   required: {
+                    value: true,
                     message: "Estado es requerido",
-                    minLength: 2,
                   },
+                  minLength: 2,
                 })}
               />
               {errors.state && (
