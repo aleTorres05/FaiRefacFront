@@ -15,7 +15,9 @@ export default function MechanicForm({ isOpen, onClose }) {
     await postMechanic(data);
     onClose();
     toast.success("Mecanico Agregado exitosamente");
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 
   if (!isOpen) return null;
