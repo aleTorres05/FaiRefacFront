@@ -142,7 +142,7 @@ export default function FollowUpRepairshopQuoteModal({
         <ul className="font-mulish">
           {quote.items.map((item) => (
             <li key={item._id}>
-              {item.quantity} {item.concept}
+              {item.quantity} {item.concept}{item.brand ? `, Marca: ${item.brand}` : " " }
             </li>
           ))}
         </ul>
