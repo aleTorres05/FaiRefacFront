@@ -1,17 +1,28 @@
 import { useState, useEffect, useMemo } from "react";
 import QuoteToReview from "./QuoteToReview";
 import RepairShopQuoteModal from "./RepairShopQuoteModal";
+import clsx from "clsx";
 
 export default function PendingQuotes({ quotes, setQuotes }) {
   const [selectedQuote, setSelectedQuote] = useState(null);
+  const[currentPage, setCurrentPage] = useState(1);
+  const quotesPerPage = 6;
 
   const initialQuotes = useMemo(() => {
     return quotes?.filter((quote) => quote.status === "initial");
   }, [quotes]);
 
+  const totalPages = Math.ceil(initialQuotes.length / quotesPerPage);
+
+  const displayedQuotes = initialQuotes.slice(
+    (currentPage - 1) * quotesPerPage,
+    currentPage * quotesPerPage
+  );
+
   const handleQuoteClick = (quote) => {
     setSelectedQuote(quote);
   };
+
 
   const closeModal = () => {
     setSelectedQuote(null);
@@ -22,6 +33,16 @@ export default function PendingQuotes({ quotes, setQuotes }) {
       quotes.filter((quote) => quote._id !== updatedQuote?._id)
     );
   };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  }
+
+  useEffect(() => {
+    if( currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  },[totalPages, currentPage]);
 
   useEffect(() => {
     document.body.style.overflow = selectedQuote ? "hidden" : "";
@@ -36,7 +57,7 @@ export default function PendingQuotes({ quotes, setQuotes }) {
         COTIZACIONES PENDIENTES
       </h2>
       <ul>
-        {initialQuotes?.map((quote) => (
+        {displayedQuotes?.map((quote) => (
           <QuoteToReview
             key={quote._id}
             quote={quote}
@@ -45,6 +66,20 @@ export default function PendingQuotes({ quotes, setQuotes }) {
           />
         ))}
       </ul>
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            onClick={() => handlePageChange(index + 1)}
+            className={clsx(
+              "border font-chakra border-[#D26528] mr-2 h-[100%] w-[9%] md:w-[10%] lg:w-[8%] xl:w-[5%] hover:bg-[#D26528]",
+              currentPage === index + 1 ? "bg-[#D26528]" : "bg-black"
+            )}
+            key={index}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
       {selectedQuote && (
         <RepairShopQuoteModal
           selectedQuote={selectedQuote}
