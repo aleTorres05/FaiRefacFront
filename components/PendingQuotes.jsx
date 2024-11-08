@@ -23,6 +23,7 @@ export default function PendingQuotes({ quotes, setQuotes }) {
     setSelectedQuote(quote);
   };
 
+
   const closeModal = () => {
     setSelectedQuote(null);
   };
