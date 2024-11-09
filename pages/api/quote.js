@@ -82,3 +82,25 @@ export async function validateToken(token, router) {
     return json.data;
   } catch (error) {}
 }
+
+export async function getPaymentIfonBySessionId(sessionId, token) {
+  try {
+    const response = await fetch(`${API_URL}/quote/payment-info/${sessionId}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error || "Error desconocido al obtener información de pago."
+      );
+    }
+    const json =  await response.json(); 
+    return json.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
