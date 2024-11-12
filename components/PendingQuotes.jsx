@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 export default function PendingQuotes({ quotes, setQuotes }) {
   const [selectedQuote, setSelectedQuote] = useState(null);
-  const[currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const quotesPerPage = 6;
 
   const initialQuotes = useMemo(() => {
@@ -23,7 +23,6 @@ export default function PendingQuotes({ quotes, setQuotes }) {
     setSelectedQuote(quote);
   };
 
-
   const closeModal = () => {
     setSelectedQuote(null);
   };
@@ -36,13 +35,13 @@ export default function PendingQuotes({ quotes, setQuotes }) {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-  }
+  };
 
   useEffect(() => {
-    if( currentPage > totalPages) {
+    if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  },[totalPages, currentPage]);
+  }, [totalPages, currentPage]);
 
   useEffect(() => {
     document.body.style.overflow = selectedQuote ? "hidden" : "";
@@ -51,7 +50,15 @@ export default function PendingQuotes({ quotes, setQuotes }) {
     };
   }, [selectedQuote]);
 
-  return (
+  return displayedQuotes.length === 0 ? (
+    <main className="flex flex-col items-center  md:justify-center h-screen bg-black text-white">
+      <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 p-8">
+        No tienes cotizaciones pendientes en este momento. Tan pronto como un
+        cliente solicite una cotización, podrás gestionarla y enviar tu
+        propuesta por aquí.
+      </h2>
+    </main>
+  ) : (
     <main>
       <h2 className="font-chakra font-bold text-[24px] mb-4">
         COTIZACIONES PENDIENTES

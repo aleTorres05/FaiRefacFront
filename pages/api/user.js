@@ -215,3 +215,50 @@ export async function addCar(clientId, userData, carPicture, token) {
     throw new Error(error.message);
   }
 }
+
+export async function createAccountLink(id, token) {
+  try {
+    const response = await fetch(`${API_URL}/repairshop/account-link/${id}`,{
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    })
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error || "Error desconocido al obtener URL de stripe."
+      );
+    }
+    const json =  await response.json(); 
+    return json.data;
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function activateStripeAccount(id, token) {
+  try {
+    const response = await fetch(`${API_URL}/repairshop/account/${id}`,{
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    })
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error || "Error desconocido al actualizar información de pago."
+      );
+    }
+    const json =  await response.json(); 
+    return json.data;
+
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+

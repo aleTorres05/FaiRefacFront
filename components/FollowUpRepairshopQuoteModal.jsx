@@ -54,6 +54,7 @@ export default function FollowUpRepairshopQuoteModal({
     } finally {
       setLoading(false);
       closeModal();
+      window.location.reload()
     }
   };
 
