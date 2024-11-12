@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-export default function DashboardButtons({ isSelected, handleButtonSelection, repairShop }) {
+export default function DashboardButtons({ isSelected, handleButtonSelection, handleUpdatePaymentInfo, repairShop }) {
   return (
     <div className="bg-black col-start-1 col-end-13 p-3 sm:w-full h-fit md:p-2 md:col-start-1 md:col-end-3 lg:col-start-1 lg:col-end-4 xl:col-start-1 xl:col-end-4 2xl:col-start-1 2xl:col-end-4 rounded-2xl mt-2 md:h-screen lg:h-screen md:flex-col lg:mt-4 lg:p-3">
     <div>
@@ -20,11 +20,11 @@ export default function DashboardButtons({ isSelected, handleButtonSelection, re
         </div>
       </div>
     </div>
-    <div className="flex flex-row gap-9 md:gap-6 md:flex-col justify-center md:mt-4 md:items-center mb-2.5">
+    <div className="flex  gap-4 md:gap-6 flex-col  md:justify-center mt-1 md:mt-4 items-center mb-2.5">
       <button
         onClick={() => handleButtonSelection("pendingQuotes")}
         className={clsx(
-          "w-[50%] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+          "w-[80%] max-w-[231px] md:max-w-[288px] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
           isSelected.pendingQuotes ? "bg-[#D26528] text-white" : "bg-white text-black"
         )}
       >
@@ -33,12 +33,21 @@ export default function DashboardButtons({ isSelected, handleButtonSelection, re
       <button
         onClick={() => handleButtonSelection("followUpPanel")}
         className={clsx(
-          "w-[50%] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+          "w-[80%] max-w-[231px] md:max-w-[288px] md:px-7 font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-lg xl:text-[22px] 2xl:text-[25px] font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
           isSelected.followUpPanel ? "bg-[#D26528] text-white" : "bg-white text-black"
         )}
       >
         PANEL DE SEGUIMIENTO
       </button>
+      <button 
+          onClick={() => handleButtonSelection("updatePaymentInfo")}
+          className={clsx(
+            "w-[80%] max-w-[231px] md:max-w-[288px] md:px-7 uppercase font-chakra leading-3 lg:leading-none text-xs md:text-[14px] lg:text-[16px] xl:text-[20px]  font-semibold lg:h-[50px] md:w-[80%] h-[30px] md:h-[40px] xl:w-[90%] 2xl:w-[90%] lg:w-[90%]",
+            isSelected.updatePaymentInfo ? "bg-[#D26528] text-white" : "bg-white text-black"
+          )}
+        >
+          Actualizar información de pago
+        </button>
     </div>
   </div>
   );
