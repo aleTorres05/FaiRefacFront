@@ -1,31 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { rejectQuote } from "@/pages/api/quote";
 import { toast } from "sonner";
 
 export default function QuotesList({
   quotes,
   carQuoteId,
+  setNoQuotesTrigger,
   selectedQuoteIdx,
   handleQuoteChange,
   onQuoteRejected,
+  currencyFormatter,
 }) {
   const [quoteList, setQuoteList] = useState(quotes);
 
   async function handleChangeStatus(quoteId) {
     try {
+      onQuoteRejected();
       const token = localStorage.getItem("token");
       const response = await rejectQuote(carQuoteId, quoteId, token);
 
       if (response?.success) {
-        onQuoteRejected();
         setQuoteList((prevQuotes) =>
           prevQuotes.filter((quote) => quote._id !== quoteId)
         );
+
+        toast.success("Cotización Eliminada Correctamente");
       } else {
-        toast.error("Error al Emilinar Item:", response.error);
+        toast.error("Error al Emilinar Cotización:", response.error);
       }
     } catch (error) {
-      toast.error("Error al Emilinar Item:", error);
+      toast.error("Error al Emilinar Cotización:", error);
     }
   }
 
@@ -47,7 +51,13 @@ export default function QuotesList({
               </div>
               <div className="font-bold font-chakra w-1/2 ">
                 <p className="justify-self-start">
-                  PRECIO TOTAL: $ {quote?.totalPrice?.toFixed(2)}
+                  PRECIO TOTAL:{" "}
+                  {currencyFormatter.format(
+                    quote.items?.reduce(
+                      (acc, item) => acc + item.itemTotalPrice,
+                      0
+                    ) || 0
+                  )}
                 </p>
               </div>
             </li>

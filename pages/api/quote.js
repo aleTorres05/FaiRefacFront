@@ -129,7 +129,7 @@ export async function deleteItemRepairShopQuote(
 ) {
   try {
     const response = await fetch(
-      `${API_URL}/repairShopQuote/${repairShopQuoteId}/delete-item/${itemId}`,
+      `${API_URL}/repairshop-quote/${repairShopQuoteId}/delete-item/${itemId}`,
       {
         method: "DELETE",
         headers: {
@@ -138,10 +138,13 @@ export async function deleteItemRepairShopQuote(
         },
       }
     );
-    console.log(response);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || "Error al Eliminar Pieza.");
+    }
+
+    if (response.status === 204) {
+      return { success: true, message: "Pieza eliminada correctamente." };
     }
 
     const json = await response.json();

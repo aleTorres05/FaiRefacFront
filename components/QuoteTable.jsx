@@ -6,7 +6,7 @@ import Item from "./Item";
 export default function QuoteTable({
   quote,
   onQuoteRejected,
-  repairShopQuoteID,
+  currencyFormatter,
   token,
 }) {
   const [itemList, setItemList] = useState(quote.items);
@@ -14,16 +14,17 @@ export default function QuoteTable({
   async function handleDeleteItem(itemId) {
     try {
       const response = await deleteItemRepairShopQuote(
-        repairShopQuoteID,
+        quote._id,
         itemId,
         token
       );
-      console.log(response);
+
       if (response?.success) {
         onQuoteRejected();
         setItemList((prevItems) =>
           prevItems.filter((item) => item._id !== itemId)
         );
+        toast.success("Pieza eliminada correctamente");
       } else {
         toast.error("Error al Eliminar Pieza:", response.error);
       }
@@ -41,10 +42,12 @@ export default function QuoteTable({
       </div>
 
       {/* Items */}
-      {itemList?.map((item) => (
+      {itemList?.map((item, index) => (
         <Item
+          currencyFormatter={currencyFormatter}
           key={item._id}
           item={item}
+          itemListLength={itemList.length}
           onDelete={() => handleDeleteItem(item._id)}
         />
       ))}
