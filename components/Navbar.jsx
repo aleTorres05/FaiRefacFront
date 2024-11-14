@@ -36,13 +36,14 @@ function DropdownMenu({ trigger, children }) {
   );
 }
 
-// Componente de Diálogo de Alerta
+// Componente de alerta cierre de sesión
 function AlertDialog({ trigger, title, description, onConfirm }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleConfirm = () => {
     onConfirm();
     setIsOpen(false);
+    localStorage.removeItem("token");
   };
 
   return (
@@ -50,19 +51,19 @@ function AlertDialog({ trigger, title, description, onConfirm }) {
       <div onClick={() => setIsOpen(true)}>{trigger}</div>
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg max-w-sm">
-            <h2 className="text-lg font-bold text-black">{title}</h2>
+          <div className="bg-[#000000] p-6 rounded-md shadow-lg max-w-sm">
+            <h2 className="text-lg font-bold text-white">{title}</h2>
             <p className="my-4 text-black">{description}</p>
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-700"
+                className="px-4 py-2 bg-white text-gray-700"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-4 py-2 bg-red-500 text-white rounded-md"
+                className="px-4 py-2 bg-[#D16527] text-white rounded-md"
               >
                 Confirmar
               </button>
@@ -92,38 +93,9 @@ export default function Navbar({ setCurrentPage }) {
     return null;
   }
 
-  //useEffect(() => {
-   // const mockNotifications = [
-     // {
-       // id: 1,
-        //title: "Nueva oferta",
-        //message: "¡50% de descuento!",
-        //read: false,
-        //time: "hace 5 minutos",
-      //},
-     // {
-        //id: 2,
-       // title: "Pedido enviado",
-        //message: "Tu pedido #123 ha sido enviado",
-        //read: false,
-       // time: "hace 1 hora",
-      //},
-    //];
-
-   // setNotifications(mockNotifications);
-   // setUnreadCount(mockNotifications.filter((n) => !n.read).length);
-//  }, []);
 
   const toggleNavbar = () => setIsOpen(!isOpen);
 
- // const markNotificationAsRead = (notificationId) => {
-  //  setNotifications(
-   //   notifications.map((notif) =>
-    //    notif.id === notificationId ? { ...notif, read: true } : notif
-     // )
-    //);
-   // setUnreadCount((prev) => Math.max(0, prev - 1));
-  //};
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -134,65 +106,26 @@ export default function Navbar({ setCurrentPage }) {
     if (router.pathname === "/dashboard" && isLoggedIn) {
       return (
         <div className="fixed top-10 right-7 flex items-center space-x-5">
-          {/* Ícono de Notificaciones */}
-          <DropdownMenu
-            trigger={
-              <div className="relative">
-                <Bell className="w-6 h-6 hover:text-[#D16527] transition-colors" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
-            }
-          >
-            <div className="p-4 ">
-              <p className="font-bold text-black">Notificaciones</p>
-              <hr />
-              {notifications.length > 0 ? (
-                notifications.map((notif) => (
-                  <div
-                    key={notif.id}
-                    className={`p-2 cursor-pointer ${
-                      !notif.read ? "bg-blue-50" : ""
-                    } mb-1`}
-                   //onClick={() => markNotificationAsRead(notif.id)}
-                  >
-                    <div className="font-medium text-black">{notif.title}</div>
-                    <div className="text-sm text-black">{notif.message}</div>
-                    <div className="text-xs text-gray-500">{notif.time}</div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-black">No hay notificaciones</p>
-              )}
-            </div>
-          </DropdownMenu>
-
-          {/* Ícono de Usuario */}
+          <div className="flex w-full justify-end">
+            {/* Ícono de Usuario */}
           <DropdownMenu
             trigger={
               <User className="w-6 h-6 hover:text-[#D16527] transition-colors" />
             }
           >
-            <div className="p-6 bg-[#302F2F] rounded-md w-64 text-white">
+            <div className="p-6 bg-[#302F2F] rounded-md w-full content-fit text-white">
               <div className="flex items-center flex-col mb-4">
                 <img
-                  src="/path/to/profile-picture.jpg" // Reemplaza con la ruta de la imagen real
-                  alt="Profile"
+                  src="https://fairefac-assets.s3.us-east-2.amazonaws.com/FR-Logo.png" 
+                  alt="logo"
                   className="w-16 h-16 rounded-full mb-2"
                 />
-                <p className="font-bold text-lg">Juan Perez</p>{" "}
-                {/* Nombre de ejemplo */}
-                <p className="text-sm text-gray-400">Olmecas 107</p>{" "}
-                {/* Dirección de ejemplo */}
               </div>
 
               <AlertDialog
                 trigger={
-                  <button className="bg-[#D16527] text-white w-full py-2 mt-4 rounded-md font-bold">
-                    SALIR
+                  <button className="bg-[#D16527] text-white uppercase w-full py-2 mt-4 rounded-md font-bold">
+                    Cerrar sesion
                   </button>
                 }
                 title="¿Estás seguro de cerrar sesión?"
@@ -201,6 +134,7 @@ export default function Navbar({ setCurrentPage }) {
               />
             </div>
           </DropdownMenu>
+          </div>
         </div>
       );
     } else {

@@ -151,3 +151,25 @@ export async function deleteItemRepairShopQuote(
     console.error("Error al Eliminar Pieza:", error);
   }
 }
+export async function getPaymentIfonBySessionId(sessionId, token) {
+  try {
+    const response = await fetch(`${API_URL}/quote/payment-info/${sessionId}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error ||
+          "Error desconocido al obtener información de pago."
+      );
+    }
+    const json = await response.json();
+    return json.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
