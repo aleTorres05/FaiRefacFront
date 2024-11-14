@@ -1,7 +1,21 @@
+import { useForm } from "react-hook-form";
+
 export default function MetodosDePago() {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    setError,
+  } = useForm();
+
+  async function onSubmit(data) {}
+
   return (
     <div className="flex flex-col px-[32px] my-5">
-      <form action="" className="flex flex-col gap-[20px]">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-[20px]"
+      >
         <div className="w-full md:w-[660px] h-[66px] flex flex-col gap-[15px]">
           <label
             className="color-[#EDEDED] font-chakra text-[16px] font-bold leading-normal uppercase"
@@ -21,6 +35,12 @@ export default function MetodosDePago() {
                 .replace(/(\d{4})/g, "$1 ")
                 .trim();
             }}
+            {...register("cardNumber", {
+              required: {
+                value: true,
+                message: "Numero de Tarjeta es Requerido",
+              },
+            })}
           />
         </div>
 
@@ -44,6 +64,12 @@ export default function MetodosDePago() {
                   .replace(/(\d{2})(\d{2})/, "$1/$2")
                   .slice(0, 5);
               }}
+              {...register("expirationDate", {
+                required: {
+                  value: true,
+                  message: "Fecha de Expiración es Requerido",
+                },
+              })}
             />
           </div>
 
@@ -63,6 +89,9 @@ export default function MetodosDePago() {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/\D/g, "");
               }}
+              {...register("cvv", {
+                required: { value: true, message: "Contraseña es Requerido" },
+              })}
             />
           </div>
         </div>
@@ -79,6 +108,12 @@ export default function MetodosDePago() {
             placeholder="Nombre completo"
             type="text"
             className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            {...register("cardOwner", {
+              required: {
+                value: true,
+                message: "Nombre completo es Requerido",
+              },
+            })}
           />
         </div>
 
@@ -94,6 +129,9 @@ export default function MetodosDePago() {
             placeholder="Correo electrónico"
             type="email"
             className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            {...register("email", {
+              required: { value: true, message: "Correo es Requerido" },
+            })}
           />
         </div>
       </form>

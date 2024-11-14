@@ -176,3 +176,28 @@ export async function getPaymentIfonBySessionId(sessionId, token) {
     throw new Error(error.message);
   }
 }
+
+export async function getStripeSession(carQuoteId, token) {
+  try {
+    const response = await fetch(
+      `${API_URL}/quote/${carQuoteId}/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error ||
+          "Error desconocido al obtener información de pago."
+      );
+    }
+    const json = await response.json();
+
+    return json;
+  } catch (error) {}
+}

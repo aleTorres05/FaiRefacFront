@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import QuoteTable from "@/components/QuoteTable";
 import QuotesList from "@/components/QuotesList";
 import { useRouter } from "next/router";
-import { getQuoteByID } from "@/pages/api/quote";
+import { getQuoteByID, getStripeSession } from "@/pages/api/quote";
+import { toast } from "sonner";
 
 export default function ClientQuotes({ carsList }) {
   const router = useRouter();
@@ -117,6 +118,17 @@ export default function ClientQuotes({ carsList }) {
   }, [carsList, refreshToggle, setNoQuotesTrigger, router.isReady]);
 
   const triggerRefresh = () => setRefreshToggle((prev) => !prev);
+
+  async function handlePayment(carQuoteId) {
+    try {
+      const response = await getStripeSession(carQuoteId, token);
+      if (response.success) {
+        router.push(response.data.session);
+      } else {
+        toast.error("Error al enviar a Session de Pago");
+      }
+    } catch (error) {}
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -286,7 +298,7 @@ export default function ClientQuotes({ carsList }) {
                         <div className="text-center py-4">
                           <button
                             className="border-2 border-[#D26528] cursor-pointer text-white px-4 py-2 font-chakra rounded"
-                            onClick={() => router.push("/metodo-de-pago")}
+                            onClick={() => handlePayment(quote?.shopQuote)}
                           >
                             PAGAR
                           </button>
