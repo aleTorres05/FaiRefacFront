@@ -29,7 +29,6 @@ export default function LoginForm() {
         return;
       }
       const response = await login(data.email, data.password, router);
-      console.log(response);
       if (response.error === "Verify your email to login.") {
         window.localStorage.setItem("email", data.email);
         toast.error("Es necesario verificar su correo electrónico.");

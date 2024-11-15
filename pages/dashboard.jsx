@@ -8,12 +8,12 @@ import { useRouter } from "next/router";
 export default function UserDashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [carListQuotes, setCarListQuotes] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (!token || !email) {
-      console.log("No token or email, triggering toast");
       toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
     } else {
@@ -39,6 +39,12 @@ export default function UserDashboard() {
             }, 1000);
             return;
           }
+          if (user.isClient) {
+            const clientCarWithQuotes = user?.client?.cars?.filter(
+              (car) => car.quotes.length > 0
+            );
+            setCarListQuotes(clientCarWithQuotes);
+          }
 
           if (
             user.isRepairShop &&
@@ -60,11 +66,12 @@ export default function UserDashboard() {
         });
     }
   }, []);
+
   return (
     <>
       {user ? (
         user.isClient ? (
-          <ClientDashboard />
+          <ClientDashboard user={user} clientCarWithQuotes={carListQuotes} />
         ) : user.isRepairShop ? (
           <RepairShopDashboard user={user} />
         ) : null

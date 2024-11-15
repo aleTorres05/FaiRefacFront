@@ -5,7 +5,7 @@ import clsx from "clsx";
 import ClientCar from "./ClientCar";
 import ClientQuotes from "./ClientQuotes";
 
-export default function ClientDashboard() {
+export default function ClientDashboard({ user, clientCarWithQuotes }) {
   const [isSelected, setIsSelected] = useState({
     coches: true,
     cotizaciones: false,
@@ -18,27 +18,14 @@ export default function ClientDashboard() {
     });
   };
 
-  const [user, setUser] = useState({});
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (!token || !email) {
       toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
-    } else {
-      getUserByEmail(email, token)
-        .then((user) => {
-          setUser(user);
-        })
-        .catch((error) => {
-          toast.error(error.message || "Ocurrió un error inesperado");
-          localStorage.removeItem("token");
-          localStorage.removeItem("email");
-          router.push("/login");
-        });
     }
-  }, []);
+  }, [user, clientCarWithQuotes]);
 
   return (
     <>
@@ -56,9 +43,6 @@ export default function ClientDashboard() {
                 <h4 className="font-chakra font-bold lg:h-[24px] md:h-[20px] md:text-[12px] lg:text-[17px] xl 2xl:text-[25px] md:w-[100%] md:mb-2 uppercase  xl:w-[full] 2xl:w-[full]">
                   {`${user.client?.firstName} ${user.client?.lastName}`}
                 </h4>
-                <p className="font-mulish text-[10px] font-semibold lg:h-[15px] md:h-[20px] md:w-[100%] xl:text-[15px] 2xl:text-[15px] xl:w-[full] 2xl:w-[full]">
-                  Calle 213 av. kodemia
-                </p>
               </div>
             </div>
           </div>
@@ -90,7 +74,7 @@ export default function ClientDashboard() {
         <div className="bg-black h-fit col-start-1 col-end-13 md:p-2 p-3.5 lg:col-start-5 lg:col-end-13 md:col-start-5 md:col-end-13 md:ml-4 rounded-2xl mt-2 md:h-fit lg:h-fit  md:flex-col  lg:mt-4 lg:p-3  xl:col-start-4 xl:col-end-13 2xl:col-start-4 2xl:col-end-13 xl:p-7">
           {isSelected.coches && <ClientCar />}
           {isSelected.cotizaciones && (
-            <ClientQuotes carsList={user.client?.cars} />
+            <ClientQuotes carListQuotes={clientCarWithQuotes} />
           )}
         </div>
       </main>
