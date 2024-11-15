@@ -10,14 +10,16 @@ import { useState } from "react";
 export default function Home() {
   const [currentPage, setCurrentPage] = useState("home");
   return (
-    <main className="grid mt-[18px] mx-[32px] grid-cols-12">
+    <>
       <Header setCurrentPage={setCurrentPage} currentPage={currentPage} />
-      <Introduction currentPage={currentPage} />
-      <DescriptionCard currentPage={currentPage} />
-      <BenefitCards currentPage={currentPage} />
-      <History currentPage={currentPage} />
-      <FAQ currentPage={currentPage} />
-      <Footer currentPage={currentPage} />
-    </main>
+      <main className="grid mt-[18px] mx-[32px] grid-cols-12">
+        <Introduction currentPage={currentPage} />
+        <DescriptionCard currentPage={currentPage} />
+        <BenefitCards currentPage={currentPage} />
+        <History currentPage={currentPage} />
+        <FAQ currentPage={currentPage} />
+        <Footer currentPage={currentPage} />
+      </main>
+    </>
   );
 }
