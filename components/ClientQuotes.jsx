@@ -82,10 +82,6 @@ export default function ClientQuotes({ carsList }) {
           await Promise.all(
             car.quotes?.map(async (shopQuote) => {
               const repairShopQuote = await getQuoteByID(shopQuote._id, token);
-              {
-                console.log(repairShopQuote);
-              }
-
               const quoteGroup = {
                 shopQuote: shopQuote._id,
                 fairRefacFee: 0,
@@ -238,7 +234,6 @@ export default function ClientQuotes({ carsList }) {
                                   className="text-white flex-wrap ml-2"
                                   key={`item-${idx}`}
                                 >
-                                  {console.log(item)}
                                   <li className="font-chakra text-lg">
                                     {item?.concept}
                                   </li>
