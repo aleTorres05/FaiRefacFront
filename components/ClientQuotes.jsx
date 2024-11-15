@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { getQuoteByID, getStripeSession } from "@/pages/api/quote";
 import { toast } from "sonner";
 
-export default function ClientQuotes({ carsList }) {
+export default function ClientQuotes({ carListQuotes }) {
   const router = useRouter();
   const [quotesReview, setQuotesReview] = useState([]);
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState(0);
@@ -71,7 +71,6 @@ export default function ClientQuotes({ carsList }) {
   useEffect(() => {
     setNoQuotesTrigger(false);
     const fetchQuotes = async () => {
-      const carListQuotes = carsList?.filter((car) => car.quotes.length > 0);
       const allCarsQuotes = [];
       const carQuoteItems = [];
 
@@ -110,7 +109,7 @@ export default function ClientQuotes({ carsList }) {
           }
         })
       );
-      if (carListQuotes.length <= 0) {
+      if (carListQuotes?.length <= 0) {
         setNoQuotesTrigger(true);
       }
       setQuoteItem(carQuoteItems);
@@ -118,7 +117,7 @@ export default function ClientQuotes({ carsList }) {
     };
 
     fetchQuotes();
-  }, [carsList, refreshToggle, setNoQuotesTrigger, router.isReady]);
+  }, [carListQuotes, refreshToggle, setNoQuotesTrigger, router.isReady]);
 
   const triggerRefresh = () => setRefreshToggle((prev) => !prev);
 
