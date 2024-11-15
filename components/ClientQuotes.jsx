@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import QuoteTable from "@/components/QuoteTable";
 import QuotesList from "@/components/QuotesList";
 import { useRouter } from "next/router";
-import { getQuoteByID } from "@/pages/api/quote";
+import { getQuoteByID, getStripeSession } from "@/pages/api/quote";
+import { toast } from "sonner";
 
 export default function ClientQuotes({ carsList }) {
   const router = useRouter();
@@ -84,6 +85,7 @@ export default function ClientQuotes({ carsList }) {
               const quoteGroup = {
                 shopQuote: shopQuote._id,
                 fairRefacFee: 0,
+                totalWithFairRefacFee: 0,
                 repairShopQuoteID: repairShopQuote?.quote?._id,
                 quoteDetails: [],
                 items: [],
@@ -93,6 +95,8 @@ export default function ClientQuotes({ carsList }) {
                 .forEach((quote) => {
                   quoteGroup.quoteDetails.push(quote);
                   quoteGroup.fairRefacFee = repairShopQuote?.quote?.fee;
+                  quoteGroup.totalWithFairRefacFee =
+                    repairShopQuote?.quote?.totalFaiRefacFee;
                   quoteGroup.items = [...quoteGroup.items, ...quote.items];
                 });
 
@@ -117,6 +121,17 @@ export default function ClientQuotes({ carsList }) {
   }, [carsList, refreshToggle, setNoQuotesTrigger, router.isReady]);
 
   const triggerRefresh = () => setRefreshToggle((prev) => !prev);
+
+  async function handlePayment(carQuoteId) {
+    try {
+      const response = await getStripeSession(carQuoteId, token);
+      if (response.success) {
+        router.push(response.data.session);
+      } else {
+        toast.error("Error al enviar a Session de Pago");
+      }
+    } catch (error) {}
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -279,14 +294,16 @@ export default function ClientQuotes({ carsList }) {
                           </div>
                           <div className="flex justify-end">
                             <p className="font-chakra">
-                              {currencyFormatter.format(total)}
+                              {currencyFormatter.format(
+                                quote.totalWithFairRefacFee
+                              )}
                             </p>
                           </div>
                         </div>
                         <div className="text-center py-4">
                           <button
                             className="border-2 border-[#D26528] cursor-pointer text-white px-4 py-2 font-chakra rounded"
-                            onClick={() => router.push("/metodo-de-pago")}
+                            onClick={() => handlePayment(quote?.shopQuote)}
                           >
                             PAGAR
                           </button>
