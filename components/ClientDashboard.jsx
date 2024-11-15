@@ -24,7 +24,6 @@ export default function ClientDashboard() {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (!token || !email) {
-      console.log("No token or email, triggering toast");
       toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
     } else {
@@ -90,7 +89,9 @@ export default function ClientDashboard() {
         </div>
         <div className="bg-black h-fit col-start-1 col-end-13 md:p-2 p-3.5 lg:col-start-5 lg:col-end-13 md:col-start-5 md:col-end-13 md:ml-4 rounded-2xl mt-2 md:h-fit lg:h-fit  md:flex-col  lg:mt-4 lg:p-3  xl:col-start-4 xl:col-end-13 2xl:col-start-4 2xl:col-end-13 xl:p-7">
           {isSelected.coches && <ClientCar />}
-          {isSelected.cotizaciones && <ClientQuotes />}
+          {isSelected.cotizaciones && (
+            <ClientQuotes carsList={user.client?.cars} />
+          )}
         </div>
       </main>
     </>
