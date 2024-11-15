@@ -90,7 +90,7 @@ export default function RepairShopDashboard({ user }) {
   return (
     <>
       <main className="md:mt-[18px] md:mx-[32px] flex flex-col md:gap-4">
-        <Header />
+        <Header user={user}/>
         <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-0 p-3 md:p-0">
           <DashboardButtons isSelected={isSelected} handleButtonSelection={handleButtonSelection} repairShop={repairShop}/>
 

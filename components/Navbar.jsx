@@ -16,8 +16,8 @@ export default function Navbar({ setCurrentPage, user }) {
     router.push("/");
   };
 
-  const client = user.isClient ? user.client : null;
-  const repairShop = user.isRepairShop ? user.repairShop : null;
+  const client = user?.isClient ? user.client : null;
+  const repairShop = user?.isRepairShop ? user.repairShop : null;
 
   const isVisible = router.pathname === "/" || router.pathname === "/dashboard" || router.pathname === "/login" || router.pathname === "/signup"
 
