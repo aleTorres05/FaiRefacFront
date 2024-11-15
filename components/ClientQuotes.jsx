@@ -82,9 +82,14 @@ export default function ClientQuotes({ carsList }) {
           await Promise.all(
             car.quotes?.map(async (shopQuote) => {
               const repairShopQuote = await getQuoteByID(shopQuote._id, token);
+              {
+                console.log(repairShopQuote);
+              }
+
               const quoteGroup = {
                 shopQuote: shopQuote._id,
                 fairRefacFee: 0,
+                totalWithFairRefacFee: 0,
                 repairShopQuoteID: repairShopQuote?.quote?._id,
                 quoteDetails: [],
                 items: [],
@@ -94,6 +99,8 @@ export default function ClientQuotes({ carsList }) {
                 .forEach((quote) => {
                   quoteGroup.quoteDetails.push(quote);
                   quoteGroup.fairRefacFee = repairShopQuote?.quote?.fee;
+                  quoteGroup.totalWithFairRefacFee =
+                    repairShopQuote?.quote?.totalFaiRefacFee;
                   quoteGroup.items = [...quoteGroup.items, ...quote.items];
                 });
 
@@ -231,6 +238,7 @@ export default function ClientQuotes({ carsList }) {
                                   className="text-white flex-wrap ml-2"
                                   key={`item-${idx}`}
                                 >
+                                  {console.log(item)}
                                   <li className="font-chakra text-lg">
                                     {item?.concept}
                                   </li>
@@ -291,7 +299,9 @@ export default function ClientQuotes({ carsList }) {
                           </div>
                           <div className="flex justify-end">
                             <p className="font-chakra">
-                              {currencyFormatter.format(total)}
+                              {currencyFormatter.format(
+                                quote.totalWithFairRefacFee
+                              )}
                             </p>
                           </div>
                         </div>
