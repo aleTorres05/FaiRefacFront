@@ -4,13 +4,18 @@ import { toast } from "sonner";
 import { repairShopQuoteUpdateById } from "@/pages/api/repairShopQuote";
 import RepairShopItem from "./RepairShopItem";
 
-export default function RepairShopQuoteTable({ items, quoteId, closeModal, onUpdateQuote }) {
-  const { 
+export default function RepairShopQuoteTable({
+  items,
+  quoteId,
+  closeModal,
+  onUpdateQuote,
+}) {
+  const {
     handleSubmit,
     watch,
     control,
     formState: { errors },
-   } = useForm();
+  } = useForm();
 
   const [itemTotals, setItemTotals] = useState({});
   const token = localStorage.getItem("token");
@@ -31,6 +36,7 @@ export default function RepairShopQuoteTable({ items, quoteId, closeModal, onUpd
       onUpdateQuote(response.data?.updatedQuote);
       toast.success("Cotización enviada con éxito");
       closeModal();
+      window.location.reload();
     } catch (error) {
       toast.error(`${error.message}`);
     }
@@ -97,7 +103,10 @@ export default function RepairShopQuoteTable({ items, quoteId, closeModal, onUpd
             </div>
 
             <div className="text-center py-4">
-              <button type="submit" className="bg-[#150801] hover:bg-[#D26528] text-white px-4 py-2 font-chakra rounded">
+              <button
+                type="submit"
+                className="bg-[#150801] hover:bg-[#D26528] text-white px-4 py-2 font-chakra rounded"
+              >
                 ENVIAR
               </button>
             </div>
