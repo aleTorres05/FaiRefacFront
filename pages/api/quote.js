@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-const API_URL = "https://fairefac-api.onrender.com";
+const API_URL = "https://fairefac.yairggdev.lat";
 
 export async function createQuote(carId, mechanicId, quoteData) {
   try {
@@ -80,7 +80,9 @@ export async function validateToken(token, router) {
     }
 
     return json?.data;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function getQuoteByID(quoteId, token) {
@@ -94,7 +96,9 @@ export async function getQuoteByID(quoteId, token) {
     const json = await response.json();
 
     return json.data;
-  } catch (error) {}
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 export async function rejectQuote(carId, repairShopQuoteId, token) {
@@ -118,7 +122,7 @@ export async function rejectQuote(carId, repairShopQuoteId, token) {
 
     return json;
   } catch (error) {
-    console.error("Error al rechazar la Cotizaición:", error);
+    toast.error("Error al rechazar la Cotizaición:", error);
   }
 }
 
@@ -151,7 +155,7 @@ export async function deleteItemRepairShopQuote(
 
     return json;
   } catch (error) {
-    console.error("Error al Eliminar Pieza:", error);
+    toast.error("Error al Eliminar Pieza:", error);
   }
 }
 export async function getPaymentIfonBySessionId(sessionId, token) {
@@ -172,6 +176,33 @@ export async function getPaymentIfonBySessionId(sessionId, token) {
     }
     const json = await response.json();
     return json.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getStripeSession(carQuoteId, token) {
+  try {
+    const response = await fetch(
+      `${API_URL}/quote/${carQuoteId}/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(
+        errorResponse.error ||
+          "Error desconocido al obtener información de pago."
+      );
+    }
+    const json = await response.json();
+
+    return json;
   } catch (error) {
     throw new Error(error.message);
   }

@@ -212,7 +212,7 @@ export default function QuoteForm() {
         </div>
         <div className="flex h-full justify-center my-auto">
           <button
-            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
+            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 "
             type="button"
             onClick={handleOpenMechanicForm}
           >
@@ -288,7 +288,7 @@ export default function QuoteForm() {
           <button
             type="button"
             onClick={() => append({ concept: "", quantity: 1 })}
-            className="bg-[#D16527] md:mt-6 md:mb-14 w-[250px] font-chakra font-bold text-white p-2 rounded-md"
+            className="bg-[#D16527] md:mt-6 md:mb-14 w-[250px] font-chakra font-bold text-white p-2 "
           >
             AGREGAR PIEZA
           </button>
@@ -297,7 +297,7 @@ export default function QuoteForm() {
         <div className="w-full flex justify-center md:justify-end">
           <button
             type="submit"
-            className="bg-[#D16527] w-[250px] font-chakra font-bold text-white p-2 rounded-md mt-4"
+            className="bg-[#D16527] w-[250px] font-chakra font-bold text-white p-2  mt-4"
           >
             SOLICITAR COTIZACIÓN
           </button>

@@ -1,43 +1,41 @@
-import Image from "next/image";
-import IconDollarSign from "../assets/images/Icon-dollar.png";
-import IconSuspention from "../assets/images/Icon-suspention.png";
-import IconCar from "../assets/images/Icon-car.png";
+import { useRouter } from "next/router";
 
 export default function DescriptionCard({ currentPage }) {
+  const router = useRouter();
   const descriptionOptions =
-    currentPage === "home"
+    router.pathname === "/"
       ? [
           {
-            icon: IconSuspention,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-piston.png",
             description:
               "Cotiza refacciones: Ingresa la lista de piezas que necesitas.",
           },
           {
-            icon: IconDollarSign,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-money+(1).png",
             description:
               "Compara precios: Revisa las ofertas de refaccionarias cercanas.",
           },
           {
-            icon: IconCar,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-car.png",
             description:
               "Compra y recibe: Selecciona la mejor opción y nosotros nos encargamos del envío al taller.",
           },
         ]
       : [
           {
-            icon: IconSuspention,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-piston.png",
             description:
-              "Llega a más clientes en tu área y aumenta la visibilidad de tu negocio.",
+              "Amplía tu alcance y atrae más clientes en tu zona para impulsar las ventas de tu refaccionaria.",
           },
           {
-            icon: IconDollarSign,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-money+(1).png",
             description:
-              "No cobramos comisión a tu refaccionaria, solo al usuario.",
+              "Vende más sin costos ocultos: no cobramos comisiones a tu negocio por las ventas realizadas.",
           },
           {
-            icon: IconCar,
+            icon: "https://fairefac-assets.s3.us-east-2.amazonaws.com/Icon-car.png",
             description:
-              "Usa tus repartidores; nosotros te traemos las ventas.",
+              "Optimiza tus entregas con tu propio equipo; nosotros nos encargamos de generar las ventas.",
           },
         ];
   return (

@@ -13,15 +13,15 @@ export default function QuotesList({
 }) {
   const [quoteList, setQuoteList] = useState(quotes);
 
-  async function handleChangeStatus(quoteId) {
+  async function handleChangeStatus(repairShopQuoteId) {
     try {
       onQuoteRejected();
       const token = localStorage.getItem("token");
-      const response = await rejectQuote(carQuoteId, quoteId, token);
+      const response = await rejectQuote(carQuoteId, repairShopQuoteId, token);
 
       if (response?.success) {
         setQuoteList((prevQuotes) =>
-          prevQuotes.filter((quote) => quote._id !== quoteId)
+          prevQuotes.filter((quote) => quote._id !== repairShopQuoteId)
         );
 
         toast.success("Cotización Eliminada Correctamente");

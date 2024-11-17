@@ -1,51 +1,53 @@
 import React, { useState } from "react";
 import { ThumbsUp, ChevronDown, ChevronUp } from "lucide-react";
+import { useRouter } from "next/router";
 
 export default function FAQ({ currentPage }) {
   const [expandedQuestion, setExpandedQuestion] = useState(null);
+
+  const router = useRouter();
 
   const toggleQuestion = (index) => {
     setExpandedQuestion(expandedQuestion === index ? null : index);
   };
 
   const questions =
-    currentPage === "home"
+    router.pathname === "/"
       ? [
           {
             question:
               "¿CÓMO SÉ QUE ESTOY OBTENIENDO EL MEJOR PRECIO EN LAS REFACCIONES?",
             answer:
-              "Compara múltiples cotizaciones de refaccionarias cercanas en tiempo real y elige la opción que mejor se ajuste a tu presupuesto.",
+              "Con nuestra app, puedes comparar cotizaciones en tiempo real de varias refaccionarias cercanas. Además, puedes combinar las mejores opciones para cada pieza en un solo pedido, optimizando calidad y precio.",
           },
           {
             question:
               "¿PUEDO CONFIAR EN LAS MARCAS DE REFACCIONES QUE OFRECEN?",
             answer:
-              "¡Sí, puedes confiar! Todas nuestras refacciones provienen de refaccionarias de confianza. Además, te ofrecemos comparaciones para que elijas la mejor opción con total seguridad.",
+              "¡Por supuesto! Trabajamos con refaccionarias verificadas que garantizan la calidad de sus productos. En cada cotización, se detalla la marca de las refacciones para que elijas entre opciones basadas en calidad, precio, o ambas.",
           },
           {
             question: "¿QUÉ SUCEDE DESPUÉS DE SELECCIONAR UNA COTIZACIÓN?",
             answer:
-              "Después de seleccionar una cotización, las refaccionarias se encargaran de procesar tu pedido y coordinar el envío de las refacciones directamente a tu taller, listas para ser instaladas.",
+              "Tu pedido será gestionado por las refaccionarias seleccionadas. Ellas se encargarán de preparar las piezas y coordinar la entrega directa a tu taller, asegurando un servicio rápido y confiable.",
           },
         ]
       : [
           {
-            question:
-              "¿CÓMO PUEDO GARANTIZAR QUE LOS CLIENTES ME ENCUENTREN MÁS RÁPIDO?",
+            question: "¿CÓMO PUEDO GARANTIZAR QUE MIS VENTAS AUMENTARÁN?",
             answer:
-              "Optimizamos la visibilidad de tu refaccionaria para que los clientes cercanos te encuentren fácilmente a través de nuestra plataforma.",
+              "Nuestra plataforma aumenta tu visibilidad ante clientes potenciales en tu área. Al permitirles comparar precios y calidad, atraerás más ventas al destacarte por tu competitividad. Además, la experiencia positiva de los clientes genera fidelidad y recomendaciones.",
           },
           {
             question: "¿NECESITO PAGAR UNA COMISIÓN POR VENDER MIS PRODUCTOS?",
             answer:
-              "No cobramos comisión a las refaccionarias. Solo cobramos a los usuarios por el uso de nuestra plataforma, lo que significa más ingresos para ti.",
+              "No, no cobramos comisiones por tus ventas. Los clientes pagan una pequeña tarifa por usar la plataforma, lo que significa que todas tus ganancias son para ti.",
           },
           {
             question:
               "¿QUIÉN SE ENCARGA DE LA ENTREGA DE LAS REFACCIONES QUE VENDEN?",
             answer:
-              "Puedes usar tus propios repartidores o solicitar ayuda externa. Nosotros solo facilitamos el proceso de venta, mientras tú manejas la entrega.",
+              "Tú decides. Puedes utilizar tu equipo de repartidores o contratar un servicio externo. La plataforma facilita la venta, mientras tú mantienes el control sobre las entregas.",
           },
         ];
   return (
