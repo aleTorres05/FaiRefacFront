@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import ClientDashboard from "@/components/ClientDashboard";
 import RepairShopDashboard from "@/components/RepairShopDashboard";
 import { useEffect, useState } from "react";
@@ -69,6 +70,7 @@ export default function UserDashboard() {
 
   return (
     <>
+      <Header user={user} />
       {user ? (
         user.isClient ? (
           <ClientDashboard user={user} clientCarWithQuotes={carListQuotes} />

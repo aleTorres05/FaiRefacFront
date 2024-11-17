@@ -28,9 +28,7 @@ export default function ClientDashboard({ user, clientCarWithQuotes }) {
   }, [user, clientCarWithQuotes]);
 
   return (
-    <>
       <main className=" mt-[18px] mx-[32px] grid lg:grid-cols-12 md:grid-cols-12  ">
-        <Header user={user}/>
         <div className="bg-black col-start-1 col-end-12 h-fit md:p-2 lg:col-start-1 lg:col-end-5 md:col-start-1 md:col-end-5 p-2 rounded-2xl mt-2 md:h-screen lg:h-full  md:flex-col lg:mt-4 lg:p-3 xl:col-start-1 xl:col-end-4 2xl:col-start-1 2xl:col-end-4 ">
           <div>
             <div className="flex flex-row mb-1 md:flex-row lg:mb-10 justify-start lg:mr-3 ">
@@ -78,6 +76,5 @@ export default function ClientDashboard({ user, clientCarWithQuotes }) {
           )}
         </div>
       </main>
-    </>
   );
 }
