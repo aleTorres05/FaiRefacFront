@@ -56,13 +56,13 @@ export default function ClientDashboard() {
                 <h4 className="font-chakra font-bold lg:h-[24px] md:h-[20px] md:text-[12px] lg:text-[17px] xl 2xl:text-[25px] md:w-[100%] md:mb-2 uppercase  xl:w-[full] 2xl:w-[full]">
                   {`${user.client?.firstName} ${user.client?.lastName}`}
                 </h4>
-                <p className="font-mulish text-[10px] font-semibold lg:h-[15px] md:h-[20px] md:w-[100%] xl:text-[15px] 2xl:text-[15px] xl:w-[full] 2xl:w-[full]">
+                <p className="font-mulish text-[10px] font-semibold md:mt-5 lg:mt-1 lg:h-[15px] md:h-[20px] md:w-[100%] xl:text-[15px] 2xl:text-[15px] xl:w-[full] 2xl:w-[full]">
                   Calle 213 av. kodemia
                 </p>
               </div>
             </div>
           </div>
-          <div className="flex flex-row gap-9 md:gap-6 md:flex-col justify-center md:mt-4 md:items-center  mb-2.5">
+          <div className="flex flex-row gap-9 md:gap-6 md:flex-col justify-center md:mt-4 md:items-center mt-5 mb-2.5">
             <button
               onClick={() => handleButtonSelection("coches")}
               className={clsx(

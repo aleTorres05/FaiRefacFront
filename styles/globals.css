@@ -1,18 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Para navegadores basados en WebKit */
+::-webkit-scrollbar {
+  width: 12px; /* Ancho de la barra */
+  height: 12px; /* Altura de la barra (horizontal) */
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272727; /* Fondo de la pista */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d16527; /* Color del scroll */
+
+  border-radius: 50px; /* Bordes redondeados */
+  border: 3px solid #272727; /* Espaciado interno para hacer la barra más visible */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #e67639; /* Color más claro al pasar el mouse */
+}
+
+/* Para Firefox */
+* {
+  scrollbar-color: #d16527 #272727; /* Color del scroll y la pista */
+  scrollbar-width: thin; /* Ancho del scroll (thin, auto, none) */
+}
+
 body {
-  color: #FFFFFF;
-  background:  #161616;
-};
+  color: #ffffff;
+  background: #161616;
+}
 
 @layer utilities {
-  
-  button{
+  button {
     clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
   }
 
@@ -20,6 +47,5 @@ body {
     .clip-custom {
       clip-path: polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%);
     }
-
-  } 
+  }
 }

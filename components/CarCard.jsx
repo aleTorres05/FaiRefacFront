@@ -13,6 +13,9 @@ export default function CarCard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [carsPerPage] = useState(3);
   const [currentCars, setCurrentCars] = useState([]);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
+
   let indexLastCar = currentPage * carsPerPage;
   let indexFirstCar = indexLastCar - carsPerPage;
 
@@ -31,23 +34,28 @@ export default function CarCard() {
       });
   }, [currentPage]);
 
-  const carDetialsOpenModal = (car) => {
-    setSelectedCar(car);
-    setIsDetailsModalOpen(true);
+  const carDetailsOpenModal = (car) => {
+    setSelectedCar(car); // Actualiza el coche seleccionado
+    setIsDetailsModalOpen(true); // Abre el modal
+    setIsDetailsVisible(true); // Muestra la animación de entrada
   };
 
   const carDetailsCloseModal = () => {
-    setIsDetailsModalOpen(false);
-    setSelectedCar(null);
+    setIsDetailsVisible(false); // Aplica la animación de salida
+    setTimeout(() => {
+      setIsDetailsModalOpen(false); // Cierra el modal
+      setSelectedCar(null); // Limpia el coche seleccionado
+    }, 300); // Tiempo de espera para que termine la animación
   };
 
-  const addCarOpenModal = (car) => {
-    setSelectedCar(car);
+  const addCarOpenModal = () => {
     setIsAddCarModalOpen(true);
+    setIsAddVisible(true);
   };
 
   const addCarCloseModal = () => {
-    setIsAddCarModalOpen(false);
+    setIsAddVisible(false);
+    setTimeout(() => setIsAddCarModalOpen(false), 300);
   };
 
   const numOfPages = userDetails.client?.cars.length
@@ -57,7 +65,7 @@ export default function CarCard() {
   const handdleCarsPerPage = (pageNum) => {
     setCurrentPage(pageNum);
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    if (pageNum == 1) {
+    if (pageNum === 1) {
       const cars = userDetails.client?.cars.slice(0, carsPerPage);
       setCurrentCars(cars);
     } else {
@@ -77,7 +85,7 @@ export default function CarCard() {
             key={`car-${idx}`}
             className="relative w-full h-[220px] rounded-lg lg:w-[48%] lg:h-[100%] cursor-pointer"
             id={`car-${idx}`}
-            onClick={() => carDetialsOpenModal(car)}
+            onClick={() => carDetailsOpenModal(car)} // Pasa el coche seleccionado
           >
             <img
               className="opacity-50 rounded-lg h-full w-full"
@@ -92,16 +100,17 @@ export default function CarCard() {
           </div>
         ))}
         {currentPage === numOfPages && (
-          <div
-            className="flex align-middle items-center justify-center h-[220px] w-full lg:w-[48%] lg:p-2 cursor-pointer bg-[#272727]"
-            style={{
-              clipPath:
-                "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
-            }}
-            onClick={() => addCarOpenModal()}
-          >
-            {/* Ícono de Font Awesome */}
-            <i className="fas fa-plus text-orange-500 text-6xl"></i>
+          <div className="w-full lg:w-[48%] flex align-middle items-center justify-center">
+            <div
+              className="flex align-middle items-center justify-center h-[100px] w-[60%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
+              style={{
+                clipPath:
+                  "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
+              }}
+              onClick={() => addCarOpenModal()}
+            >
+              <i className="fas fa-plus text-orange-500 text-6xl"></i>
+            </div>
           </div>
         )}
       </div>
@@ -122,14 +131,29 @@ export default function CarCard() {
       </div>
 
       {isDetailsModalOpen && (
-        <CarDetail
-          client={userDetails.client}
-          selectedCar={selectedCar}
-          closeModal={carDetailsCloseModal}
-        />
+        <div
+          className={clsx(
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
+            isDetailsVisible ? "animate-fadeIn" : "animate-fadeOut"
+          )}
+        >
+          <CarDetail
+            client={userDetails.client}
+            selectedCar={selectedCar} // Pasa el coche seleccionado
+            closeModal={carDetailsCloseModal}
+          />
+        </div>
       )}
+
       {isAddCarModalOpen && (
-        <AddCar closeModal={addCarCloseModal} user={userDetails} />
+        <div
+          className={clsx(
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
+            isAddVisible ? "animate-fadeIn" : "animate-fadeOut"
+          )}
+        >
+          <AddCar closeModal={addCarCloseModal} user={userDetails} />
+        </div>
       )}
     </>
   );
