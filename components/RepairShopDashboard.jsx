@@ -76,8 +76,11 @@ export default function RepairShopDashboard({ user }) {
     return (
       <main className="flex flex-col items-center text-center justify-center h-screen bg-black text-white">
         <h2 className="text-2xl font-chakra uppercase font-bold mb-4 p-8">
-          Dirigete a nuestra plataforma de pago y agrega tu información para
-          recibir pagos
+          Por favor, accede a nuestra plataforma de pagos para completar tu
+          información y habilitar la recepción de transferencias. Si ya has
+          completado el registro de tu cuenta en Stripe, espera unos momentos
+          mientras verificamos que tu cuenta esté configurada correctamente para
+          recibir pagos.
         </h2>
         <button
           onClick={handleUpdatePaymentInfo}
