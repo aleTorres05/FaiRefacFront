@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-const API_URL = "https://fairefac-api.onrender.com";
+const API_URL = "https://fairefac.yairggdev.lat";
 
 export async function send(email) {
   try {

@@ -4,7 +4,7 @@ import NavLinks from "./NavLinks";
 import { Menu, X } from "lucide-react";
 import { toast } from "sonner";
 
-export default function Navbar({ setCurrentPage, user }) {
+export default function Navbar({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -19,13 +19,12 @@ export default function Navbar({ setCurrentPage, user }) {
   const client = user?.isClient ? user.client : null;
   const repairShop = user?.isRepairShop ? user.repairShop : null;
 
-  const isVisible = router.pathname === "/" || router.pathname === "/dashboard" || router.pathname === "/login" || router.pathname === "/signup"
+  const isVisible = router.pathname === "/" || router.pathname === "/repairshop-benefits" || router.pathname === "/dashboard" || router.pathname === "/login" || router.pathname === "/signup"
 
   return (
     <nav className="mb-2 mt-1 mr-2 md:mr-6 lg:mr-8 sm:w-1/3 flex justify-end text-end md:w-1/3 lg:w-full xl:w-1/3 2xl:w-1/3 lg:mb-3">
       <div className="hidden justify-between lg:flex">
         <NavLinks
-          setCurrentPage={setCurrentPage}
           handleLogout={handleLogout}
           client={client}
           repairShop={repairShop}
@@ -51,7 +50,6 @@ export default function Navbar({ setCurrentPage, user }) {
               <X />
             </button>
             <NavLinks
-              setCurrentPage={setCurrentPage}
               handleLogout={handleLogout}
               client={client}
               repairShop={repairShop}

@@ -1,6 +1,9 @@
+import { useRouter } from "next/router";
+
 export default function BenefitCards({ currentPage }) {
+  const router = useRouter();
   const benefitOptions =
-    currentPage === "home"
+    router.pathname === "/"
       ? [
           {
             title: "Ahorro de Tiempo",
@@ -31,7 +34,7 @@ export default function BenefitCards({ currentPage }) {
           {
             title: "Gestión y Entrega de Pedidos",
             description:
-              "LRecibe, procesa y organiza la entrega de pedidos directamente al taller con tu equipo de repartidores, asegurando un servicio rápido y confiable.",
+              "Recibe, procesa y organiza la entrega de pedidos directamente al taller con tu equipo de repartidores, asegurando un servicio rápido y confiable.",
           },
         ];
   return (

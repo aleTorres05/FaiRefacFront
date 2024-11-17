@@ -4,7 +4,6 @@ import DropdownMenu from "./DropdownMenu";
 import { User, Bell } from "lucide-react";
 
 export default function NavLinks({
-  setCurrentPage,
   handleLogout,
   client,
   repairShop,
@@ -17,10 +16,12 @@ export default function NavLinks({
       return repairShop.quotes.filter((quote) => quote.status === "initial")
         .length;
     } else if (client) {
-        return client.cars.reduce((acc, car) => {
-          return acc + car.quotes.filter((quote) => quote.status === "initial").length;
-        }, 0);
-      }
+      return client.cars.reduce((acc, car) => {
+        return (
+          acc + car.quotes.filter((quote) => quote.status === "initial").length
+        );
+      }, 0);
+    }
     return 0;
   };
 
@@ -29,19 +30,18 @@ export default function NavLinks({
   return (
     <div className="flex flex-col lg:flex-row items-center lg:space-x-5 w-full lg:w-auto">
       {(router.pathname === "/" ||
+        router.pathname === "/repairshop-benefits" ||
         router.pathname === "/login" ||
         router.pathname === "/signup") && (
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-full space-y-4 lg:space-y-0 lg:space-x-5">
           <Link
             href="/"
-            onClick={() => setCurrentPage("home")}
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
             Home
           </Link>
           <Link
-            href="/"
-            onClick={() => setCurrentPage("impulsa")}
+            href="/repairshop-benefits"
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
             Impulsa tu Refaccionaria
