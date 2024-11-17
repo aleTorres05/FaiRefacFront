@@ -33,6 +33,14 @@
   scrollbar-width: thin; /* Ancho del scroll (thin, auto, none) */
 }
 
+.popup-container {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.popup-container[data-state="closing"] {
+  animation: fadeOut 0.3s ease-out;
+}
+
 body {
   color: #ffffff;
   background: #161616;

@@ -54,17 +54,17 @@ export default function QuoteForm() {
     try {
       const decoded = parseJwt(token);
       const currentTime = Math.floor(Date.now() / 1000);
-      return decoded.exp - currentTime; // Time left in seconds
+      return decoded.exp - currentTime;
     } catch (error) {
       console.error("Error decoding token:", error);
-      return 0; // Return 0 if there's an error, indicating expiration
+      return 0;
     }
   };
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`; // e.g., "5:09"
+    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
   const isTokenExpired = (token) => {
@@ -90,7 +90,6 @@ export default function QuoteForm() {
       setCar(clientCar._id);
       setClient(client._id);
     } else if (token && !isTokenExpired(token)) {
-      // Update time left every second
       const intervalId = setInterval(() => {
         const newTimeLeft = getTokenExpirationTime(token);
         setTimeLeft(newTimeLeft);
@@ -167,27 +166,29 @@ export default function QuoteForm() {
   }
 
   return (
-    <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
-      <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">
+    <div className="flex flex-col w-full px-4 md:px-10 justify-center md:items-center min-h-screen">
+      <h1 className="font-chakra mb-10 md:mb-16 w-full text-center text-[24px] md:text-[32px] font-bold">
         SOLICITA UNA COTIZACIÓN
       </h1>
-      <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
+      <div className="flex flex-col md:flex-row w-full mb-14 md:max-w-[692px] justify-between items-center">
         {!token ? (
-          <div className="w-full flex flex-row items-center">
+          <button className="flex flex-row items-center">
             <img
-              className="h-[50px]"
+              className="h-[40px] md:h-[50px]"
               src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
               alt="copy-icon"
               onClick={handleCopyUrl}
             />
-            <p className="font-chakra">Copiar Enlace</p>
-          </div>
+            <p className="font-chakra ml-2">Copiar Enlace</p>
+          </button>
         ) : (
-          <div className="w-full flex flex-row items-center">
-            <p className=""> Session expira en: {formatTime(timeLeft)}</p>
+          <div className="flex items-center justify-center w-full md:justify-end">
+            <p className="font-mulish text-[12px] md:text-[14px]">
+              Sesión expira en: {formatTime(timeLeft)}
+            </p>
           </div>
         )}
-        <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
+        <div className="flex flex-col w-full mt-4 md:mt-0 sm:w-1/2">
           <label
             htmlFor="mechanic-select"
             className="block text-white w-full font-chakra font-bold"
@@ -198,7 +199,7 @@ export default function QuoteForm() {
             id="mechanic-select"
             value={selectedMechanic}
             onChange={handleMechanicChange}
-            className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434]"
           >
             <option className="text-white font-mulish" value="" disabled>
               Selecciona un taller
@@ -210,9 +211,9 @@ export default function QuoteForm() {
             ))}
           </select>
         </div>
-        <div className="flex h-full justify-center my-auto">
+        <div className="flex h-full justify-center mt-4 md:mt-0">
           <button
-            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 "
+            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2"
             type="button"
             onClick={handleOpenMechanicForm}
           >
@@ -222,21 +223,26 @@ export default function QuoteForm() {
       </div>
 
       <MechanicForm
+        className="popup-container"
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
       />
+
       <form
         onSubmit={handleSubmit(submitForm)}
-        className="flex flex-col gap-4 my-4"
+        className="flex flex-col gap-4 my-4 w-full max-w-lg md:max-w-3xl mx-auto"
       >
         {fields.map((field, index) => (
-          <div key={index} className="flex items-center gap-4">
+          <div
+            key={index}
+            className="flex flex-col md:flex-row items-center gap-4"
+          >
             <input
               type="text"
               placeholder="Refacción"
-              className="text-white text-base outline-none font-mulish text-[14px] font-normal leading-normal md:min-w-[600px] md:max-w-[850px] w-full bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+              className="text-white text-base outline-none font-mulish text-[14px] font-normal leading-normal w-full md:w-3/4 bg-transparent pb-3 border-b border-b-[#343434]"
               {...register(`items.${index}.concept`, {
-                required: { value: true, message: "Refaccion es Requerida" },
+                required: { value: true, message: "Refacción es requerida" },
               })}
             />
             <div className="flex items-center">
@@ -256,12 +262,11 @@ export default function QuoteForm() {
                 type="text"
                 value={field.quantity}
                 readOnly
-                className="font-chakra px-2 bg-transparent text-center w-10 "
+                className="font-chakra px-2 bg-transparent text-center w-10"
                 {...register(`items.${index}.quantity`, {
                   valueAsNumber: true,
                 })}
               />
-
               <button
                 type="button"
                 onClick={() =>
@@ -284,20 +289,20 @@ export default function QuoteForm() {
           </div>
         ))}
 
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mt-4">
           <button
             type="button"
             onClick={() => append({ concept: "", quantity: 1 })}
-            className="bg-[#D16527] md:mt-6 md:mb-14 w-[250px] font-chakra font-bold text-white p-2 "
+            className="bg-[#D16527] w-[200px] md:w-[250px] font-chakra font-bold text-white p-2"
           >
             AGREGAR PIEZA
           </button>
         </div>
 
-        <div className="w-full flex justify-center md:justify-end">
+        <div className="w-full flex justify-center md:justify-end mt-4">
           <button
             type="submit"
-            className="bg-[#D16527] w-[250px] font-chakra font-bold text-white p-2  mt-4"
+            className="bg-[#D16527] w-[200px] md:w-[250px] font-chakra font-bold text-white p-2"
           >
             SOLICITAR COTIZACIÓN
           </button>
