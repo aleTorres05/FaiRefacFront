@@ -54,8 +54,8 @@ export default function BenefitCards({ currentPage }) {
                     {option.title}
                   </h4>
                 </div>
-                <div className="border-y-[3px] border-y-[#302F2F] lg:w-[300px] lg:m lg:h-[240px] ">
-                  <p className=" font-mulish my-[74px] lg:w-[280px]">
+                <div className="flex items-center h-[15vh] border-y-[3px] border-y-[#302F2F] lg:w-[300px] lg:h-[25vh]">
+                  <p className="font-mulish w-full p-0 m-0">
                     {option.description}
                   </p>
                 </div>

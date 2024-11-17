@@ -71,11 +71,11 @@ export default function CarCard() {
 
   return (
     <>
-      <div className="flex flex-col ">
+      <div className="flex flex-wrap px-5 md:px-10 md:py-5 lg:px-1 h-auto lg:h-[40vh] justify-start items-center gap-3">
         {currentCars?.map((car, idx) => (
           <div
             key={`car-${idx}`}
-            className="relative w-full h-[220px] mb-3 rounded-lg lg:p-2 lg:h-[100%] xl:h-[100%] 2xl:h-[100%] cursor-pointer"
+            className="relative w-full h-[220px] rounded-lg lg:w-[48%] lg:h-[100%] cursor-pointer"
             id={`car-${idx}`}
             onClick={() => carDetialsOpenModal(car)}
           >
@@ -84,29 +84,29 @@ export default function CarCard() {
               src={car?.carPicture}
               alt="car"
             />
-            <p className="font-chakra absolute bottom-3 border-t-2 border-[#D16527] left-3 lg:left-4 lg:bottom-4 xl:h-[10%] xl:w-fit xl:text-2xl xl:font-semibold xl:border-t-4 xl:left-7">
-              {car?.nickname != "null"
+            <p className="font-chakra absolute bottom-3 border-t-2 border-[#D16527] left-3 lg:left-4">
+              {car?.nickname !== "null"
                 ? car.nickname
                 : `${car.brand} ${car.model} ${car.version} ${car.year}`}
             </p>
           </div>
         ))}
         {currentPage === numOfPages && (
-          <div>
-            <button
-              onClick={() => addCarOpenModal()}
-              className="opacity-50 rounded-lg h-full w-full"
-            >
-              <img
-                className="opacity-80 rounded-lg h-full w-full "
-                src="https://fairefac-assets.s3.us-east-2.amazonaws.com/add-car-icon.png"
-                alt="Add Car"
-              />
-            </button>
+          <div
+            className="flex align-middle items-center justify-center h-[220px] w-full lg:w-[48%] lg:p-2 cursor-pointer bg-[#272727]"
+            style={{
+              clipPath:
+                "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
+            }}
+            onClick={() => addCarOpenModal()}
+          >
+            {/* Ícono de Font Awesome */}
+            <i className="fas fa-plus text-orange-500 text-6xl"></i>
           </div>
         )}
       </div>
-      <div className=" p-3">
+
+      <div className="p-3">
         {Array.from({ length: numOfPages }, (_, index) => (
           <button
             onClick={() => handdleCarsPerPage(index + 1)}
@@ -120,6 +120,7 @@ export default function CarCard() {
           </button>
         ))}
       </div>
+
       {isDetailsModalOpen && (
         <CarDetail
           client={userDetails.client}

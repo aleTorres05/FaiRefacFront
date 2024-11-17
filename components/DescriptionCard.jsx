@@ -51,10 +51,10 @@ export default function DescriptionCard({ currentPage }) {
             return (
               <div
                 key={`description-card-${idx}`}
-                className="bg-[#302F2F] md:w-[44%] md:mr-9 flex flex-col lg:flex-row mb-4 h-fit p-5  justify-center relative lg:w-[280px] lg:h-[200px] rounded-2xl xl:w-[30%] 2xl:w-[30%]"
+                className="bg-[#302F2F] md:w-[44%] md:mr-9 flex flex-row gap-5 align-middle lg:flex-row mb-4 h-fit p-5  justify-center relative lg:w-[280px] lg:h-[200px] rounded-2xl xl:w-[30%] 2xl:w-[30%]"
               >
                 <Image
-                  className=" h-[50px] w-[50px] mb-2 lg:w-[60px] lg:h-[60px] lg:absolute lg:top-5 lg:left-5 lg:mb-9"
+                  className=" h-[50px] w-[50px] lg:w-[60px] lg:h-[60px] lg:absolute lg:top-5 lg:left-5 lg:mb-9"
                   src={option.icon}
                   alt="logo"
                 />
