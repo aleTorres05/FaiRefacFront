@@ -20,6 +20,7 @@ export default function QuoteForm() {
   const [timeLeft, setTimeLeft] = useState(0);
   const { token } = router.query;
 
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
   const {
     handleSubmit,
     register,
@@ -172,15 +173,29 @@ export default function QuoteForm() {
       </h1>
       <div className="flex flex-col md:flex-row w-full mb-14 md:max-w-[692px] justify-between items-center">
         {!token ? (
-          <button className="flex flex-row items-center">
-            <img
-              className="h-[40px] md:h-[50px]"
-              src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
-              alt="copy-icon"
-              onClick={handleCopyUrl}
-            />
-            <p className="font-chakra ml-2">Copiar Enlace</p>
-          </button>
+          <div
+            className="relative"
+            onMouseEnter={() => setIsInfoVisible(true)} // Mostrar modal al pasar el cursor
+            onMouseLeave={() => setIsInfoVisible(false)} // Ocultar modal al salir del contenedor
+          >
+            {/* Botón con evento hover */}
+            <button className="flex flex-row items-center">
+              <img
+                className="h-[40px] md:h-[50px]"
+                src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
+                alt="copy-icon"
+                onClick={handleCopyUrl}
+              />
+              <p className="font-chakra ml-2">Copiar Link</p>
+            </button>
+            {/* Modal informativo pequeño */}
+            {isInfoVisible && (
+              <div className="absolute top-[-60px] left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-md shadow-lg text-sm w-[200px] text-center z-50">
+                ¿No estás seguro de qué refacciones necesitas? Haz clic para
+                compartir con tu mecánico.
+              </div>
+            )}
+          </div>
         ) : (
           <div className="flex items-center justify-center w-full md:justify-end">
             <p className="font-mulish text-[12px] md:text-[14px]">

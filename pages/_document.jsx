@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { ModalProvider, useModal } from "react-modal-manager";
 
 export default function Document() {
   return (

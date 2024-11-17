@@ -74,7 +74,7 @@ export default function RepairShopDashboard({ user }) {
 
   if (!repairShop?.stripeAccountActive) {
     return (
-      <main className="flex flex-col items-center text-center justify-center h-screen bg-black text-white">
+      <div className="flex flex-col items-center text-center justify-center text-white">
         <h2 className="text-2xl font-chakra uppercase font-bold mb-4 p-8">
           Por favor, accede a nuestra plataforma de pagos para completar tu
           información y habilitar la recepción de transferencias. Si ya has
@@ -88,12 +88,12 @@ export default function RepairShopDashboard({ user }) {
         >
           Actualizar
         </button>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="md:mt-[18px] md:mx-[32px] flex flex-col md:gap-4">
+    <div className="md:mt-[18px] md:mx-[32px] flex flex-col md:gap-4">
       <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-0 p-3 md:p-0">
         <DashboardButtons
           isSelected={isSelected}
@@ -109,16 +109,16 @@ export default function RepairShopDashboard({ user }) {
             <FollowUpPanel repairShop={repairShop} />
           )}
           {isSelected.updatePaymentInfo && (
-            <main className="flex flex-col items-center  md:justify-center h-screen bg-black text-white">
+            <div className="flex flex-col items-center md:justify-center text-white">
               <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 p-8">
                 En Stripe podrás actualizar tu información. Recuerda que es
                 importante mantener tus datos actualizados, ya que recibirás tus
                 pagos en esta cuenta.
               </h2>
-            </main>
+            </div>
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

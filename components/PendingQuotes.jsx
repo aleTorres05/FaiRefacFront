@@ -51,13 +51,13 @@ export default function PendingQuotes({ quotes, setQuotes }) {
   }, [selectedQuote]);
 
   return displayedQuotes.length === 0 ? (
-    <main className="flex flex-col items-center  md:justify-center h-screen bg-black text-white">
+    <div className="flex flex-col items-center  md:justify-center bg-black text-white">
       <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 p-8">
         No tienes cotizaciones pendientes en este momento. Tan pronto como un
         cliente solicite una cotización, podrás gestionarla y enviar tu
         propuesta por aquí.
       </h2>
-    </main>
+    </div>
   ) : (
     <main>
       <h2 className="font-chakra font-bold text-[24px] mb-4">
