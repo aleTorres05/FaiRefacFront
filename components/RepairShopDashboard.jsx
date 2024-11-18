@@ -22,9 +22,6 @@ export default function RepairShopDashboard({ user }) {
       followUpPanel: option === "followUpPanel",
       updatePaymentInfo: option === "updatePaymentInfo",
     });
-    if (option === "updatePaymentInfo") {
-      handleUpdatePaymentInfo();
-    }
   };
 
   const { repairShop } = user;
@@ -84,7 +81,7 @@ export default function RepairShopDashboard({ user }) {
         </h2>
         <button
           onClick={handleUpdatePaymentInfo}
-          className="bg-[#D16527] px-6 py-2 font-chakra uppercase rounded-md"
+          className="bg-[#D16527] font-semibold px-6 py-2 font-chakra uppercase rounded-md"
         >
           Actualizar
         </button>
@@ -109,13 +106,19 @@ export default function RepairShopDashboard({ user }) {
             <FollowUpPanel repairShop={repairShop} />
           )}
           {isSelected.updatePaymentInfo && (
-            <div className="flex flex-col items-center md:justify-center text-white">
-              <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 p-8">
+            <main className="flex flex-col items-center  h-screen bg-black text-white">
+              <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 md:p-8 lg:p-16">
                 En Stripe podrás actualizar tu información. Recuerda que es
                 importante mantener tus datos actualizados, ya que recibirás tus
                 pagos en esta cuenta.
               </h2>
-            </div>
+              <button
+                onClick={handleUpdatePaymentInfo}
+                className="bg-[#D16527] font-semibold px-6 py-2 font-chakra uppercase rounded-md"
+              >
+                Actualizar
+              </button>
+            </main>
           )}
         </div>
       </div>
