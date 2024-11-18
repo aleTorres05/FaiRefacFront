@@ -106,7 +106,7 @@ export default function RepairShopDashboard({ user }) {
             <FollowUpPanel repairShop={repairShop} />
           )}
           {isSelected.updatePaymentInfo && (
-            <main className="flex flex-col items-center  h-screen bg-black text-white">
+            <div className="flex flex-col items-center text-white">
               <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 md:p-8 lg:p-16">
                 En Stripe podrás actualizar tu información. Recuerda que es
                 importante mantener tus datos actualizados, ya que recibirás tus
@@ -118,7 +118,7 @@ export default function RepairShopDashboard({ user }) {
               >
                 Actualizar
               </button>
-            </main>
+            </div>
           )}
         </div>
       </div>
