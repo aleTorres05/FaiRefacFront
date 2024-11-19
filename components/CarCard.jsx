@@ -11,7 +11,7 @@ export default function CarCard() {
   const [selectedCar, setSelectedCar] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [carsPerPage] = useState(3);
+  const [carsPerPage] = useState(4);
   const [currentCars, setCurrentCars] = useState([]);
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [isAddVisible, setIsAddVisible] = useState(false);
@@ -79,11 +79,11 @@ export default function CarCard() {
 
   return (
     <>
-      <div className="flex flex-wrap px-5 md:px-10 md:py-5 lg:px-1 h-auto lg:h-[40vh] justify-start items-center gap-3">
+      <div className="flex flex-wrap  px-5 md:px-10 md:py-5 lg:px-1  justify-start gap-3">
         {currentCars?.map((car, idx) => (
           <div
             key={`car-${idx}`}
-            className="relative w-full h-[220px] rounded-lg lg:w-[48%] lg:h-[100%] cursor-pointer"
+            className="relative w-full  rounded-lg  lg:w-[48%] cursor-pointer"
             id={`car-${idx}`}
             onClick={() => carDetialsOpenModal(car)}
           >
@@ -102,7 +102,7 @@ export default function CarCard() {
         {currentPage === numOfPages && (
           <div className="w-full lg:w-[48%] flex align-middle items-center justify-center">
             <div
-              className="flex align-middle items-center justify-center h-[100px] w-[60%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
+              className="flex  align-middle items-center justify-center h-[100px] w-[100%] lg:h-[100%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
               style={{
                 clipPath:
                   "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
