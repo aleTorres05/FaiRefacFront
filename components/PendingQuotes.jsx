@@ -97,7 +97,7 @@ export default function PendingQuotes({ quotes, setQuotes }) {
             isModalVisible ? "animate-fadeIn" : "animate-fadeOut"
           )}
         >
-          <RepairShopQuoteModal
+          <RepairShopQuotegModal
             selectedQuote={selectedQuote}
             closeModal={closeModal}
             onUpdateQuote={updateQuotes}
