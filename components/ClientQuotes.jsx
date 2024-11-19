@@ -4,9 +4,11 @@ import QuotesList from "@/components/QuotesList";
 import { useRouter } from "next/router";
 import { getQuoteByID, getStripeSession } from "@/pages/api/quote";
 import { toast } from "sonner";
+import SpinnerLoading from "./SpinnerLoading";
 
 export default function ClientQuotes({ carListQuotes }) {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [quotesReview, setQuotesReview] = useState([]);
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +29,6 @@ export default function ClientQuotes({ carListQuotes }) {
   const calculateTotals = (quoteDetails) => {
     let subtotal = 0;
     let iva = 0;
-    let total = 0;
 
     quoteDetails.forEach((quote) => {
       quote.items.forEach((item) => {
@@ -36,9 +37,8 @@ export default function ClientQuotes({ carListQuotes }) {
     });
 
     iva = subtotal * 0.16;
-    total = subtotal + iva;
 
-    return { subtotal, iva, total };
+    return { subtotal, iva };
   };
 
   const toggleDropdown = (quoteId) => {
@@ -69,55 +69,65 @@ export default function ClientQuotes({ carListQuotes }) {
   }, [isModalOpen]);
 
   useEffect(() => {
-    setNoQuotesTrigger(false);
     const fetchQuotes = async () => {
+      setLoading(true);
       const allCarsQuotes = [];
       const carQuoteItems = [];
 
-      await Promise.all(
-        carListQuotes?.map(async (car) => {
-          const groupedQuotes = [];
+      try {
+        await Promise.all(
+          carListQuotes?.map(async (car) => {
+            const groupedQuotes = [];
 
-          await Promise.all(
-            car.quotes?.map(async (shopQuote) => {
-              const repairShopQuote = await getQuoteByID(shopQuote._id, token);
-              const quoteGroup = {
-                shopQuote: shopQuote._id,
-                fairRefacFee: 0,
-                totalWithFairRefacFee: 0,
-                repairShopQuoteID: repairShopQuote?.quote?._id,
-                quoteDetails: [],
-                items: [],
-              };
-              repairShopQuote?.quote?.repairShopQuotes
-                ?.filter((quote) => quote.status === "review")
-                .forEach((quote) => {
-                  quoteGroup.quoteDetails.push(quote);
-                  quoteGroup.fairRefacFee = repairShopQuote?.quote?.fee;
-                  quoteGroup.totalWithFairRefacFee =
-                    repairShopQuote?.quote?.totalFaiRefacFee;
-                  quoteGroup.items = [...quoteGroup.items, ...quote.items];
-                });
+            await Promise.all(
+              car.quotes?.map(async (shopQuote) => {
+                const repairShopQuote = await getQuoteByID(
+                  shopQuote._id,
+                  token
+                );
+                const quoteGroup = {
+                  shopQuote: shopQuote._id,
+                  fairRefacFee: 0,
+                  totalWithFairRefacFee: 0,
+                  repairShopQuoteID: repairShopQuote?.quote?._id,
+                  quoteDetails: [],
+                  items: [],
+                };
+                repairShopQuote?.quote?.repairShopQuotes
+                  ?.filter((quote) => quote.status === "review")
+                  .forEach((quote) => {
+                    quoteGroup.quoteDetails.push(quote);
+                    quoteGroup.fairRefacFee = repairShopQuote?.quote?.fee;
+                    quoteGroup.totalWithFairRefacFee =
+                      repairShopQuote?.quote?.totalFaiRefacFee;
+                    quoteGroup.items = [...quoteGroup.items, ...quote.items];
+                  });
 
-              if (quoteGroup.quoteDetails.length > 0) {
-                groupedQuotes.push(quoteGroup);
-              }
-            })
-          );
-          if (groupedQuotes.length > 0) {
-            allCarsQuotes.push({ car, carQuoteDetails: groupedQuotes });
-          }
-        })
-      );
-      if (carListQuotes?.length <= 0) {
-        setNoQuotesTrigger(true);
+                if (quoteGroup.quoteDetails.length > 0) {
+                  groupedQuotes.push(quoteGroup);
+                }
+              })
+            );
+
+            if (groupedQuotes.length > 0) {
+              allCarsQuotes.push({ car, carQuoteDetails: groupedQuotes });
+            } else {
+              setNoQuotesTrigger(true);
+            }
+          })
+        );
+
+        setQuoteItem(carQuoteItems);
+        setQuotesReview(allCarsQuotes);
+      } catch (error) {
+        toast.error("Error al obtener Info");
+      } finally {
+        setLoading(false);
       }
-      setQuoteItem(carQuoteItems);
-      setQuotesReview(allCarsQuotes);
     };
 
     fetchQuotes();
-  }, [carListQuotes, refreshToggle, setNoQuotesTrigger, router.isReady]);
+  }, [carListQuotes, refreshToggle, router.isReady]);
 
   const triggerRefresh = () => setRefreshToggle((prev) => !prev);
 
@@ -129,7 +139,9 @@ export default function ClientQuotes({ carListQuotes }) {
       } else {
         toast.error("Error al enviar a Session de Pago");
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error("Error:", error);
+    }
   }
 
   return (
@@ -138,42 +150,9 @@ export default function ClientQuotes({ carListQuotes }) {
         <h2 className="font-chakra font-bold text-[24px] mt-4 mb-4">
           COTIZACIONES A ELEGIR
         </h2>
-        {/* {quotesReview.length <= 0 && !noQuotesTrigger && (
-          <div className=" justify-self-center">
-            <button
-              type="button"
-              className="bg-[#D26528] text-white font-chakra px-4 py-2 rounded flex items-center"
-              disabled
-            >
-              <svg
-                className="animate-spin h-5 w-5 mr-3 text-white"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                ></path>
-              </svg>
-              Processing...
-            </button>
-          </div>
-        )} */}
-        {quotesReview.length === 0 && noQuotesTrigger ? (
-          <div>
-            <h1>No hay Cotizaciones</h1>
-          </div>
-        ) : (
+        {loading && <SpinnerLoading />}
+        {!loading &&
+          quotesReview.length > 0 &&
           quotesReview?.map(({ car, carQuoteDetails }, index) => (
             <div key={index}>
               {car.nickname !== "null" ? (
@@ -187,9 +166,7 @@ export default function ClientQuotes({ carListQuotes }) {
                 </h2>
               )}
               {carQuoteDetails?.map((quote) => {
-                const { subtotal, iva, total } = calculateTotals(
-                  quote.quoteDetails
-                );
+                const { subtotal, iva } = calculateTotals(quote.quoteDetails);
                 return (
                   <div className="relative" key={quote.repairShopQuoteID}>
                     <button
@@ -338,7 +315,13 @@ export default function ClientQuotes({ carListQuotes }) {
                 );
               })}
             </div>
-          ))
+          ))}
+        {!loading && quotesReview.length === 0 && (
+          <div>
+            <h1 className="font-chakra font-semibold text-xl">
+              No hay Cotizaciones
+            </h1>
+          </div>
         )}
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getUserByEmail } from "./api/user";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
+import SpinnerLoading from "@/components/SpinnerLoading";
 
 export default function UserDashboard() {
   const router = useRouter();
@@ -76,9 +77,7 @@ export default function UserDashboard() {
           <RepairShopDashboard user={user} />
         ) : null
       ) : (
-        <p className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
-          CARGANDO DATOS DEL USUARIO...
-        </p>
+        <SpinnerLoading />
       )}
     </>
   );
