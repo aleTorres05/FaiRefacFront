@@ -6,6 +6,7 @@ import clsx from "clsx";
 export default function PendingQuotes({ quotes, setQuotes }) {
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const quotesPerPage = 6;
 
   const initialQuotes = useMemo(() => {
@@ -21,10 +22,12 @@ export default function PendingQuotes({ quotes, setQuotes }) {
 
   const handleQuoteClick = (quote) => {
     setSelectedQuote(quote);
+    setIsModalVisible(true);
   };
 
   const closeModal = () => {
-    setSelectedQuote(null);
+    setIsModalVisible(false);
+    setTimeout(() => setSelectedQuote(null), 300); // Tiempo para la animación
   };
 
   const updateQuotes = (updatedQuote) => {
@@ -51,13 +54,13 @@ export default function PendingQuotes({ quotes, setQuotes }) {
   }, [selectedQuote]);
 
   return displayedQuotes.length === 0 ? (
-    <main className="flex flex-col items-center   h-screen bg-black text-white">
+    <div className="flex flex-col items-center text-white">
       <h2 className="text-base md:text-2xl font-chakra uppercase font-bold mb-4 p-8 lg:p-16">
         No tienes cotizaciones pendientes en este momento. Tan pronto como un
         cliente solicite una cotización, podrás gestionarla y enviar tu
         propuesta por aquí.
       </h2>
-    </main>
+    </div>
   ) : (
     <main>
       <h2 className="font-chakra font-bold text-[24px] mb-4">
@@ -88,11 +91,18 @@ export default function PendingQuotes({ quotes, setQuotes }) {
         ))}
       </div>
       {selectedQuote && (
-        <RepairShopQuoteModal
-          selectedQuote={selectedQuote}
-          closeModal={closeModal}
-          onUpdateQuote={updateQuotes}
-        />
+        <div
+          className={clsx(
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
+            isModalVisible ? "animate-fadeIn" : "animate-fadeOut"
+          )}
+        >
+          <RepairShopQuoteModal
+            selectedQuote={selectedQuote}
+            closeModal={closeModal}
+            onUpdateQuote={updateQuotes}
+          />
+        </div>
       )}
     </main>
   );
