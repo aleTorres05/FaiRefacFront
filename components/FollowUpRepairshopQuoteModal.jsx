@@ -54,12 +54,12 @@ export default function FollowUpRepairshopQuoteModal({
     } finally {
       setLoading(false);
       closeModal();
-      window.location.reload()
+      window.location.reload();
     }
   };
 
   const handleQuoteSelection = () => {
-    onQuoteSelection(quote); 
+    onQuoteSelection(quote);
     closeModal();
   };
 
@@ -67,14 +67,14 @@ export default function FollowUpRepairshopQuoteModal({
     switch (quote.status) {
       case "paid":
         return (
-            <button
-              onClick={handleStatusChange}
-              className="mt-4 bg-[#D26528] text-white px-4 py-2 rounded"
-              disabled={loading}
-            >
-              {loading ? "Actualizando..." : "Enviar pedido"}
-            </button>
-          );
+          <button
+            onClick={handleStatusChange}
+            className="mt-4 bg-[#D26528] text-white px-4 py-2 rounded"
+            disabled={loading}
+          >
+            {loading ? "Actualizando..." : "Enviar pedido"}
+          </button>
+        );
       case "sent":
         return (
           <button
@@ -86,19 +86,33 @@ export default function FollowUpRepairshopQuoteModal({
           </button>
         );
       case "rejected":
-        return <p className="mt-4 text-red-500">La cotización fue rechazada por el cliente.</p>;
+        return (
+          <p className="mt-4 text-red-500">
+            La cotización fue rechazada por el cliente.
+          </p>
+        );
       case "initial":
-        return <p className="mt-4 text-[#D26528]">Dirigete a cotizaciones pendientes para cotizar este pedido.</p>;
+        return (
+          <p className="mt-4 text-[#D26528]">
+            Dirigete a cotizaciones pendientes para cotizar este pedido.
+          </p>
+        );
       case "review":
-        return <p className="mt-4 text-yellow-500">Cotización en espera de respuesta por parte del cliente.</p>;
+        return (
+          <p className="mt-4 text-yellow-500">
+            Cotización en espera de respuesta por parte del cliente.
+          </p>
+        );
       case "delivered":
-        return <p className="mt-4 text-green-500">La cotización fue entregada al taller mecánico.</p>;
+        return (
+          <p className="mt-4 text-green-500">
+            La cotización fue entregada al taller mecánico.
+          </p>
+        );
       default:
         return null;
     }
   };
-
-
 
   return (
     <div
@@ -143,7 +157,8 @@ export default function FollowUpRepairshopQuoteModal({
         <ul className="font-mulish">
           {quote.items.map((item) => (
             <li key={item._id}>
-              {item.quantity} {item.concept}{item.brand ? `, Marca: ${item.brand}` : " " }
+              {item.quantity} {item.concept}
+              {item.brand ? `, Marca: ${item.brand}` : " "}
             </li>
           ))}
         </ul>
