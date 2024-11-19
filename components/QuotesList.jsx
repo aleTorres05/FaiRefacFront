@@ -15,6 +15,7 @@ export default function QuotesList({
 
   async function handleChangeStatus(repairShopQuoteId) {
     try {
+      setNoQuotesTrigger(true);
       onQuoteRejected();
       const token = localStorage.getItem("token");
       const response = await rejectQuote(carQuoteId, repairShopQuoteId, token);
