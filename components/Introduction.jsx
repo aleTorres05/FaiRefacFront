@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Introduction({ currentPage }) {
+  const router = useRouter();
+
   const introductionText =
-    currentPage === "home"
+    router.pathname === "/"
       ? {
           title: "Encuentra las mejores refacciones y envíalas a tu taller",
           description:
@@ -14,7 +17,7 @@ export default function Introduction({ currentPage }) {
       : {
           title: "Aumenta tus ventas ofreciendo refacciones de calidad",
           description:
-            "Haz que tu refaccionaria llegue a más clientes locales con nuestras herramientas de comparación de precios y gestión de envíos.",
+            "Haz que tu refaccionaria llegue a más clientes locales con nuestras herramientas de comparación de precios.",
           buttonText: "Regístrate Ahora!",
           imageSrc:
             "https://fairefac-assets.s3.us-east-2.amazonaws.com/Car+driving-amico+3+(1).png",
@@ -32,8 +35,8 @@ export default function Introduction({ currentPage }) {
               {introductionText.description}
             </p>
             <Link href="/signup">
-              <button className="bg-[#D16527] h-[40px] w-[60%] text-lg px-6 py-2 md:h-[45px] md:w-[25%] lg:w-[50%] lg:h-[10%]">
-                <p className="font-chakra font-bold uppercase xl:text-[25px] 2xl:text-[30px]">
+              <button className="bg-[#D16527] md:h-11 text-lg px-6 py-2   ">
+                <p className="font-chakra font-bold uppercase text-xs md:text-base xl:text-[25px] 2xl:text-[30px]">
                   {introductionText.buttonText}
                 </p>
               </button>

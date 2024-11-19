@@ -1,11 +1,16 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-export default function CarDetail({ selectedCar, closeModal, isModalOpen }) {
+export default function CarDetail({
+  client,
+  selectedCar,
+  closeModal,
+  isModalOpen,
+}) {
   const router = useRouter();
 
   const handleQuoteClick = () => {
-
+    sessionStorage.setItem("client", JSON.stringify(client));
     sessionStorage.setItem("carSelected", JSON.stringify(selectedCar));
     router.push(`/quote-form`);
   };

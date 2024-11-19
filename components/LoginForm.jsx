@@ -29,7 +29,6 @@ export default function LoginForm() {
         return;
       }
       const response = await login(data.email, data.password, router);
-      console.log(response);
       if (response.error === "Verify your email to login.") {
         window.localStorage.setItem("email", data.email);
         toast.error("Es necesario verificar su correo electrónico.");
@@ -88,9 +87,6 @@ export default function LoginForm() {
           className="bg-[#D16527] mt-5 font-chakra w-[190px] h-[41px] uppercase"
         >
           Iniciar sesión
-        </button>
-        <button className="lg:hidden bg-[#fff] font-chakra w-[190px] h-[41px] text-[#000] uppercase">
-          Resgitrarse
         </button>
       </form>
     </div>

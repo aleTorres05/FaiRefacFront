@@ -11,8 +11,11 @@ export default function CarCard() {
   const [selectedCar, setSelectedCar] = useState(null);
   const [userDetails, setUserDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [carsPerPage] = useState(3);
+  const [carsPerPage] = useState(4);
   const [currentCars, setCurrentCars] = useState([]);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+  const [isAddVisible, setIsAddVisible] = useState(false);
+
   let indexLastCar = currentPage * carsPerPage;
   let indexFirstCar = indexLastCar - carsPerPage;
 
@@ -34,20 +37,25 @@ export default function CarCard() {
   const carDetialsOpenModal = (car) => {
     setSelectedCar(car);
     setIsDetailsModalOpen(true);
+    setIsDetailsVisible(true);
   };
 
   const carDetailsCloseModal = () => {
-    setIsDetailsModalOpen(false);
-    setSelectedCar(null);
+    setIsDetailsVisible(false);
+    setTimeout(() => {
+      setIsDetailsModalOpen(false);
+      setSelectedCar(null);
+    }, 300);
   };
 
-  const addCarOpenModal = (car) => {
-    setSelectedCar(car);
+  const addCarOpenModal = () => {
     setIsAddCarModalOpen(true);
+    setIsAddVisible(true);
   };
 
   const addCarCloseModal = () => {
-    setIsAddCarModalOpen(false);
+    setIsAddVisible(false);
+    setTimeout(() => setIsAddCarModalOpen(false), 300);
   };
 
   const numOfPages = userDetails.client?.cars.length
@@ -57,7 +65,7 @@ export default function CarCard() {
   const handdleCarsPerPage = (pageNum) => {
     setCurrentPage(pageNum);
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    if (pageNum == 1) {
+    if (pageNum === 1) {
       const cars = userDetails.client?.cars.slice(0, carsPerPage);
       setCurrentCars(cars);
     } else {
@@ -71,11 +79,11 @@ export default function CarCard() {
 
   return (
     <>
-      <div className="flex flex-col ">
+      <div className="flex flex-wrap  px-5 md:px-10 md:py-5 lg:px-1  justify-start gap-3">
         {currentCars?.map((car, idx) => (
           <div
             key={`car-${idx}`}
-            className="relative w-full h-[220px] mb-3 rounded-lg lg:p-2 lg:h-[100%] xl:h-[100%] 2xl:h-[100%] cursor-pointer"
+            className="relative w-full  rounded-lg  lg:w-[48%] cursor-pointer"
             id={`car-${idx}`}
             onClick={() => carDetialsOpenModal(car)}
           >
@@ -84,25 +92,25 @@ export default function CarCard() {
               src={car?.carPicture}
               alt="car"
             />
-            <p className="font-chakra absolute bottom-3 border-t-2 border-[#D16527] left-3 lg:left-4 lg:bottom-4 xl:h-[10%] xl:w-fit xl:text-2xl xl:font-semibold xl:border-t-4 xl:left-7">
-              {car?.nickname != "null"
+            <p className="font-chakra absolute bottom-3 border-t-2 border-[#D16527] left-3 lg:left-4">
+              {car?.nickname !== "null"
                 ? car.nickname
                 : `${car.brand} ${car.model} ${car.version} ${car.year}`}
             </p>
           </div>
         ))}
         {currentPage === numOfPages && (
-          <div>
-            <button
+          <div className="w-full lg:w-[48%] flex align-middle items-center justify-center">
+            <div
+              className="flex  align-middle items-center justify-center h-[100px] w-[100%] lg:h-[100%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
+              style={{
+                clipPath:
+                  "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
+              }}
               onClick={() => addCarOpenModal()}
-              className="opacity-50 rounded-lg h-full w-full"
             >
-              <img
-                className="opacity-80 rounded-lg h-full w-full "
-                src="https://fairefac-assets.s3.us-east-2.amazonaws.com/add-car-icon.png"
-                alt="Add Car"
-              />
-            </button>
+              <i className="fas fa-plus text-orange-500 text-6xl"></i>
+            </div>
           </div>
         )}
       </div>
@@ -121,13 +129,29 @@ export default function CarCard() {
         ))}
       </div>
       {isDetailsModalOpen && (
-        <CarDetail
-          selectedCar={selectedCar}
-          closeModal={carDetailsCloseModal}
-        />
+        <div
+          className={clsx(
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
+            isDetailsVisible ? "animate-fadeIn" : "animate-fadeOut"
+          )}
+        >
+          <CarDetail
+            client={userDetails.client}
+            selectedCar={selectedCar} // Pasa el coche seleccionado
+            closeModal={carDetailsCloseModal}
+          />
+        </div>
       )}
+
       {isAddCarModalOpen && (
-        <AddCar closeModal={addCarCloseModal} user={userDetails} />
+        <div
+          className={clsx(
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50",
+            isAddVisible ? "animate-fadeIn" : "animate-fadeOut"
+          )}
+        >
+          <AddCar closeModal={addCarCloseModal} user={userDetails} />
+        </div>
       )}
     </>
   );

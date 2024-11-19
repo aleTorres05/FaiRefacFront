@@ -1,20 +1,22 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function History({ currentPage }) {
+  const router = useRouter();
   const descriptionOptions =
-    currentPage === "home"
+    router.pathname === "/"
       ? [
           {
             description:
-              "Siempre he confiado en mi mecánico de confianza, pero después de probar con 3 talleres y cotizar con ellos, descubrí que estaba equivocado. Ahora, con esta app, puedo comparar fácilmente los precios y marcas de diferentes refaccionarias cercanas",
-            user: "Jua Perez",
+            "Siempre me pregunté si realmente estaba obteniendo los mejores precios por mis refacciones. Al usar esta app, descubrí que cada refaccionaria maneja precios y marcas diferentes. Gracias a la posibilidad de combinar cotizaciones, pude solicitar piezas a varias refaccionarias en un solo pedido, obteniendo la mejor calidad al mejor precio.",
+            user: "Cliente de FaiRefac",
           },
         ]
       : [
           {
             description:
-              "Gracias a esta aplicación, hemos logrado aumentar nuestras ventas en un 30%. Los clientes ahora pueden comparar precios y encontrarnos fácilmente. Nos ha ayudado a destacar entre la competencia en la zona.",
-            user: "Refaccionaria El Buen Taller, Ciudad de México",
+            "Nuestra refaccionaria ha experimentado un aumento del 30% en ventas gracias a esta plataforma. Los clientes ahora pueden comparar precios y calidad, lo que nos ha permitido destacar frente a la competencia en nuestra área.",
+            user: "Refaccionaria afiliada a FaiRefac",
           },
         ];
   return (

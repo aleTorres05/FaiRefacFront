@@ -1,19 +1,21 @@
+import Header from "@/components/Header";
 import ClientDashboard from "@/components/ClientDashboard";
 import RepairShopDashboard from "@/components/RepairShopDashboard";
 import { useEffect, useState } from "react";
 import { getUserByEmail } from "./api/user";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
+import SpinnerLoading from "@/components/SpinnerLoading";
 
 export default function UserDashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [carListQuotes, setCarListQuotes] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
     if (!token || !email) {
-      console.log("No token or email, triggering toast");
       toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
     } else {
@@ -39,6 +41,12 @@ export default function UserDashboard() {
             }, 1000);
             return;
           }
+          if (user.isClient) {
+            const clientCarWithQuotes = user?.client?.cars?.filter(
+              (car) => car.quotes.length > 0
+            );
+            setCarListQuotes(clientCarWithQuotes);
+          }
 
           if (
             user.isRepairShop &&
@@ -60,18 +68,18 @@ export default function UserDashboard() {
         });
     }
   }, []);
+
   return (
     <>
+      <Header user={user} />
       {user ? (
         user.isClient ? (
-          <ClientDashboard />
+          <ClientDashboard user={user} clientCarWithQuotes={carListQuotes} />
         ) : user.isRepairShop ? (
           <RepairShopDashboard user={user} />
         ) : null
       ) : (
-        <p className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
-          CARGANDO DATOS DEL USUARIO...
-        </p>
+        <SpinnerLoading />
       )}
     </>
   );
