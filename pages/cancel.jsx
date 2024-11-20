@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { useRouter } from "next/router";
 
 export default function ConfimPayment() {
@@ -9,8 +8,6 @@ export default function ConfimPayment() {
   }
 
   return (
-    <>
-      <Header />
       <main className="flex flex-1 flex-col justify-center items-center my-5">
         <div className="p-5">
           <i className="fa-solid fa-times-circle text-[120px] mb-10 text-red-600" />
@@ -36,6 +33,5 @@ export default function ConfimPayment() {
           </div>
         </div>
       </main>
-    </>
   );
 }

@@ -1,8 +1,8 @@
-import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { getPaymentIfonBySessionId } from "./api/quote";
+import SpinnerLoading from "@/components/SpinnerLoading";
 
 export default function Success() {
   const router = useRouter();
@@ -10,6 +10,12 @@ export default function Success() {
   const [paymentInfo, setPaymentInfo] = useState(null);
 
   useEffect(() => {
+    if (!session_id) {
+      toast.error("No se ha proporcionado información de pago válida.");
+      router.push("/dashboard"); 
+      return;
+    }
+
     const fetchPaymentInfo = async () => {
       if (session_id) {
         try {
@@ -44,7 +50,6 @@ export default function Success() {
 
   return (
     <>
-      <Header />
       {paymentInfo ? (
         <main className="flex flex-1 flex-col justify-center items-center my-5">
           <div className="p-5">
@@ -80,9 +85,7 @@ export default function Success() {
           </div>
         </main>
       ) : (
-        <p className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
-          CARGANDO INFORMACIÓN DE PAGO...
-        </p>
+        <SpinnerLoading/>
       )}
     </>
   );

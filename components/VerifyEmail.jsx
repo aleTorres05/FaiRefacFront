@@ -2,9 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { send, verify } from "@/pages/api/opt";
-import { getUserByEmail } from "@/pages/api/user";
 
-export default function VerifyEmail() {
+export default function VerifyEmail({ user }) {
   const [code, setCode] = useState(Array(6).fill(""));
   const [userEmail, setUserEmail] = useState("");
   const inputsRef = useRef([]);
@@ -39,6 +38,14 @@ export default function VerifyEmail() {
   };
 
   useEffect(() => {
+    if (!user) return;
+
+    if (user?.verifiedEmail) {
+      toast.success("Tu correo ya ha sido validado.");
+      router.push("/dashboard");
+      return;
+    }
+
     const email = localStorage.getItem("email");
     setUserEmail(email);
 
@@ -51,7 +58,7 @@ export default function VerifyEmail() {
         router.push("/login");
         throw new Error(e);
       });
-  }, []);
+  }, [user, router]);
 
   async function handleConfirmClick() {
     try {
