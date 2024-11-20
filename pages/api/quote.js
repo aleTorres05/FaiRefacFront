@@ -59,7 +59,7 @@ export async function createQuoteLinkToken(clientId, carId) {
 
 export async function validateToken(token, router) {
   try {
-    const response = await fetch(`${API_URL}/quote/validate-token/${token}`, {
+    const response = await fetch(`${API_URL}/quote/validate-token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export async function validateToken(token, router) {
     const json = await response.json();
 
     if (response.status === 401) {
-      router.push("/timeOutPage");
+      router.push("/");
       toast.error("Session Expirada, Solicite Nuevo Enlace");
     } else if (!response.ok) {
       const errorResponse = await response.json();
@@ -82,6 +82,42 @@ export async function validateToken(token, router) {
     return json?.data;
   } catch (error) {
     throw new Error(error.message);
+  }
+}
+
+export async function validateCanceledLink(token, router) {
+  try {
+    const response = await fetch(`${API_URL}/quote/validate-cancel-Link`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+
+    if (response.status === 403) {
+      router.push("/");
+      toast.error("Session Expirada, Solicite Nuevo Enlace");
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function cancelQuoteLink(token) {
+  try {
+    const response = await fetch(`${API_URL}/quote/revoke-token`, {
+      method: "POST",
+      headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+  } catch (error) {
+    console.error("Failed to revoke token:", error);
+    toast.error("Hubo un problema al cancelar el enlace.");
   }
 }
 

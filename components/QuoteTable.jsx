@@ -1,15 +1,20 @@
 import { deleteItemRepairShopQuote } from "@/pages/api/quote";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Item from "./Item";
 
 export default function QuoteTable({
   quote,
-  onQuoteRejected,
   currencyFormatter,
   token,
+  onQuoteRejected,
+  closeModal,
 }) {
   const [itemList, setItemList] = useState(quote.items);
+
+  useEffect(() => {
+    setItemList(quote.items);
+  }, [quote.items]);
 
   async function handleDeleteItem(itemId) {
     try {
@@ -20,10 +25,11 @@ export default function QuoteTable({
       );
 
       if (response?.success) {
-        onQuoteRejected();
         setItemList((prevItems) =>
           prevItems.filter((item) => item._id !== itemId)
         );
+        onQuoteRejected();
+        closeModal();
         toast.success("Pieza eliminada correctamente");
       } else {
         toast.error("Error al Eliminar Pieza:", response.error);

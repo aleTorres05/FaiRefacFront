@@ -302,6 +302,7 @@ export default function ClientQuotes({ carListQuotes }) {
                           </h2>
 
                           <QuoteTable
+                            closeModal={closeModal}
                             currencyFormatter={currencyFormatter}
                             quote={selectedQuote}
                             onQuoteRejected={triggerRefresh}
