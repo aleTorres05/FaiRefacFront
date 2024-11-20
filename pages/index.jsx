@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import Introduction from "@/components/Introduction";
 import DescriptionCard from "@/components/DescriptionCard";
 import BenefitCards from "@/components/BenefitCards";
@@ -8,16 +7,13 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
-      <Header />
-      <main className="grid mt-[18px] mx-[32px] grid-cols-12">
-        <Introduction />
-        <DescriptionCard />
-        <BenefitCards />
-        <History />
-        <FAQ />
-        <Footer />
-      </main>
-    </>
+    <main className="grid mt-[18px] mx-[32px] grid-cols-12">
+      <Introduction />
+      <DescriptionCard />
+      <BenefitCards />
+      <History />
+      <FAQ />
+      <Footer />
+    </main>
   );
 }

@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { useRouter } from "next/router";
 
 export default function QuoteSent() {
@@ -9,8 +8,6 @@ export default function QuoteSent() {
   };
 
   return (
-    <>
-      <Header />
       <main className="flex flex-1 w-full h-screen flex-col justify-center items-center">
         <div className="p-5 md:p-20 lg:p-52">
           <i className="fa-solid fa-circle-check text-[120px] mb-10" />
@@ -41,6 +38,5 @@ export default function QuoteSent() {
           </button>
         </div>
       </main>
-    </>
   );
 }

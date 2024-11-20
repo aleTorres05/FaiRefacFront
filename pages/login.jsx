@@ -1,14 +1,9 @@
 import LoginForm from "@/components/LoginForm";
-import Header from "@/components/Header";
 import Link from "next/link";
 
 export default function Login() {
   return (
     <div className="h-[100vh] flex flex-col">
-      {/* Header siempre en la parte superior */}
-      <Header className="fixed top-0 left-0 w-full" />
-
-      {/* Contenedor centrado */}
       <div className="flex flex-1 flex-col justify-center md:items-center">
         <Link href="/signup">
           <button className="hidden md:block md:absolute lg:block lg:absolute right-5 top-[15%] bg-[#D16527] font-chakra w-[190px] h-[41px] text-[#fff] uppercase">
