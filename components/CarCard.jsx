@@ -100,7 +100,12 @@ export default function CarCard() {
           </div>
         ))}
         {currentPage === numOfPages && (
-          <div className="w-full lg:w-[48%] flex align-middle items-center justify-center">
+          <div
+            className={clsx(
+              "w-full  flex align-middle items-center justify-center",
+              currentCars.length % 2 === 0 ? "lg:w-[97%]" : "lg:w-[48%]"
+            )}
+          >
             <div
               className="flex  align-middle items-center justify-center h-[100px] w-[100%] lg:h-[100%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
               style={{
