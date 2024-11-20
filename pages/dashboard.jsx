@@ -1,26 +1,26 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "./_app";
+import { useEffect, useState } from "react";
 import ClientDashboard from "@/components/ClientDashboard";
 import RepairShopDashboard from "@/components/RepairShopDashboard";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
+import { getUserByEmail } from "./api/user";
 import SpinnerLoading from "@/components/SpinnerLoading";
 
 export default function UserDashboard() {
   const router = useRouter();
-  const user = useContext(UserContext);
+  const [user, setUser] = useState(null)
   const [carListQuotes, setCarListQuotes] = useState();
 
   useEffect(() => {
-    if (!user) return;
-
     const token = localStorage.getItem("token");
     const email = localStorage.getItem("email");
-
     if (!token || !email) {
       toast.error("Es necesario iniciar sesión para acceder a esta página.");
       router.push("/login");
-    }
+    } else {
+      getUserByEmail(email, token)
+        .then((user) => {
+          setUser(user);
 
     if (!user.verifiedEmail) {
       toast.error("Es necesario verificar su correo electrónico.");
@@ -56,7 +56,15 @@ export default function UserDashboard() {
         router.push("/update-info");
       }, 1000);
     }
-  }, [user, router]);
+  })
+  .catch((error) => {
+    toast.error(error.message || "Ocurrió un error inesperado");
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    router.push("/login");
+  });
+}
+  }, []);
 
   return (
     <>
