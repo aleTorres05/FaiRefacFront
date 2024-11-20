@@ -3,11 +3,7 @@ import { useRouter } from "next/router";
 import DropdownMenu from "./DropdownMenu";
 import { User, Bell } from "lucide-react";
 
-export default function NavLinks({
-  handleLogout,
-  client,
-  repairShop,
-}) {
+export default function NavLinks({ handleLogout, client, repairShop }) {
   const router = useRouter();
   const userInfo = client || repairShop;
 
@@ -77,13 +73,13 @@ export default function NavLinks({
             }
           >
             <div className="p-6 bg-[#302F2F] rounded-md w-full content-fit text-white">
-              <div className="flex items-center flex-col mb-4">
+              <div className="flex items-center flex-col mb-4 ">
                 <img
                   src={userInfo?.profilePicture || "/default-avatar.png"}
                   alt="profile"
                   className="w-16 h-16 rounded-full mb-2"
                 />
-                <p className="font-chakra">
+                <p className="font-chakra text-center">
                   ¡Hola! {userInfo?.companyName || userInfo?.firstName}
                 </p>
                 <button

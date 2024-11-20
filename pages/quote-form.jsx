@@ -54,17 +54,17 @@ export default function QuoteForm() {
     try {
       const decoded = parseJwt(token);
       const currentTime = Math.floor(Date.now() / 1000);
-      return decoded.exp - currentTime; // Time left in seconds
+      return decoded.exp - currentTime;
     } catch (error) {
       console.error("Error decoding token:", error);
-      return 0; // Return 0 if there's an error, indicating expiration
+      return 0;
     }
   };
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`; // e.g., "5:09"
+    return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
   const isTokenExpired = (token) => {
@@ -90,7 +90,6 @@ export default function QuoteForm() {
       setCar(clientCar._id);
       setClient(client._id);
     } else if (token && !isTokenExpired(token)) {
-      // Update time left every second
       const intervalId = setInterval(() => {
         const newTimeLeft = getTokenExpirationTime(token);
         setTimeLeft(newTimeLeft);
