@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function CarDetail({
@@ -8,6 +8,11 @@ export default function CarDetail({
   isModalOpen,
 }) {
   const router = useRouter();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleQuoteClick = () => {
     sessionStorage.setItem("client", JSON.stringify(client));
@@ -41,9 +46,8 @@ export default function CarDetail({
         <h2 className="font-chakra uppercase font-bold text-center text-[24px] mb-4 border-b-2 border-[#D16527]">
           Información del Carro
         </h2>
-        {/* Mostrar información del carro seleccionado */}
         {selectedCar && (
-          <div>
+          <div className=" justify-items-center w-full">
             <div className="max-w-[520px] mx-auto mb-4 ">
               <img
                 src={selectedCar.carPicture}
@@ -54,32 +58,112 @@ export default function CarDetail({
                 {selectedCar?.nickname != "null" ? selectedCar.nickname : ""}
               </h2>
             </div>
-            <div className="max-w-[320px] mx-auto justify-evenly">
-              <div className="flex flex-col md:flex-row justify-between md:mb-4 font-chakra text-xl">
-                <p>
+            <div className="w-full md:max-w-[320px] mb-4  flex flex-row md:flex-col mx-auto justify-evenly">
+              <div className="flex flex-col md:flex-row justify-evenly md:mb-4 font-chakra ">
+                <p className="text-sm md:text-lg lg:text-xl">
                   <strong>Marca:</strong> {selectedCar.brand}
                 </p>
-                <p>
+                <p className="text-sm md:text-lg lg:text-xl">
                   <strong>Modelo:</strong> {selectedCar.model}
                 </p>
               </div>
-              <div className="flex flex-col md:flex-row justify-between mb-4 font-chakra text-xl">
-                <p>
+              <div className="flex flex-col md:flex-row justify-evenly md:mb-4 font-chakra">
+                <p className="text-sm md:text-lg lg:text-xl">
                   <strong>Año:</strong> {selectedCar.year}
                 </p>
-                <p>
+                <p className="text-sm md:text-lg lg:text-xl">
                   <strong>Versión:</strong> {selectedCar.version || "N/A"}
                 </p>
               </div>
             </div>
-            <div className="w-full text-center">
+            <div className="w-full my-2 md:p-2 text-center items-center justify-center flex flex-col md:flex-row">
               <button
-                className="w-[250px] py-2 bg-[#D16527] text-white font-chakra font-semibold rounded-md"
+                className="font-chakra border-2 border-[#D16527] flex flex-row w-[50%] md:w-[30%] lg:w-[20%] bg-[#D16527] justify-center py-2 font-semibold text-white md:mr-4 mb-2 md:mb-0"
                 onClick={handleQuoteClick}
               >
                 COTIZAR
               </button>
+              <button
+                onClick={toggleDropdown}
+                id="dropdownDefaultButton"
+                data-dropdown-toggle="dropdown"
+                class="bg-transparent font-chakra flex flex-row w-[50%] md:w-[30%] lg:w-[20%] hover:bg-[#D16527] justify-center py-2 font-semibold text-white border-2 border-[#D16527]"
+                type="button"
+              >
+                COTIZACIONES
+                <svg
+                  class="w-2.5 h-2.5 ml-2 mt-1"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
             </div>
+            {isDropdownOpen && (
+              <div id="dropdown" className="w-[100%]">
+                <table
+                  aria-labelledby="dropdownDefaultButton"
+                  className="table-fixed w-full font-chakra border-collapse border-2 border-[#D16527] mb-3"
+                >
+                  <thead>
+                    <tr className="bg-[#D16527]">
+                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                        Items
+                      </th>
+                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                        Ticket
+                      </th>
+                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                        Status
+                      </th>
+                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                        Total Paid
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {selectedCar.quotes
+                      ?.filter((quote) => quote.totalFaiRefacFee > 0)
+                      .map((quote) => (
+                        <tr key={quote._id} className="text-center">
+                          <td className="border text-start text-xs md:text-md lg:text-lg border-gray-300 px-2 py-2">
+                            {quote.items?.map((item) => (
+                              <p key={item._id}>
+                                {item.concept} (x{item.quantity})
+                              </p>
+                            ))}
+                          </td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
+                            <a
+                              href={quote.ticketUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline"
+                            >
+                              View Ticket
+                            </a>
+                          </td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg capitalize">
+                            {quote.status}
+                          </td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
+                            ${quote.totalFaiRefacFee.toFixed(2)}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>
