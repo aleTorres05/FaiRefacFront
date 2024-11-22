@@ -12,8 +12,6 @@ export default function ClientQuotes({ carListQuotes }) {
   const [quotesReview, setQuotesReview] = useState([]);
   const [selectedQuoteIndex, setSelectedQuoteIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [quoteItem, setQuoteItem] = useState([]);
-  const [noQuotesTrigger, setNoQuotesTrigger] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [openDropdownId, setOpenDropdownId] = useState(null);
   const [refreshToggle, setRefreshToggle] = useState(false);
@@ -111,13 +109,10 @@ export default function ClientQuotes({ carListQuotes }) {
 
             if (groupedQuotes.length > 0) {
               allCarsQuotes.push({ car, carQuoteDetails: groupedQuotes });
-            } else {
-              setNoQuotesTrigger(true);
             }
           })
         );
 
-        setQuoteItem(carQuoteItems);
         setQuotesReview(allCarsQuotes);
       } catch (error) {
         toast.error("Error al obtener Info");

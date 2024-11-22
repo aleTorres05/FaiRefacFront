@@ -19,13 +19,32 @@ export default function QuoteForm() {
   const [isMechanicFormOpen, setIsMechanicFormOpen] = useState(false);
   const [mechanics, setMechanics] = useState([]);
   const [quoteToken, setQuoteToken] = useState({});
-  const [selectedMechanic, setSelectedMechanic] = useState("");
   const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
   const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
   const [car, setCar] = useState(null);
   const [client, setClient] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const { token } = router.query;
+
+  const [filterText, setFilterText] = useState(""); // Search filter text
+  const [selectedMechanic, setSelectedMechanic] = useState(""); // Selected mechanic ID
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown visibility
+
+  const handleInputChange = (e) => {
+    setFilterText(e.target.value);
+    setIsDropdownOpen(true); // Open dropdown on typing
+  };
+
+  const handleOptionClick = (mechanic) => {
+    setSelectedMechanic(mechanic._id); // Set selected mechanic ID
+    setFilterText(mechanic.workshopName); // Display mechanic name
+    setIsDropdownOpen(false); // Close dropdown
+  };
+
+  // Filter mechanics based on search input
+  const filteredMechanics = mechanics.filter((mechanic) =>
+    mechanic.workshopName.toLowerCase().includes(filterText.toLowerCase())
+  );
 
   const {
     handleSubmit,
@@ -135,9 +154,16 @@ export default function QuoteForm() {
       });
   }, [token, router.isReady]);
 
-  const handleMechanicChange = (e) => {
-    setSelectedMechanic(e.target.value);
-  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".relative")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   async function submitForm(data) {
     try {
@@ -202,8 +228,7 @@ export default function QuoteForm() {
               onClick={handleCopyUrl}
             />
             <p className="font-chakra">Copiar Enlace</p>
-
-            <div className=" font-chakra text-center text-wrap font-semibold absolute bottom-full  transform-translate-x-1/2 md:transform-translate-x-1/3 mb-2 hidden group-hover:block bg-[#D16527] text-white text-xs lg:text-sm rounded py-1 px-2 z-10">
+            <div className=" font-chakra text-center text-wrap font-semibold absolute bottom-full  transform-translate-x-1/2 md:transform-translate-x-1/3 mb-2 hidden group-hover:block bg-[#D16527] text-white text-xs lg:text-sm rounded py-1 px-2 z-10 ">
               Este Enlace se le envia a tu Mecanico, Haz Click para copiarlo.
             </div>
           </div>
@@ -212,38 +237,53 @@ export default function QuoteForm() {
             <p className=""> Session expira en: {formatTime(timeLeft)}</p>
           </div>
         )}
-        <div className="flex flex-col mr-4 sm:mr-9 min-w-[150px] md:min-w-[250px] items-center">
+        <div className="flex flex-col min-w-[150px] md:min-w-[250px] items-center">
           <label
             htmlFor="mechanic-select"
             className="block text-white w-full font-chakra font-bold"
           >
             SELECCIONA UN TALLER
           </label>
-          <select
-            id="mechanic-select"
-            value={selectedMechanic}
-            onChange={handleMechanicChange}
-            className="text-[#C2C2C2] w-full outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
-          >
-            <option className="text-white font-mulish" value="" disabled>
-              Selecciona un taller
-            </option>
-            {mechanics.map((mechanic) => (
-              <option key={mechanic._id} value={mechanic._id}>
-                {mechanic.workshopName}
-              </option>
-            ))}
-          </select>
+          <div className="relative w-full flex flex-row">
+            <div className="mr-2 font-chakra">
+              <input
+                type="text"
+                placeholder="Buscar taller..."
+                value={filterText}
+                onChange={handleInputChange}
+                onClick={() => setIsDropdownOpen(true)}
+                className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white"
+              />
+
+              {isDropdownOpen && (
+                <ul className="absolute z-10 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto">
+                  {filteredMechanics.map((mechanic) => (
+                    <li
+                      key={mechanic._id}
+                      onClick={() => handleOptionClick(mechanic)}
+                      className="px-4 py-2 text-white hover:bg-[#D16527] font-medium  cursor-pointer"
+                    >
+                      {mechanic.workshopName}
+                    </li>
+                  ))}
+                  {filteredMechanics.length === 0 && (
+                    <li className="px-4 py-2 text-gray-400">
+                      No se encontraron talleres
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
+            <button
+              className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
+              type="button"
+              onClick={handleOpenMechanicForm}
+            >
+              +
+            </button>
+          </div>
         </div>
-        <div className="flex h-full justify-center my-auto">
-          <button
-            className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
-            type="button"
-            onClick={handleOpenMechanicForm}
-          >
-            +
-          </button>
-        </div>
+        <div className="flex h-full justify-center"></div>
       </div>
 
       <MechanicForm
