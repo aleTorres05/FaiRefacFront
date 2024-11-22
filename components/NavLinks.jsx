@@ -1,11 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 import { User, Bell } from "lucide-react";
 
 export default function NavLinks({ handleLogout, client, repairShop }) {
   const router = useRouter();
   const userInfo = client || repairShop;
+  const [allowedRoutes, setAllowedRoutes] = useState([
+    "/dashboard",
+    "/cancel",
+    "/success",
+    "/email-verification",
+    "/quote-form",
+    "/quote-sent",
+    "/update-info",
+  ]);
 
   const getNotificationCount = () => {
     if (repairShop) {
@@ -14,7 +24,13 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
     } else if (client) {
       return client.cars.reduce((acc, car) => {
         return (
-          acc + car.quotes.filter((quote) => quote.status === "initial").length
+          acc +
+          car.quotes.reduce((quoteAcc, quote) => {
+            const reviewCount = quote.repairShopQuotes.filter(
+              (rsQuote) => rsQuote.status === "review"
+            ).length;
+            return quoteAcc + reviewCount;
+          }, 0)
         );
       }, 0);
     }
@@ -48,16 +64,25 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
           >
             Regístrate
           </Link>
-          <Link
-            href="/login"
-            className="hover:text-[#D16527] font-mulish transition-colors"
-          >
-            Login
-          </Link>
+          {userInfo ? (
+            <Link
+              href="/dashboard"
+              className="hover:text-[#D16527] font-mulish transition-colors"
+            >
+              Mi cuenta
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="hover:text-[#D16527] font-mulish transition-colors"
+            >
+              Login
+            </Link>
+          )}
         </div>
       )}
 
-      {userInfo && router.pathname === "/dashboard" && (
+      {userInfo && allowedRoutes.includes(router.pathname) && (
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-full lg:space-x-5 space-y-4 lg:space-y-0">
           <div className="relative">
             <Bell className="w-6 h-6 hover:text-[#D16527] transition-colors cursor-pointer" />

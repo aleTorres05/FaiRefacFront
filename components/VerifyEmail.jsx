@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { send, verify } from "@/pages/api/opt";
 
-export default function VerifyEmail({ user }) {
+export default function VerifyEmail() {
   const [code, setCode] = useState(Array(6).fill(""));
   const [userEmail, setUserEmail] = useState("");
   const inputsRef = useRef([]);
@@ -38,13 +38,6 @@ export default function VerifyEmail({ user }) {
   };
 
   useEffect(() => {
-    if (!user) return;
-
-    if (user?.verifiedEmail) {
-      toast.success("Tu correo ya ha sido validado.");
-      router.push("/dashboard");
-      return;
-    }
 
     const email = localStorage.getItem("email");
     setUserEmail(email);
@@ -58,7 +51,7 @@ export default function VerifyEmail({ user }) {
         router.push("/login");
         throw new Error(e);
       });
-  }, [user, router]);
+  }, []);
 
   async function handleConfirmClick() {
     try {
