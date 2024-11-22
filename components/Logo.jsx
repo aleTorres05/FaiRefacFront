@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-
+import { useState } from "react";
 
 export default function Logo() {
   const router = useRouter();
+  const [allowedRoutes, setAllowedRoutes] = useState([
+    "/dashboard",
+    "/cancel",
+    "/success",
+    "/email-verification",
+    "/quote-form",
+    "/quote-sent",
+    "/update-info",
+  ]);
 
-  // Define el enlace según la ruta actual
-  const logoHref = router.pathname === "/dashboard" ? "/dashboard" : "/";
+  const logoHref = allowedRoutes.includes(router.pathname) ? "/dashboard" : "/";
 
   return (
     <div className="w-1/4 ml-5">
