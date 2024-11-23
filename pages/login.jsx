@@ -5,22 +5,20 @@ export default function Login() {
   return (
     <div className="h-[100vh] flex flex-col">
       <div className="flex flex-1 flex-col justify-center md:items-center">
-        <Link href="/signup">
-          <button className="hidden md:block md:absolute lg:block lg:absolute right-5 top-[15%] bg-[#D16527] font-chakra w-[190px] h-[41px] text-[#fff] uppercase">
-            Resgitrarse
-          </button>
-        </Link>
-
-        <h1 className="text-[#FFF] text-center font-chakra text-[32px] font-bold leading-normal mb-[50px]">
-          Welcome to the FaiRefac
+        <h1 className="text-center font-chakra text-[32px] uppercase font-bold leading-normal mb-[50px]">
+          <span className="text-[#FFF]">Bienvenido a Fai</span>
+          <span className="text-[#D16527]">Refac</span>
         </h1>
         <LoginForm />
-        <div className="flex w-full md:hidden lg:hidden justify-start  px-[32px]  mt-5">
-          <Link href="/signup">
-            <button className="bg-[#fff] font-chakra w-[190px] h-[41px] text-[#000] uppercase">
-              Registrarse
-            </button>
-          </Link>
+        <div className="flex w-full  justify-center  px-[32px]  mt-5">
+          <div>
+            <p className="text-base font-mulish">
+              ¿Aún no tienes cuenta?
+              <Link href="/signup" className="text-[#D16527] underline ml-1">
+                Regístrate
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
