@@ -137,7 +137,7 @@ export default function UserRegistrationForm() {
             )}
           <div
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-4 top-4 cursor-pointer"
+            className="absolute right-1 md:right-4 top-4 cursor-pointer"
           >
             {showPassword ? <EyeOff /> : <Eye />}
           </div>
@@ -164,7 +164,7 @@ export default function UserRegistrationForm() {
             )}
           <div
             onClick={() => setShowConfirmPassword((prev) => !prev)}
-            className="absolute right-4 top-4 cursor-pointer"
+            className="absolute right-1 md:right-4 top-4 cursor-pointer"
           >
             {showConfirmPassword ? <EyeOff /> : <Eye />}
           </div>
