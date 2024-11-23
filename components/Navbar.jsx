@@ -12,6 +12,8 @@ export default function Navbar({ user }) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("userId");
     toast.success("Sesión cerrada, vuelve pronto.");
     router.push("/");
   };

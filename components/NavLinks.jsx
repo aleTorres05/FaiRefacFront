@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import DropdownMenu from "./DropdownMenu";
-import { User, Bell } from "lucide-react";
+import { User, Bell, LogOut } from "lucide-react";
 
 export default function NavLinks({ handleLogout, client, repairShop }) {
   const router = useRouter();
