@@ -4,7 +4,12 @@ import { useState } from "react";
 import DropdownMenu from "./DropdownMenu";
 import { User, Bell, LogOut } from "lucide-react";
 
-export default function NavLinks({ handleLogout, client, repairShop }) {
+export default function NavLinks({
+  handleLogout,
+  client,
+  repairShop,
+  closeMenu,
+}) {
   const router = useRouter();
   const userInfo = client || repairShop;
   const [allowedRoutes, setAllowedRoutes] = useState([
@@ -47,18 +52,21 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
         router.pathname === "/signup") && (
         <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-full space-y-4 lg:space-y-0 lg:space-x-5">
           <Link
+            onClick={closeMenu}
             href="/"
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
             Home
           </Link>
           <Link
+            onClick={closeMenu}
             href="/repairshop-benefits"
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
             Impulsa tu Refaccionaria
           </Link>
           <Link
+            onClick={closeMenu}
             href="/signup"
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
@@ -66,6 +74,7 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
           </Link>
           {userInfo ? (
             <Link
+              onClick={closeMenu}
               href="/dashboard"
               className="hover:text-[#D16527] font-mulish transition-colors"
             >
@@ -73,6 +82,7 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
             </Link>
           ) : (
             <Link
+              onClick={closeMenu}
               href="/login"
               className="hover:text-[#D16527] font-mulish transition-colors"
             >
@@ -84,28 +94,48 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
 
       {userInfo && allowedRoutes.includes(router.pathname) && (
         <div className="flex flex-col lg:flex-row  lg:justify-start w-full lg:space-x-5 space-y-4 lg:space-y-0">
-          <div className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer">
-            <div className="relative">
-              <Bell className="w-6 h-6 mr-2 " />
-              {notificationCount > 0 && (
-                <div className="absolute top-0 right-2 w-3 h-3 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
-                  {notificationCount}
-                </div>
-              )}
+          <div className="relative flex flex-row hover:text-[#D16527] transition-colors cursor-pointer group">
+            <Link
+              href={"/dashboard"}
+              onClick={closeMenu}
+              className="flex flex-row"
+            >
+              <div className="relative">
+                <Bell className="w-6 h-6 mr-2 " />
+                {notificationCount > 0 && (
+                  <div className="absolute top-0 right-2 w-3 h-3 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                    {notificationCount}
+                  </div>
+                )}
+              </div>
+              <p className="font-mulish lg:hidden ">Cotizaciones pendientes</p>
+            </Link>
+            <div className="absolute min-w-[87px] top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-[#000000] text-white font-mulish text-xs text-center rounded hidden lg:group-hover:block">
+              Cotizaciones pendientes
             </div>
-            <p className="font-mulish lg:hidden ">Cotizaciones pendientes</p>
           </div>
 
-          <div className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer">
-            <User className="w-6 h-6 mr-2" />
-            <p className="font-mulish lg:hidden">Mi cuenta</p>
+          <div
+            onClick={closeMenu}
+            className="relative hover:text-[#D16527] transition-colors cursor-pointer group"
+          >
+            <Link className="flex flex-row" href={"/dashboard"}>
+              <User className="w-6 h-6 mr-2" />
+              <p className="font-mulish lg:hidden">Mi cuenta</p>
+            </Link>
+            <div className="absolute min-w-[87px] top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-[#000000] text-white font-mulish text-xs text-center rounded hidden lg:group-hover:block">
+              Mi cuenta
+            </div>
           </div>
           <div
-            className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer"
+            className="relative flex flex-row hover:text-[#D16527] transition-colors cursor-pointer group"
             onClick={handleLogout}
           >
             <LogOut className="w-6 h-6 mr-2" />
             <p className="font-mulish lg:hidden">Cerrar sesión</p>
+            <div className="absolute min-w-[87px] top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-[#000000] text-white font-mulish text-xs text-center rounded hidden lg:group-hover:block">
+              Cerrar sesión
+            </div>
           </div>
         </div>
       )}
