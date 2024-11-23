@@ -5,7 +5,6 @@ import { toast } from "sonner";
 export default function QuotesList({
   quotes,
   carQuoteId,
-  setNoQuotesTrigger,
   selectedQuoteIdx,
   handleQuoteChange,
   onQuoteRejected,
@@ -13,9 +12,12 @@ export default function QuotesList({
 }) {
   const [quoteList, setQuoteList] = useState(quotes);
 
+  useEffect(() => {
+    setQuoteList(quotes); // Sync initial quotes prop to local state
+  }, [quotes]);
+
   async function handleChangeStatus(repairShopQuoteId) {
     try {
-      setNoQuotesTrigger(true);
       onQuoteRejected();
       const token = localStorage.getItem("token");
       const response = await rejectQuote(carQuoteId, repairShopQuoteId, token);

@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { send, verify } from "@/pages/api/opt";
-import { getUserByEmail } from "@/pages/api/user";
 
 export default function VerifyEmail() {
   const [code, setCode] = useState(Array(6).fill(""));
@@ -39,6 +38,7 @@ export default function VerifyEmail() {
   };
 
   useEffect(() => {
+
     const email = localStorage.getItem("email");
     setUserEmail(email);
 
