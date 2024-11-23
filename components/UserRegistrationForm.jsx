@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { toast } from "sonner";
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import { create } from "@/pages/api/user";
-import { login } from "@/pages/api/login";
 
 export default function UserRegistrationForm() {
   const router = useRouter();
@@ -12,6 +12,9 @@ export default function UserRegistrationForm() {
     isClient: false,
     isRepairShop: false,
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -29,13 +32,17 @@ export default function UserRegistrationForm() {
         );
         return;
       }
-      if (!data.email || !data.password) {
+      if (!data.email || !data.password || !data.confirmPassword) {
         toast.error("Por favor, completa todos los campos.");
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(data.email)) {
         toast.error("Por favor, ingresa un correo electrónico válido.");
+        return;
+      }
+      if (data.password !== data.confirmPassword) {
+        toast.error("Las contraseñas no coinciden.");
         return;
       }
       await create(data);
@@ -58,7 +65,6 @@ export default function UserRegistrationForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-sm md:max-w-[660px]"
       >
-        {/* Botones para seleccionar si es cliente o refaccionaria */}
         <div className="mb-14 flex  flex-col md:flex-row justify-between ">
           <button
             type="button"
@@ -107,22 +113,61 @@ export default function UserRegistrationForm() {
             required
             className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528] focus:border-[#D26528] font-mulish"
             {...register("email", {
-              required: { value: true, message: "Email Required" },
+              required: { value: true, message: "Email requerido." },
             })}
           />
+          {errors.email && (
+              <span className="text-red-500">Correo electronico es obligatorio.</span>
+            )}
         </div>
 
-        <div className="mb-14">
-          <label className="block text-sm font-medium mb-1">CONTRASEÑA</label>
+        <div className="mb-14 relative">
+          <label className="block text-sm font-chakra font-medium mb-1">CONTRASEÑA</label>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             required
             className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528] focus:border-[#D26528] font-mulish"
             {...register("password", {
-              required: { value: true, message: "Password Required" },
+              required: { value: true, message: "Contraseña requerida." },
+            })}
+            />
+            {errors.password && (
+              <span className="text-red-500">Contraseña es obligatoria.</span>
+            )}
+          <div
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-4 top-4 cursor-pointer"
+          >
+            {showPassword ? <EyeOff /> : <Eye />}
+          </div>
+        </div>
+
+        <div className="mb-14 relative">
+          <label className="block text-sm font-chakra font-medium mb-1">
+            CONFIRMAR CONTRASEÑA
+          </label>
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            required
+            className="w-full border-b border-[#343434] bg-transparent focus:outline-none focus-visible:border-[#D26528] focus:border-[#D26528] font-mulish"
+            {...register("confirmPassword", {
+              required: {
+                value: true,
+                message: "Confirmación de contraseña requerida.",
+              },
             })}
           />
+          {errors.confirmPassword && (
+              <span className="text-red-500">Confirmar contraseña es obligatoria.</span>
+            )}
+          <div
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            className="absolute right-4 top-4 cursor-pointer"
+          >
+            {showConfirmPassword ? <EyeOff /> : <Eye />}
+          </div>
         </div>
 
         <button
