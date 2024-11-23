@@ -83,39 +83,30 @@ export default function NavLinks({ handleLogout, client, repairShop }) {
       )}
 
       {userInfo && allowedRoutes.includes(router.pathname) && (
-        <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-start w-full lg:space-x-5 space-y-4 lg:space-y-0">
-          <div className="relative">
-            <Bell className="w-6 h-6 hover:text-[#D16527] transition-colors cursor-pointer" />
-            {notificationCount > 0 && (
-              <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
-                {notificationCount}
-              </div>
-            )}
-          </div>
-          <DropdownMenu
-            trigger={
-              <User className="w-6 h-6 hover:text-[#D16527] transition-colors cursor-pointer" />
-            }
-          >
-            <div className="p-6 bg-[#302F2F] rounded-md w-full content-fit text-white">
-              <div className="flex items-center flex-col mb-4 ">
-                <img
-                  src={userInfo?.profilePicture || "/default-avatar.png"}
-                  alt="profile"
-                  className="w-16 h-16 rounded-full mb-2"
-                />
-                <p className="font-chakra text-center">
-                  ¡Hola! {userInfo?.companyName || userInfo?.firstName}
-                </p>
-                <button
-                  className="bg-[#D16527] text-white uppercase w-full py-2 mt-4 rounded-md font-bold"
-                  onClick={handleLogout}
-                >
-                  Cerrar sesión
-                </button>
-              </div>
+        <div className="flex flex-col lg:flex-row  lg:justify-start w-full lg:space-x-5 space-y-4 lg:space-y-0">
+          <div className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer">
+            <div className="relative">
+              <Bell className="w-6 h-6 mr-2 " />
+              {notificationCount > 0 && (
+                <div className="absolute top-0 right-2 w-3 h-3 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                  {notificationCount}
+                </div>
+              )}
             </div>
-          </DropdownMenu>
+            <p className="font-mulish lg:hidden ">Cotizaciones pendientes</p>
+          </div>
+
+          <div className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer">
+            <User className="w-6 h-6 mr-2" />
+            <p className="font-mulish lg:hidden">Mi cuenta</p>
+          </div>
+          <div
+            className="flex flex-row hover:text-[#D16527] transition-colors cursor-pointer"
+            onClick={handleLogout}
+          >
+            <LogOut className="w-6 h-6 mr-2" />
+            <p className="font-mulish lg:hidden">Cerrar sesión</p>
+          </div>
         </div>
       )}
     </div>
