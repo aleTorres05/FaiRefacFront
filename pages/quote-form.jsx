@@ -235,25 +235,53 @@ export default function QuoteForm() {
             SELECCIONA UN TALLER
           </label>
           <div className="relative w-full flex flex-row">
-            <div className="relative w-full flex flex-row dropdown-container">
-              <input
-                type="text"
-                placeholder="Buscar taller..."
-                value={filterText}
-                onChange={handleInputChange}
-                onClick={() => setIsDropdownOpen(true)}
-                className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white"
-              />
+            <div className="relative w-full flex flex-col dropdown-container">
+              {/* Campo de entrada */}
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Buscar taller..."
+                  value={filterText}
+                  onChange={handleInputChange}
+                  onClick={() => setIsDropdownOpen(true)}
+                  className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white pr-8"
+                />
+                {filterText && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterText("");
+                      setFilteredMechanics(mechanics);
+                    }}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-[#D16527]"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
 
               {/* Dropdown */}
               {isDropdownOpen && (
-                <ul className="absolute z-10 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto">
+                <ul className="absolute top-full left-0 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto z-10">
                   {filteredMechanics.length > 0 ? (
                     filteredMechanics.map((mechanic) => (
                       <li
                         key={mechanic._id}
                         onClick={() => handleOptionClick(mechanic)}
-                        className="px-4 py-2 text-white hover:bg-[#D16527]te cursor-pointer hover:bg-[#D16527]"
+                        className="px-4 py-2 text-white hover:bg-[#D16527] cursor-pointer"
                       >
                         <p className="text-[12px]">{mechanic.workshopName}</p>
                         <hr />
