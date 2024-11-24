@@ -227,9 +227,9 @@ export default function QuoteForm() {
       <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">
         SOLICITA UNA COTIZACIÓN
       </h1>
-      <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
+      <div className="flex flex-col md:flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
         {!token ? (
-          <div className="w-full flex flex-row items-center relative group cursor-pointer">
+          <div className="w-full flex flex-row items-center relative group cursor-pointer mb-5">
             <img
               className="h-[50px]"
               src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
@@ -260,11 +260,24 @@ export default function QuoteForm() {
                   type="text"
                   placeholder="Buscar taller..."
                   value={filterText}
-                  onChange={handleInputChange} // Maneja el texto de búsqueda.
+                  onChange={handleInputChange}
                   onClick={() => setIsDropdownOpen(true)}
                   className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white pr-8"
                 />
+                {filterText && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterText("");
+                      setIsDropdownOpen(false);
+                    }}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-transparent hover:text-red-500"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
+
               {isDropdownOpen && (
                 <ul className="absolute top-full left-0 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto z-10">
                   {filteredMechanics.map((mechanic) => (
@@ -274,6 +287,7 @@ export default function QuoteForm() {
                       className="px-4 py-2 text-white hover:bg-[#D16527] cursor-pointer"
                     >
                       <p className="text-[12px]">{mechanic.workshopName}</p>
+                      <hr />
                       <p className="text-[8px] text-[#888]">
                         Tel: {mechanic.phoneNumber}
                       </p>

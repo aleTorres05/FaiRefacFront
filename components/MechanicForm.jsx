@@ -19,6 +19,7 @@ export default function MechanicForm({ isOpen, onClose, onMechanicCreated }) {
       onMechanicCreated(newMechanic); // Notifica al padre sobre el nuevo mecánico.
 
       localStorage.setItem("lastCreatedMechanicId", newMechanic._id);
+
       onClose(); // Cierra el popup.
     } catch (error) {
       toast.error("Error al agregar el mecánico");
