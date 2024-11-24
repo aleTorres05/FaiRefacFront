@@ -208,9 +208,9 @@ export default function QuoteForm() {
       <h1 className="font-chakra mb-14 md:mb-[80px] w-full text-center text-[32px] font-bold">
         SOLICITA UNA COTIZACIÓN
       </h1>
-      <div className="flex flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
+      <div className="flex flex-col md:flex-row w-full mb-14 md:max-w-[692px] justify-end items-center">
         {!token ? (
-          <div className="w-full flex flex-row items-center relative group cursor-pointer">
+          <div className="w-full flex flex-row items-center relative group cursor-pointer mb-5">
             <img
               className="h-[50px]"
               src="https://fairefac-assets.s3.us-east-2.amazonaws.com/Copy.png"
@@ -299,7 +299,7 @@ export default function QuoteForm() {
               )}
             </div>
 
-            <div className="relative flex items-center">
+            <div className="relative flex items-center justify-center">
               <div className="relative group">
                 <button
                   className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
