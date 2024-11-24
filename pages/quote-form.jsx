@@ -83,11 +83,17 @@ export default function QuoteForm() {
   };
 
   const handleInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase(); // Convertimos el texto de búsqueda a minúsculas
     setFilterText(e.target.value);
     setIsDropdownOpen(true);
-    const filtered = mechanics.filter((mechanic) =>
-      mechanic.workshopName.toLowerCase().includes(e.target.value.toLowerCase())
+
+    const filtered = mechanics.filter(
+      (mechanic) =>
+        mechanic.workshopName.toLowerCase().includes(searchTerm) || // Comparar nombre del taller
+        (mechanic.phoneNumber &&
+          mechanic.phoneNumber.toString().includes(searchTerm)) // Comparar teléfono como cadena
     );
+
     setFilteredMechanics(filtered);
   };
 
@@ -266,7 +272,6 @@ export default function QuoteForm() {
             </div>
 
             <div className="relative flex items-center">
-              {/* Botón + */}
               <div className="relative group">
                 <button
                   className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
@@ -275,19 +280,18 @@ export default function QuoteForm() {
                 >
                   +
                 </button>
-                {/* Tooltip visible en escritorio al hacer hover */}
+
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden md:group-hover:block bg-[#D16527] text-white text-xs lg:text-sm rounded py-1 px-2 z-10">
                   Agregar nuevo mecánico
                 </div>
               </div>
 
-              {/* Icono de interrogación visible solo en móvil */}
               <div className="relative flex items-center ml-2 md:hidden">
                 <button
                   type="button"
                   className="text-[#D16527] text-xl rounded-full border border-[#D16527] w-6 h-6 flex items-center justify-center"
                   onClick={(e) => {
-                    e.stopPropagation(); // Evita conflictos de clic
+                    e.stopPropagation();
                     setIsTooltipOpen(!isTooltipOpen);
                   }}
                 >
