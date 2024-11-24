@@ -29,6 +29,7 @@ export default function QuoteForm() {
   const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
   const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Controla la recarga de mecánicos.
 
   const { token } = router.query;
 
@@ -198,10 +199,28 @@ export default function QuoteForm() {
 
   const handleMechanicCreated = (newMechanic) => {
     setMechanics((prevMechanics) => [...prevMechanics, newMechanic]);
-    setFilterText(newMechanic.workshopName);
     setSelectedMechanic(newMechanic._id);
-    setIsDropdownOpen(false);
+    setFilterText(newMechanic.workshopName);
+    setRefresh((prev) => !prev);
   };
+
+  useEffect(() => {
+    getAllMechanics()
+      .then(setMechanics)
+      .catch((e) => {
+        toast.error("Error al cargar mecánicos");
+        console.error(e);
+      });
+  }, [refresh]);
+
+  useEffect(() => {
+    if (selectedMechanic) {
+      const mechanic = mechanics.find((m) => m._id === selectedMechanic);
+      if (mechanic) {
+        setFilterText(mechanic.workshopName);
+      }
+    }
+  }, [mechanics, selectedMechanic]);
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
@@ -236,7 +255,6 @@ export default function QuoteForm() {
           </label>
           <div className="relative w-full flex flex-row">
             <div className="relative w-full flex flex-col dropdown-container">
-              {/* Campo de entrada */}
               <div className="relative w-full">
                 <input
                   type="text"
@@ -251,50 +269,30 @@ export default function QuoteForm() {
                     type="button"
                     onClick={() => {
                       setFilterText("");
-                      setFilteredMechanics(mechanics);
+                      setIsDropdownOpen(false);
                     }}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-[#D16527]"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white bg-transparent hover:text-red-500"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    ✕
                   </button>
                 )}
               </div>
 
-              {/* Dropdown */}
               {isDropdownOpen && (
                 <ul className="absolute top-full left-0 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto z-10">
-                  {filteredMechanics.length > 0 ? (
-                    filteredMechanics.map((mechanic) => (
-                      <li
-                        key={mechanic._id}
-                        onClick={() => handleOptionClick(mechanic)}
-                        className="px-4 py-2 text-white hover:bg-[#D16527] cursor-pointer"
-                      >
-                        <p className="text-[12px]">{mechanic.workshopName}</p>
-                        <hr />
-                        <p className="text-[8px] text-[#888]">
-                          Tel: {mechanic.phoneNumber}
-                        </p>
-                      </li>
-                    ))
-                  ) : (
-                    <li className="px-4 py-2 text-gray-400">
-                      No se encontraron talleres
+                  {filteredMechanics.map((mechanic) => (
+                    <li
+                      key={mechanic._id}
+                      onClick={() => handleOptionClick(mechanic)}
+                      className="px-4 py-2 text-white hover:bg-[#D16527] cursor-pointer"
+                    >
+                      <p className="text-[12px]">{mechanic.workshopName}</p>
+                      <hr />
+                      <p className="text-[8px] text-[#888]">
+                        Tel: {mechanic.phoneNumber}
+                      </p>
                     </li>
-                  )}
+                  ))}
                 </ul>
               )}
             </div>
@@ -339,7 +337,7 @@ export default function QuoteForm() {
       <MechanicForm
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
-        onMechanicCreated={handleMechanicCreated}
+        onMechanicCreated={handleMechanicCreated} // Notifica al padre.
       />
 
       <form

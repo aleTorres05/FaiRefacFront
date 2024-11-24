@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function MechanicForm({ isOpen, onClose }) {
+export default function MechanicForm({ isOpen, onClose, onMechanicCreated }) {
   const {
     handleSubmit,
     register,
@@ -12,12 +12,18 @@ export default function MechanicForm({ isOpen, onClose }) {
   } = useForm();
 
   async function onSubmit(data) {
-    await postMechanic(data);
-    onClose();
-    toast.success("Mecanico Agregado exitosamente");
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    try {
+      const newMechanic = await postMechanic(data); // Envía los datos del mecánico.
+      toast.success("Mecánico agregado exitosamente");
+
+      onMechanicCreated(newMechanic); // Notifica al padre sobre el nuevo mecánico.
+
+      localStorage.setItem("lastCreatedMechanicId", newMechanic._id);
+
+      onClose(); // Cierra el popup.
+    } catch (error) {
+      toast.error("Error al agregar el mecánico");
+    }
   }
 
   if (!isOpen) return null;

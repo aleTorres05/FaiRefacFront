@@ -27,6 +27,8 @@ export default function App({ Component, pageProps }) {
           localStorage.removeItem("email");
           router.push("/login");
         });
+    } else {
+      setUser(null);
     }
   }, [router]);
 

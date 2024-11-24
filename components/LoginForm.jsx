@@ -3,10 +3,10 @@ import { useRouter } from "next/router";
 import { toast } from "sonner";
 import { login } from "@/pages/api/login";
 import { useForm } from "react-hook-form";
-import { getUserByEmail } from "@/pages/api/user";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
-  const [userData, setUserData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -53,34 +53,48 @@ export default function LoginForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-[20px]"
       >
-        <div className="w-full md:w-[660px] h-[66px] flex flex-col gap-[15px]">
+        <div className="w-full md:w-[660px] h-[66px] flex flex-col ">
           <label className="color-[#EDEDED] font-chakra text-[16px] font-bold leading-normal uppercase">
             CORREO
           </label>
           <input
-            type="mail"
-            className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            type="email"
+            name="email"
+            className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal mt-4 leading-normal bg-transparent border-b border-b-[#343434] border-b-1"
             required
             {...register("email", {
-              required: { value: true, message: "Email Required" },
+              required: { value: true, message: "Email requerido." },
             })}
           />
+          {errors.email && (
+              <span className="text-red-500">Correo electronico es obligatorio.</span>
+            )}
         </div>
-        <div className="w-full md:w-[660px] h-[66px] flex flex-col gap-[15px]">
+        <div className="relative w-full md:w-[660px] mt-4 h-[66px] flex flex-col">
           <label
-            htmlFor=""
             className="color-[#EDEDED] font-chakra text-[16px] font-bold leading-normal uppercase"
           >
             CONTRASEÑA
           </label>
+
           <input
-            type="password"
-            className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal leading-normal bg-transparent pb-3 border-b border-b-[#343434] border-b-1"
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className="text-[#C2C2C2] outline-none font-mulish text-[14px] font-normal mt-4 leading-normal bg-transparent border-b border-b-[#343434] border-b-1"
             required
             {...register("password", {
-              required: { value: true, message: "Password Required" },
+              required: { value: true, message: "Contraseña requerida." },
             })}
           />
+          {errors.password && (
+              <span className="text-red-500">Contraseña requerida.</span>
+            )}
+            <div
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="absolute right-1 md:right-4 top-8 cursor-pointer"
+          >
+            {showPassword ? <EyeOff /> : <Eye />}
+          </div>
         </div>
         <button
           type="submit"
