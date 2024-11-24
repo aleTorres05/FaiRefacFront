@@ -19,32 +19,18 @@ export default function QuoteForm() {
   const [isMechanicFormOpen, setIsMechanicFormOpen] = useState(false);
   const [mechanics, setMechanics] = useState([]);
   const [quoteToken, setQuoteToken] = useState({});
-  const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
-  const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
   const [car, setCar] = useState(null);
   const [client, setClient] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [filterText, setFilterText] = useState(""); // Texto de búsqueda
+  const [selectedMechanic, setSelectedMechanic] = useState(""); // ID del mecánico seleccionado
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Estado del dropdown
+  const [filteredMechanics, setFilteredMechanics] = useState([]); // Lista filtrada
+  const handleOpenMechanicForm = () => setIsMechanicFormOpen(true);
+  const handleCloseMechanicForm = () => setIsMechanicFormOpen(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+
   const { token } = router.query;
-
-  const [filterText, setFilterText] = useState(""); // Search filter text
-  const [selectedMechanic, setSelectedMechanic] = useState(""); // Selected mechanic ID
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown visibility
-
-  const handleInputChange = (e) => {
-    setFilterText(e.target.value);
-    setIsDropdownOpen(true); // Open dropdown on typing
-  };
-
-  const handleOptionClick = (mechanic) => {
-    setSelectedMechanic(mechanic._id); // Set selected mechanic ID
-    setFilterText(mechanic.workshopName); // Display mechanic name
-    setIsDropdownOpen(false); // Close dropdown
-  };
-
-  // Filter mechanics based on search input
-  const filteredMechanics = mechanics.filter((mechanic) =>
-    mechanic.workshopName.toLowerCase().includes(filterText.toLowerCase())
-  );
 
   const {
     handleSubmit,
@@ -71,21 +57,23 @@ export default function QuoteForm() {
           .join("")
       );
       return JSON.parse(jsonPayload);
-    } catch (error) {
-      console.error("Error decoding token:", error);
+    } catch {
       return null;
     }
   };
 
   const getTokenExpirationTime = (token) => {
-    try {
-      const decoded = parseJwt(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-      return decoded.exp - currentTime;
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return 0;
-    }
+    const decoded = parseJwt(token);
+    if (!decoded) return 0;
+    const currentTime = Math.floor(Date.now() / 1000);
+    return decoded.exp - currentTime;
+  };
+
+  const isTokenExpired = (token) => {
+    const decoded = parseJwt(token);
+    if (!decoded) return true;
+    const currentTime = Math.floor(Date.now() / 1000);
+    return decoded.exp < currentTime;
   };
 
   const formatTime = (seconds) => {
@@ -94,17 +82,25 @@ export default function QuoteForm() {
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
 
-  const isTokenExpired = (token) => {
-    try {
-      if (token) {
-        const decoded = parseJwt(token);
-        const currentTime = Math.floor(Date.now() / 1000);
-        return decoded.exp < currentTime;
-      }
-    } catch (error) {
-      toast.error("Error decoding token:", error);
-      return true;
-    }
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value.toLowerCase(); // Convertimos el texto de búsqueda a minúsculas
+    setFilterText(e.target.value);
+    setIsDropdownOpen(true);
+
+    const filtered = mechanics.filter(
+      (mechanic) =>
+        mechanic.workshopName.toLowerCase().includes(searchTerm) || // Comparar nombre del taller
+        (mechanic.phoneNumber &&
+          mechanic.phoneNumber.toString().includes(searchTerm)) // Comparar teléfono como cadena
+    );
+
+    setFilteredMechanics(filtered);
+  };
+
+  const handleOptionClick = (mechanic) => {
+    setSelectedMechanic(mechanic._id);
+    setFilterText(mechanic.workshopName);
+    setIsDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -112,14 +108,15 @@ export default function QuoteForm() {
     const clientSelected = sessionStorage.getItem("client");
 
     if (carSelected && clientSelected) {
-      const clientCar = JSON.parse(carSelected);
-      const client = JSON.parse(clientSelected);
-      setCar(clientCar._id);
-      setClient(client._id);
-    } else if (token && !isTokenExpired(token)) {
-      validateCanceledLink(token, router).then((response) => {
-        console.log(response);
-      });
+      setCar(JSON.parse(carSelected)._id);
+      setClient(JSON.parse(clientSelected)._id);
+    }
+
+    if (token && !isTokenExpired(token)) {
+      validateCanceledLink(token, router)
+        .then((response) => console.log(response))
+        .catch((err) => toast.error("Error al validar el enlace"));
+
       const intervalId = setInterval(() => {
         const newTimeLeft = getTokenExpirationTime(token);
         setTimeLeft(newTimeLeft);
@@ -127,36 +124,28 @@ export default function QuoteForm() {
         if (newTimeLeft <= 0) {
           clearInterval(intervalId);
           router.push("/");
-          toast.error("Session Expirada, Solicite Nuevo Enlace");
+          toast.error("Sesión expirada. Solicite un nuevo enlace");
         }
       }, 1000);
-
-      return () => clearInterval(intervalId);
-    } else if (!token && isTokenExpired(token)) {
-      const intervalId = setInterval(() => {
-        if (isTokenExpired(token)) {
-          clearInterval(intervalId);
-          router.push("/");
-          toast.error("Session Expirada, Solicite Nuevo Enlace");
-        }
-      }, 60000);
 
       return () => clearInterval(intervalId);
     }
 
     getAllMechanics()
-      .then((mechanics) => {
-        setMechanics(mechanics);
-      })
+      .then(setMechanics)
       .catch((e) => {
-        toast.error("Algo salio mal: ", e);
-        throw new Error(e);
+        toast.error("Error al cargar mecánicos");
+        console.error(e);
       });
-  }, [token, router.isReady]);
+  }, [token, router]);
+
+  useEffect(() => {
+    setFilteredMechanics(mechanics);
+  }, [mechanics]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".relative")) {
+      if (!event.target.closest(".dropdown-container")) {
         setIsDropdownOpen(false);
       }
     };
@@ -165,10 +154,10 @@ export default function QuoteForm() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  async function submitForm(data) {
+  const submitForm = async (data) => {
     try {
       if (!selectedMechanic) {
-        toast.warning("Selecciona un Mecanico");
+        toast.warning("Selecciona un mecánico");
         return;
       }
       if (token) {
@@ -176,42 +165,43 @@ export default function QuoteForm() {
         setCar(tokenValidated.carId);
       }
       const response = await createQuote(car, selectedMechanic, data);
-      if (response.success) {
-        router.push("/quote-sent");
-      }
-    } catch (error) {}
-  }
-
-  async function handleCopyUrl() {
-    const currentUrl = window.location.href;
-    if (quoteToken) {
-      setQuoteToken({});
+      if (response.success) router.push("/quote-sent");
+    } catch (error) {
+      toast.error("Error al enviar la cotización");
     }
-    const token = await createQuoteLinkToken(client, car);
-    setQuoteToken({ token });
+  };
 
-    navigator.clipboard
-      .writeText(`${currentUrl}?token=${token}`)
-      .then(() => {
-        toast.success("URL copiada al portapapeles");
-        router.push("/dashboard");
-      })
-      .catch((err) => {
-        toast.error("Error al copiar la URL: ", err);
-      });
-  }
-
-  async function handleCancelQuote() {
-    if (token) {
-      await cancelQuoteLink(token);
-      setTimeout(() => {
-        toast.warning("Este Enlace ha sido Cancelado Solicite uno nuevo");
-        router.push("/");
-      }, 1000);
-    } else {
+  const handleCopyUrl = async () => {
+    try {
+      const token = await createQuoteLinkToken(client, car);
+      setQuoteToken({ token });
+      const currentUrl = `${window.location.href}?token=${token}`;
+      await navigator.clipboard.writeText(currentUrl);
+      toast.success("URL copiada al portapapeles");
       router.push("/dashboard");
+    } catch (err) {
+      toast.error("Error al copiar la URL");
     }
-  }
+  };
+
+  const handleCancelQuote = async () => {
+    try {
+      if (token) {
+        await cancelQuoteLink(token);
+        toast.warning("Enlace cancelado");
+      }
+      router.push("/dashboard");
+    } catch (err) {
+      toast.error("Error al cancelar la cotización");
+    }
+  };
+
+  const handleMechanicCreated = (newMechanic) => {
+    setMechanics((prevMechanics) => [...prevMechanics, newMechanic]);
+    setFilterText(newMechanic.workshopName);
+    setSelectedMechanic(newMechanic._id);
+    setIsDropdownOpen(false);
+  };
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
@@ -245,28 +235,62 @@ export default function QuoteForm() {
             SELECCIONA UN TALLER
           </label>
           <div className="relative w-full flex flex-row">
-            <div className="mr-2 font-chakra">
-              <input
-                type="text"
-                placeholder="Buscar taller..."
-                value={filterText}
-                onChange={handleInputChange}
-                onClick={() => setIsDropdownOpen(true)}
-                className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white"
-              />
-
-              {isDropdownOpen && (
-                <ul className="absolute z-10 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto">
-                  {filteredMechanics.map((mechanic) => (
-                    <li
-                      key={mechanic._id}
-                      onClick={() => handleOptionClick(mechanic)}
-                      className="px-4 py-2 text-white hover:bg-[#D16527] font-medium  cursor-pointer"
+            <div className="relative w-full flex flex-col dropdown-container">
+              {/* Campo de entrada */}
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Buscar taller..."
+                  value={filterText}
+                  onChange={handleInputChange}
+                  onClick={() => setIsDropdownOpen(true)}
+                  className="w-full px-4 py-2 border-b border-b-[#D16527] outline-none rounded bg-transparent text-white pr-8"
+                />
+                {filterText && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFilterText("");
+                      setFilteredMechanics(mechanics);
+                    }}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-[#D16527]"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
                     >
-                      {mechanic.workshopName}
-                    </li>
-                  ))}
-                  {filteredMechanics.length === 0 && (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                )}
+              </div>
+
+              {/* Dropdown */}
+              {isDropdownOpen && (
+                <ul className="absolute top-full left-0 w-full border border-[#D16527] bg-black rounded shadow max-h-40 overflow-y-auto z-10">
+                  {filteredMechanics.length > 0 ? (
+                    filteredMechanics.map((mechanic) => (
+                      <li
+                        key={mechanic._id}
+                        onClick={() => handleOptionClick(mechanic)}
+                        className="px-4 py-2 text-white hover:bg-[#D16527] cursor-pointer"
+                      >
+                        <p className="text-[12px]">{mechanic.workshopName}</p>
+                        <hr />
+                        <p className="text-[8px] text-[#888]">
+                          Tel: {mechanic.phoneNumber}
+                        </p>
+                      </li>
+                    ))
+                  ) : (
                     <li className="px-4 py-2 text-gray-400">
                       No se encontraron talleres
                     </li>
@@ -274,22 +298,50 @@ export default function QuoteForm() {
                 </ul>
               )}
             </div>
-            <button
-              className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
-              type="button"
-              onClick={handleOpenMechanicForm}
-            >
-              +
-            </button>
+
+            <div className="relative flex items-center">
+              <div className="relative group">
+                <button
+                  className="bg-[#D16527] text-white font-chakra min-w-[50px] max-h-10 p-2 rounded-md"
+                  type="button"
+                  onClick={handleOpenMechanicForm}
+                >
+                  +
+                </button>
+
+                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden md:group-hover:block bg-[#D16527] text-white text-xs lg:text-sm rounded py-1 px-2 z-10">
+                  Agregar nuevo mecánico
+                </div>
+              </div>
+
+              <div className="relative flex items-center ml-2 md:hidden">
+                <button
+                  type="button"
+                  className="text-[#D16527] text-xl rounded-full border border-[#D16527] w-6 h-6 flex items-center justify-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsTooltipOpen(!isTooltipOpen);
+                  }}
+                >
+                  ?
+                </button>
+                {isTooltipOpen && (
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-[#D16527] text-white text-xs lg:text-sm rounded py-2 px-3 z-10">
+                    Agregar nuevo mecánico
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex h-full justify-center"></div>
       </div>
-
       <MechanicForm
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
+        onMechanicCreated={handleMechanicCreated}
       />
+
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col gap-4 my-4 items-center md:w-[80%]"

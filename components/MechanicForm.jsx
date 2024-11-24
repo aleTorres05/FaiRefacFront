@@ -41,6 +41,7 @@ export default function MechanicForm({ isOpen, onClose }) {
             className="w-full max-w-lg text-c p-4"
             onSubmit={handleSubmit(onSubmit)}
           >
+            {/* Información personal */}
             <div className="mb-4">
               <label className="block font-bold font-chakra mb-2">NOMBRE</label>
               <input
