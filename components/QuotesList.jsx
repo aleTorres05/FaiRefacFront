@@ -18,7 +18,6 @@ export default function QuotesList({
 
   async function handleChangeStatus(repairShopQuoteId) {
     try {
-      onQuoteRejected();
       const token = localStorage.getItem("token");
       const response = await rejectQuote(carQuoteId, repairShopQuoteId, token);
 
@@ -26,6 +25,7 @@ export default function QuotesList({
         setQuoteList((prevQuotes) =>
           prevQuotes.filter((quote) => quote._id !== repairShopQuoteId)
         );
+        onQuoteRejected();
 
         toast.success("Cotización Eliminada Correctamente");
       } else {

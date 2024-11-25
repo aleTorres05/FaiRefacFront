@@ -167,12 +167,12 @@ export default function ClientQuotes({ carListQuotes }) {
                     <button
                       type="button"
                       onClick={() => toggleDropdown(quote.repairShopQuoteID)}
-                      className="bg-transparent inline-flex w-full justify-center gap-x-1.5 rounded-md mt-4 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300"
+                      className=" uppercase font-chakra bg-transparent inline-flex w-full justify-center gap-x-1.5 rounded-md mt-4 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300"
                       id="menu-button"
                       aria-expanded={isModalOpen}
                       aria-haspopup="true"
                     >
-                      Piezas Solicitadas
+                      Refacciones Solicitadas
                       <svg
                         className="-mr-1 h-5 w-5 text-gray-400"
                         viewBox="0 0 20 20"
@@ -197,7 +197,7 @@ export default function ClientQuotes({ carListQuotes }) {
                         <div className="py-1 flex flex-row mb-4 p-4 content-center text-lg">
                           <div>
                             <h2 className="text-white font-chakra font-bold">
-                              Piezas:
+                              Refacciones:
                             </h2>
                             <ul>
                               {quote?.items.map((item, idx) => (
@@ -218,7 +218,6 @@ export default function ClientQuotes({ carListQuotes }) {
 
                     <div className="mb-3">
                       <QuotesList
-                        setNoQuotesTrigger={setNoQuotesTrigger}
                         carQuoteId={quote?.shopQuote}
                         quotes={quote?.quoteDetails}
                         handleQuoteChange={openModal}
