@@ -29,7 +29,7 @@ export default function ClientQuotes({ carListQuotes }) {
     let iva = 0;
 
     quoteDetails.forEach((quote) => {
-      quote.items.forEach((item) => {
+      quote.items?.forEach((item) => {
         subtotal += item.itemTotalPrice;
       });
     });
@@ -147,32 +147,32 @@ export default function ClientQuotes({ carListQuotes }) {
         </h2>
         {loading && <SpinnerLoading />}
         {!loading &&
-          quotesReview.length > 0 &&
+          quotesReview?.length > 0 &&
           quotesReview?.map(({ car, carQuoteDetails }, index) => (
             <div key={index}>
               {car.nickname !== "null" ? (
                 <h2 className="font-chakra text-xl">
-                  Cotizaciones para: <strong>{car.nickname}</strong>
+                  Cotizaciones para: <strong>{car?.nickname}</strong>
                 </h2>
               ) : (
                 <h2 className="font-chakra font-bold text-xl">
                   Cotizaciones para:{" "}
-                  <strong>{`${car.model} ${car.brand} ${car.version} ${car.year}`}</strong>
+                  <strong>{`${car?.model} ${car?.brand} ${car?.version} ${car?.year}`}</strong>
                 </h2>
               )}
               {carQuoteDetails?.map((quote) => {
-                const { subtotal, iva } = calculateTotals(quote.quoteDetails);
+                const { subtotal, iva } = calculateTotals(quote?.quoteDetails);
                 return (
-                  <div className="relative" key={quote.repairShopQuoteID}>
+                  <div className="relative" key={quote?.repairShopQuoteID}>
                     <button
                       type="button"
-                      onClick={() => toggleDropdown(quote.repairShopQuoteID)}
-                      className="bg-transparent inline-flex w-full justify-center gap-x-1.5 rounded-md mt-4 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300"
+                      onClick={() => toggleDropdown(quote?.repairShopQuoteID)}
+                      className=" uppercase font-chakra bg-transparent inline-flex w-full justify-center gap-x-1.5 rounded-md mt-4 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300"
                       id="menu-button"
                       aria-expanded={isModalOpen}
                       aria-haspopup="true"
                     >
-                      Piezas Solicitadas
+                      Refacciones Solicitadas
                       <svg
                         className="-mr-1 h-5 w-5 text-gray-400"
                         viewBox="0 0 20 20"
@@ -187,7 +187,7 @@ export default function ClientQuotes({ carListQuotes }) {
                       </svg>
                     </button>
 
-                    {openDropdownId === quote.repairShopQuoteID && (
+                    {openDropdownId === quote?.repairShopQuoteID && (
                       <div
                         className="mt-2 w-full rounded-md bg-transparent border border-[#D26528] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu"
@@ -197,7 +197,7 @@ export default function ClientQuotes({ carListQuotes }) {
                         <div className="py-1 flex flex-row mb-4 p-4 content-center text-lg">
                           <div>
                             <h2 className="text-white font-chakra font-bold">
-                              Piezas:
+                              Refacciones:
                             </h2>
                             <ul>
                               {quote?.items.map((item, idx) => (
@@ -218,7 +218,6 @@ export default function ClientQuotes({ carListQuotes }) {
 
                     <div className="mb-3">
                       <QuotesList
-                        setNoQuotesTrigger={setNoQuotesTrigger}
                         carQuoteId={quote?.shopQuote}
                         quotes={quote?.quoteDetails}
                         handleQuoteChange={openModal}
@@ -312,7 +311,7 @@ export default function ClientQuotes({ carListQuotes }) {
               })}
             </div>
           ))}
-        {!loading && quotesReview.length === 0 && (
+        {!loading && quotesReview?.length === 0 && (
           <div>
             <h1 className="font-chakra font-semibold text-xl">
               No hay Cotizaciones

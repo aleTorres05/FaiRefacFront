@@ -47,28 +47,29 @@ export async function postMechanic(mechanicData) {
         Accept: "application/json",
       },
       body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        workshopName: workshopName,
-        phoneNumber: phoneNumber,
+        firstName,
+        lastName,
+        workshopName,
+        phoneNumber,
         address: {
-          street: street,
-          extNum: extNum,
+          street,
+          extNum,
           intNum: intNum === "" ? null : intNum,
-          neighborhood: neighborhood,
-          zipCode: zipCode,
-          city: city,
-          state: state,
+          neighborhood,
+          zipCode,
+          city,
+          state,
         },
       }),
     });
-
-    if (response.status === 409) {
-      toast.error("El numero telefónico ya esta en uso");
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.error || "Error Desconocido");
     }
 
     const json = await response.json();
-    return json;
+
+    return json; // Devuelve directamente el mecánico recién creado
   } catch (error) {
     throw new Error(error.message);
   }

@@ -79,7 +79,12 @@ export default function CarCard() {
 
   return (
     <>
-      <div className="flex flex-wrap  px-5 md:px-10 md:py-5 lg:px-1  justify-start gap-3">
+      <div
+        className={clsx(
+          "flex flex-wrap px-5 md:px-10 md:py-5 lg:px-1 gap-3",
+          currentCars?.length == 0 ? "justify-center" : "justify-start"
+        )}
+      >
         {currentCars?.map((car, idx) => (
           <div
             key={`car-${idx}`}
@@ -100,14 +105,9 @@ export default function CarCard() {
           </div>
         ))}
         {currentPage === numOfPages && (
-          <div
-            className={clsx(
-              "w-full  flex align-middle items-center justify-center",
-              currentCars.length % 2 === 0 ? "lg:w-[97%]" : "lg:w-[48%]"
-            )}
-          >
+          <div className="w-full md:w-[48%] flex align-middle items-center  justify-center">
             <div
-              className="flex  align-middle items-center justify-center h-[100px] w-[100%] lg:h-[100%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff]"
+              className="flex flex-col align-middle items-center justify-center h-[100px] w-[100%] lg:h-[100%] lg:p-2 cursor-pointer bg-[#272727] hover:bg-[#fff] hover:text-black"
               style={{
                 clipPath:
                   "polygon(10% 0%, 100% 0%, 100% 70%, 90% 100%, 0% 100%, 0% 30%)",
@@ -115,6 +115,9 @@ export default function CarCard() {
               onClick={() => addCarOpenModal()}
             >
               <i className="fas fa-plus text-orange-500 text-6xl"></i>
+              <p className="font-chakra uppercase font-semibold">
+                Agregar coche
+              </p>
             </div>
           </div>
         )}

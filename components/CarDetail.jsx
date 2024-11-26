@@ -110,58 +110,64 @@ export default function CarDetail({
             </div>
             {isDropdownOpen && (
               <div id="dropdown" className="w-[100%]">
-                <table
-                  aria-labelledby="dropdownDefaultButton"
-                  className="table-fixed w-full font-chakra border-collapse border-2 border-[#D16527] mb-3"
-                >
-                  <thead>
-                    <tr className="bg-[#D16527]">
-                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
-                        Items
-                      </th>
-                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
-                        Ticket
-                      </th>
-                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
-                        Status
-                      </th>
-                      <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
-                        Total Paid
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {selectedCar.quotes
-                      ?.filter((quote) => quote.totalFaiRefacFee > 0)
-                      .map((quote) => (
-                        <tr key={quote._id} className="text-center">
-                          <td className="border text-start text-xs md:text-md lg:text-lg border-gray-300 px-2 py-2">
-                            {quote.items?.map((item) => (
-                              <p key={item._id}>
-                                {item.concept} (x{item.quantity})
-                              </p>
-                            ))}
-                          </td>
-                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
-                            <a
-                              href={quote.ticketUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-500 underline"
-                            >
-                              View Ticket
-                            </a>
-                          </td>
-                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg capitalize">
-                            {quote.status}
-                          </td>
-                          <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
-                            ${quote.totalFaiRefacFee.toFixed(2)}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                {selectedCar.quotes?.length < 1 ? (
+                  <p className="w-fulln uppercase text-center mt-4 font-chakra font-bold text-xl">
+                    Sin Historial de Cotizaciones
+                  </p>
+                ) : (
+                  <table
+                    aria-labelledby="dropdownDefaultButton"
+                    className="table-fixed w-full font-chakra border-collapse border-2 border-[#D16527] mb-3"
+                  >
+                    <thead>
+                      <tr className="bg-[#D16527]">
+                        <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                          Refacciones
+                        </th>
+                        <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                          Ticket
+                        </th>
+                        <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                          Status
+                        </th>
+                        <th className="border border-gray-300 text-xs md:text-md lg:text-lg uppercase px-4 py-2">
+                          Total Pagado
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedCar.quotes
+                        ?.filter((quote) => quote.status === "paid")
+                        .map((quote) => (
+                          <tr key={quote._id} className="text-center">
+                            <td className="border text-start text-xs md:text-md lg:text-lg border-gray-300 px-2 py-2">
+                              {quote.items?.map((item) => (
+                                <p key={item._id}>
+                                  {item.concept} (x{item.quantity})
+                                </p>
+                              ))}
+                            </td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
+                              <a
+                                href={quote.ticketUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#D16527] underline"
+                              >
+                                Ver Ticket
+                              </a>
+                            </td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg capitalize">
+                              Pagado
+                            </td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs md:text-md lg:text-lg">
+                              ${quote.totalFaiRefacFee.toFixed(2)}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             )}
           </div>

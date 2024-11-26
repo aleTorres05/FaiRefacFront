@@ -3,7 +3,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function MechanicForm({ isOpen, onClose }) {
+export default function MechanicForm({
+  isOpen,
+  onClose,
+  setSelectedMechanic,
+  setFilterText,
+  setRefresh,
+}) {
   const {
     handleSubmit,
     register,
@@ -12,12 +18,23 @@ export default function MechanicForm({ isOpen, onClose }) {
   } = useForm();
 
   async function onSubmit(data) {
-    await postMechanic(data);
-    onClose();
-    toast.success("Mecanico Agregado exitosamente");
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    try {
+      const response = await postMechanic(data);
+      if (response.success) {
+        toast.success("Mecánico agregado exitosamente");
+        setSelectedMechanic(data.phoneNumber);
+        setFilterText(data.workshopName);
+        setRefresh((prev) => !prev);
+
+        onClose();
+      }
+    } catch (error) {
+      if (
+        error.message === " A mechanic with this phone number already exist"
+      ) {
+        toast.error("Número telefónico existente");
+      }
+    }
   }
 
   if (!isOpen) return null;
@@ -41,6 +58,7 @@ export default function MechanicForm({ isOpen, onClose }) {
             className="w-full max-w-lg text-c p-4"
             onSubmit={handleSubmit(onSubmit)}
           >
+            {/* Información personal */}
             <div className="mb-4">
               <label className="block font-bold font-chakra mb-2">NOMBRE</label>
               <input
