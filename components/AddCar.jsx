@@ -64,7 +64,7 @@ export default function Addcar({ closeModal, isModalOpen, user }) {
         </h2>
         <form
           onSubmit={handleSubmit(submitForm)}
-          className="w-full max-w-sm md:max-w-[660px]"
+          className="w-full md:justify-self-center max-w-sm md:max-w-[660px]"
         >
           <div className="mb-14">
             <label className="block font-chakra text-sm font-medium mb-1">
