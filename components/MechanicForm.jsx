@@ -3,7 +3,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-export default function MechanicForm({ isOpen, onClose, onMechanicCreated }) {
+export default function MechanicForm({
+  isOpen,
+  onClose,
+  setSelectedMechanic,
+  setFilterText,
+  setRefresh,
+}) {
   const {
     handleSubmit,
     register,
@@ -13,16 +19,21 @@ export default function MechanicForm({ isOpen, onClose, onMechanicCreated }) {
 
   async function onSubmit(data) {
     try {
-      const newMechanic = await postMechanic(data); // Envía los datos del mecánico.
-      toast.success("Mecánico agregado exitosamente");
+      const response = await postMechanic(data);
+      if (response.success) {
+        toast.success("Mecánico agregado exitosamente");
+        setSelectedMechanic(data.phoneNumber);
+        setFilterText(data.workshopName);
+        setRefresh((prev) => !prev);
 
-      onMechanicCreated(newMechanic); // Notifica al padre sobre el nuevo mecánico.
-
-      localStorage.setItem("lastCreatedMechanicId", newMechanic._id);
-
-      onClose(); // Cierra el popup.
+        onClose();
+      }
     } catch (error) {
-      toast.error("Error al agregar el mecánico");
+      if (
+        error.message === " A mechanic with this phone number already exist"
+      ) {
+        toast.error("Número telefónico existente");
+      }
     }
   }
 

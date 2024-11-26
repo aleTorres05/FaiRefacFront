@@ -62,20 +62,15 @@ export async function postMechanic(mechanicData) {
         },
       }),
     });
-
     if (!response.ok) {
       const errorResponse = await response.json();
-      if (response.status === 409) {
-        toast.error("El número telefónico ya está en uso");
-      }
-      throw new Error(errorResponse.error || "Error al crear el mecánico");
+      throw new Error(errorResponse.error || "Error Desconocido");
     }
 
     const json = await response.json();
-    console.log("Nuevo mecánico creado:", json); // Verifica la estructura
+
     return json; // Devuelve directamente el mecánico recién creado
   } catch (error) {
-    toast.error(error.message);
     throw new Error(error.message);
   }
 }

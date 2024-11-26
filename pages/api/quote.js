@@ -114,7 +114,6 @@ export async function cancelQuoteLink(token) {
       },
     });
     const json = await response.json();
-    console.log(json);
   } catch (error) {
     console.error("Failed to revoke token:", error);
     toast.error("Hubo un problema al cancelar el enlace.");

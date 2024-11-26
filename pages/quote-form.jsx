@@ -161,6 +161,7 @@ export default function QuoteForm() {
         toast.warning("Selecciona un mecánico");
         return;
       }
+
       if (token) {
         const tokenValidated = await validateToken(token, router);
         setCar(tokenValidated.carId);
@@ -197,13 +198,6 @@ export default function QuoteForm() {
     }
   };
 
-  const handleMechanicCreated = (newMechanic) => {
-    setMechanics((prevMechanics) => [...prevMechanics, newMechanic]);
-    setSelectedMechanic(newMechanic._id);
-    setFilterText(newMechanic.workshopName);
-    setRefresh((prev) => !prev);
-  };
-
   useEffect(() => {
     getAllMechanics()
       .then(setMechanics)
@@ -214,13 +208,16 @@ export default function QuoteForm() {
   }, [refresh]);
 
   useEffect(() => {
-    if (selectedMechanic) {
-      const mechanic = mechanics.find((m) => m._id === selectedMechanic);
+    if (selectedMechanic != "") {
+      const mechanic = mechanics.find(
+        (m) => m.phoneNumber === selectedMechanic
+      );
       if (mechanic) {
         setFilterText(mechanic.workshopName);
+        setSelectedMechanic(mechanic._id);
       }
     }
-  }, [mechanics, selectedMechanic]);
+  }, [selectedMechanic, mechanics, refresh]);
 
   return (
     <div className="flex flex-col w-full p-4 justify-center md:items-center min-h-screen">
@@ -337,7 +334,9 @@ export default function QuoteForm() {
       <MechanicForm
         isOpen={isMechanicFormOpen}
         onClose={handleCloseMechanicForm}
-        onMechanicCreated={handleMechanicCreated} // Notifica al padre.
+        setSelectedMechanic={setSelectedMechanic} // Notifica al padre.
+        setFilterText={setFilterText}
+        setRefresh={setRefresh}
       />
 
       <form

@@ -21,7 +21,6 @@ export async function login(email, password, router) {
     const json = await response.json();
     return json.data;
   } catch (error) {
-    console.log(error.message);
     throw new Error(error.message);
   }
 }
