@@ -12,7 +12,7 @@ export default function Success() {
   useEffect(() => {
     if (!session_id) {
       toast.error("No se ha proporcionado información de pago válida.");
-      router.push("/dashboard"); 
+      // router.push("/dashboard");
       return;
     }
 
@@ -85,7 +85,7 @@ export default function Success() {
           </div>
         </main>
       ) : (
-        <SpinnerLoading/>
+        <SpinnerLoading />
       )}
     </>
   );
