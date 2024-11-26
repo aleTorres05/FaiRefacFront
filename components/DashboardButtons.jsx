@@ -15,7 +15,7 @@ export default function DashboardButtons({
             src={repairShop?.profilePicture}
             alt="avatar"
           />
-          <div className="flex flex-col md:h-full md:flex-col justify-center xl:w-full 2xl:w-full xl:p-2 2xl:p-2">
+          <div className="flex flex-col md:h-full md:flex-col lg:mb-5 justify-center xl:w-full 2xl:w-full xl:p-2 2xl:p-2">
             <h4 className="font-chakra font-bold lg:h-fit md:h-fit xl:text-[25px] 2xl:text-[25px] md:w-[100%] uppercase xl:w-[full] 2xl:w-[full]">
               {repairShop?.companyName || "Nombre de la Refaccionaria"}
             </h4>
