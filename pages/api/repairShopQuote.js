@@ -1,4 +1,4 @@
-const API_URL = "https://fairefac.yairggdev.lat/repairshop-quote";
+const API_URL = "https://fairefac-api.onrender.com/repairshop-quote";
 
 export async function repairShopQuoteUpdateById(id, token, items) {
   try {
