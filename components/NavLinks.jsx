@@ -65,13 +65,15 @@ export default function NavLinks({
           >
             Impulsa tu Refaccionaria
           </Link>
-          <Link
+          {!userInfo && (
+            <Link
             onClick={closeMenu}
             href="/signup"
             className="hover:text-[#D16527] font-mulish transition-colors"
           >
             Regístrate
           </Link>
+          )}
           {userInfo ? (
             <Link
               onClick={closeMenu}
