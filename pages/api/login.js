@@ -1,5 +1,4 @@
-import { toast } from "sonner";
-const API_URL = "https://fairefac.yairggdev.lat";
+const API_URL = "https://fairefac-api.onrender.com";
 
 export async function login(email, password, router) {
   try {
