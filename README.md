@@ -1,40 +1,141 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FaiRefacFront
 
-## Getting Started
+Welcome to the **FaiRefacFront** repository, the frontend application for the FaiRefac system. This project is designed to provide a seamless and user-friendly interface for managing car repair quotes and processes efficiently. Built using modern web technologies, it ensures a responsive and intuitive user experience.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Features
+
+- **Quote Management**: Add, view, and manage repair shop quotes.
+- **Secure Authentication**: Robust login and authentication with token management.
+- **Dynamic Components**: Leverage modular and reusable components for scalability.
+- **Real-Time Updates**: Responsive UI for handling quote actions (acceptance, rejection, etc.) dynamically.
+- **API Integration**: Smooth communication with backend services to fetch and update data.
+- **Modern UI/UX**: Designed with responsiveness and usability in mind for optimal client interaction.
+
+---
+
+## Tech Stack
+
+- **Frontend Framework**: [React.js](https://reactjs.org/) with [Next.js](https://nextjs.org/)
+- **State Management**: Context API / Custom Hooks
+- **Styling**: CSS Modules / Styled Components
+- **HTTP Client**: [Axios](https://axios-http.com/)
+- **Utilities**:
+  - JWT for secure token handling
+  - Dynamic routing with Next.js
+  - Responsive design principles
+
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v14+ recommended)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+
+---
+
+## Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/aleTorres05/FaiRefacFront.git
+   cd FaiRefacFront
+   ```
+
+2. **Install Dependencies**  
+   Using npm:
+
+   ```bash
+   npm install
+   ```
+
+   Or using yarn:
+
+   ```bash
+   yarn install
+   ```
+
+3. **Set Up Environment Variables**  
+   Create a `.env` file in the root directory and provide the necessary configuration, such as:
+
+   ```env
+   NEXT_PUBLIC_API_URL=<backend_api_url>
+   NEXT_PUBLIC_STRIPE_KEY=<stripe_public_key>
+   ```
+
+4. **Run the Development Server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Or using yarn:
+
+   ```bash
+   yarn dev
+   ```
+
+5. **Open in Browser**  
+   Navigate to `http://localhost:3000` to access the application.
+
+---
+
+## Folder Structure
+
+```
+FaiRefacFront/
+├── components/         # Reusable components
+├── pages/              # Next.js page routes
+├── styles/             # Styling files
+├── utils/              # Helper functions
+├── context/            # Context API setup
+├── public/             # Static assets
+├── .env                # Environment variables
+└── README.md           # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Usage
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+1. Log in using your credentials.
+2. View and manage quotes in real-time.
+3. Accept or reject quotes with dynamic updates.
+4. Review totals and summaries for transparency.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contribution Guidelines
 
-## Learn More
+We welcome contributions to enhance the project! Follow these steps to contribute:
 
-To learn more about Next.js, take a look at the following resources:
+1. Fork the repository.
+2. Create a feature branch.
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+3. Commit your changes.
+   ```bash
+   git commit -m "Add your feature description"
+   ```
+4. Push to your branch.
+   ```bash
+   git push origin feature/your-feature
+   ```
+5. Create a pull request and describe your changes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Issues
 
-## Deploy on Vercel
+If you encounter any issues or have suggestions, please report them [here](https://github.com/aleTorres05/FaiRefacFront/issues). Ensure to provide a detailed description to help resolve them efficiently.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+This project is licensed under the [MIT License](LICENSE).
